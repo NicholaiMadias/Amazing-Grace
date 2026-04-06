@@ -62,6 +62,9 @@
         </header>
 
         <nav class="flex flex-wrap justify-center gap-4 mb-10" aria-label="Main Navigation">
+            <button class="tab-btn active" onclick="switchTab('housing', event)">🏠 Amazing Grace</button>
+            <button class="tab-btn" onclick="switchTab('toolbox', event)">⚙️ Nexus Toolbox</button>
+            <button class="tab-btn" onclick="switchTab('arcade', event)">🎮 The Arcade</button>
             <button class="tab-btn active" onclick="switchTab('housing')">🏠 Amazing Grace</button>
             <button class="tab-btn" onclick="switchTab('toolbox')">⚙️ Nexus Toolbox</button>
             <button class="tab-btn" onclick="switchTab('arcade')">🎮 The Arcade</button>
@@ -156,6 +159,7 @@
 
     <script>
         // Tab Routing
+        function switchTab(tabId, event) {
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -166,6 +170,7 @@
         // Service Worker Registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('Service worker registration failed', err));
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW setup pending', err));
             });
         }
@@ -199,11 +204,29 @@
             document.getElementById('game-state').innerHTML = html;
         }
 
+        function showGameEnd(success, stage) {
+            const heading = success
+                ? `<h2 class="text-green-400 text-2xl">Case Closed!</h2><p>${stage.final_reveal}</p>`
+                : `<h2 class="text-red-400 text-2xl">Failed!</h2><p>${stage.fail_reveal}</p>`;
+            document.getElementById('game-state').innerHTML =
+                heading + `<button onclick="renderStage('intro')">Play Again</button>`;
+        }
+
         function handleAns(key, idx) {
             const stage = gameData[key];
             const res = document.getElementById('result');
             if (stage.answers[idx].correct) {
                 res.innerHTML = `<span class="text-green-400">${stage.correct_response || 'Correct!'}</span>`;
+                if (stage.type === 'final') {
+                    setTimeout(() => showGameEnd(true, stage), 1500);
+                } else {
+                    setTimeout(() => renderStage(stage.next), 1500);
+                }
+            } else {
+                res.innerHTML = `<span class="text-red-400">Incorrect deduction.</span>`;
+                if (stage.type === 'final') {
+                    setTimeout(() => showGameEnd(false, stage), 1500);
+                }
                 setTimeout(() => stage.type === 'final' ? document.getElementById('game-state').innerHTML = `<h2 class="text-green-400 text-2xl">Case Closed!</h2><p>${stage.final_reveal}</p><button onclick="renderStage('intro')">Play Again</button>` : renderStage(stage.next), 1500);
             } else {
                 res.innerHTML = `<span class="text-red-400">Incorrect deduction.</span>`;
