@@ -65,6 +65,9 @@
             <button class="tab-btn active" onclick="switchTab('housing', event)">🏠 Amazing Grace</button>
             <button class="tab-btn" onclick="switchTab('toolbox', event)">⚙️ Nexus Toolbox</button>
             <button class="tab-btn" onclick="switchTab('arcade', event)">🎮 The Arcade</button>
+            <button class="tab-btn active" onclick="switchTab('housing')">🏠 Amazing Grace</button>
+            <button class="tab-btn" onclick="switchTab('toolbox')">⚙️ Nexus Toolbox</button>
+            <button class="tab-btn" onclick="switchTab('arcade')">🎮 The Arcade</button>
         </nav>
 
         <main id="housing" class="tab-content active">
@@ -157,6 +160,7 @@
     <script>
         // Tab Routing
         function switchTab(tabId, event) {
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             event.currentTarget.classList.add('active');
@@ -167,6 +171,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('Service worker registration failed', err));
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW setup pending', err));
             });
         }
 
@@ -180,7 +185,6 @@
 
         let currentStage = 'intro';
         function renderStage(stageKey) {
-            currentStage = stageKey;
             const stage = gameData[stageKey];
             let html = `<h2 class="text-xl font-bold mb-2 text-white">${stage.title}</h2>`;
             if(stage.text) html += `<p class="mb-4 text-sm text-gray-300 border-l-2 border-[#4a235a] pl-3">${stage.text}</p>`;
@@ -223,6 +227,10 @@
                 if (stage.type === 'final') {
                     setTimeout(() => showGameEnd(false, stage), 1500);
                 }
+                setTimeout(() => stage.type === 'final' ? document.getElementById('game-state').innerHTML = `<h2 class="text-green-400 text-2xl">Case Closed!</h2><p>${stage.final_reveal}</p><button onclick="renderStage('intro')">Play Again</button>` : renderStage(stage.next), 1500);
+            } else {
+                res.innerHTML = `<span class="text-red-400">Incorrect deduction.</span>`;
+                if(stage.type === 'final') setTimeout(() => document.getElementById('game-state').innerHTML = `<h2 class="text-red-400 text-2xl">Failed!</h2><p>${stage.fail_reveal}</p><button onclick="renderStage('intro')">Play Again</button>`, 1500);
             }
         }
 
