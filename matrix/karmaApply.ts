@@ -8,63 +8,77 @@ export interface MatrixState {
   community: number;
   wisdom: number;
   integrity: number;
-  [key: string]: number;
 }
 
+export type MatrixStateKey = keyof MatrixState;
+
+const MATRIX_STATE_KEYS: ReadonlySet<MatrixStateKey> = new Set([
+  'karma', 'community', 'wisdom', 'integrity'
+]);
+
 export interface TelemetryEvent {
-  type: string;
+  type: MatrixStateKey;
   value: number;
   ts: number;
   source: string;
 }
 
+export interface KarmaActionResult {
+  matrixState: MatrixState;
+  rep: ReputationVector;
+}
+
 export function applyTelemetryEvent(
   matrixState: MatrixState,
   event: TelemetryEvent
-): void {
-  if (event.type in matrixState) {
-    matrixState[event.type] += event.value;
+): MatrixState {
+  if (!MATRIX_STATE_KEYS.has(event.type)) {
+    throw new Error(`Unknown telemetry event type: "${event.type}"`);
   }
+  return { ...matrixState, [event.type]: matrixState[event.type] + event.value };
 }
 
 export function applyKarmaAction(
   matrixState: MatrixState,
   rep: ReputationVector,
   action: KarmaAction
-): ReputationVector {
+): KarmaActionResult {
   const rule = resolveKarmaAction(action);
+  const ts = Date.now();
+
+  let nextState = matrixState;
 
   if (rule.karmaDelta !== 0) {
-    applyTelemetryEvent(matrixState, {
+    nextState = applyTelemetryEvent(nextState, {
       type: 'karma',
       value: rule.karmaDelta,
-      ts: Date.now(),
+      ts,
       source: 'karma-economy'
     });
   }
 
   if (rule.communityDelta !== 0) {
-    applyTelemetryEvent(matrixState, {
+    nextState = applyTelemetryEvent(nextState, {
       type: 'community',
       value: rule.communityDelta,
-      ts: Date.now(),
+      ts,
       source: 'karma-economy'
     });
   }
 
-  rep = applyReputationEvent(rep, {
+  let nextRep = applyReputationEvent(rep, {
     type: 'karma',
     value: rule.karmaDelta,
-    ts: Date.now(),
+    ts,
     source: 'karma-economy'
   });
 
-  rep = applyReputationEvent(rep, {
+  nextRep = applyReputationEvent(nextRep, {
     type: 'community',
     value: rule.communityDelta,
-    ts: Date.now(),
+    ts,
     source: 'karma-economy'
   });
 
-  return rep;
+  return { matrixState: nextState, rep: nextRep };
 }

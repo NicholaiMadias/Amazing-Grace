@@ -26,10 +26,16 @@ export function addInteraction(
   next.nodes.add(from);
   next.nodes.add(to);
 
-  const edge = next.edges.find(e => e.from === from && e.to === to);
-  if (edge) {
-    edge.weight += delta;
-    if (tag && !edge.tags.includes(tag)) edge.tags.push(tag);
+  const edgeIdx = next.edges.findIndex(e => e.from === from && e.to === to);
+  if (edgeIdx !== -1) {
+    const existing = next.edges[edgeIdx];
+    next.edges[edgeIdx] = {
+      ...existing,
+      weight: existing.weight + delta,
+      tags: tag && !existing.tags.includes(tag)
+        ? [...existing.tags, tag]
+        : [...existing.tags]
+    };
   } else {
     next.edges.push({
       from,

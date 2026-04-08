@@ -14,6 +14,21 @@ export interface ReputationEvent {
   source: string;
 }
 
+const CLAMP_MIN = -1000;
+const CLAMP_MAX = 1000;
+
+const CREDIT_SCORE_WEIGHTS = {
+  integrity: 0.4,
+  karma: 0.3,
+  wisdom: 0.3
+} as const;
+
+const TRUST_SCORE_WEIGHTS = {
+  community: 0.5,
+  integrity: 0.3,
+  karma: 0.2
+} as const;
+
 export function applyReputationEvent(
   rep: ReputationVector,
   event: ReputationEvent
@@ -37,26 +52,26 @@ export function applyReputationEvent(
 
   // Clamp base dimensions
   (['karma', 'community', 'wisdom', 'integrity'] as const).forEach(k => {
-    next[k] = Math.max(-1000, Math.min(1000, next[k]));
+    next[k] = Math.max(CLAMP_MIN, Math.min(CLAMP_MAX, next[k]));
   });
 
   // Derive credit & trust
   next.creditScore = Math.round(
-    0.4 * normalize(next.integrity) +
-    0.3 * normalize(next.karma) +
-    0.3 * normalize(next.wisdom)
+    CREDIT_SCORE_WEIGHTS.integrity * normalize(next.integrity) +
+    CREDIT_SCORE_WEIGHTS.karma     * normalize(next.karma) +
+    CREDIT_SCORE_WEIGHTS.wisdom    * normalize(next.wisdom)
   );
 
   next.trustScore = Math.round(
-    0.5 * normalize(next.community) +
-    0.3 * normalize(next.integrity) +
-    0.2 * normalize(next.karma)
+    TRUST_SCORE_WEIGHTS.community  * normalize(next.community) +
+    TRUST_SCORE_WEIGHTS.integrity  * normalize(next.integrity) +
+    TRUST_SCORE_WEIGHTS.karma      * normalize(next.karma)
   );
 
   return next;
 }
 
 function normalize(v: number): number {
-  // Map [-1000, 1000] → [0, 100]
-  return ((v + 1000) / 2000) * 100;
+  // Map [CLAMP_MIN, CLAMP_MAX] → [0, 100]
+  return ((v - CLAMP_MIN) / (CLAMP_MAX - CLAMP_MIN)) * 100;
 }
