@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply min-h-screen bg-brand-sand text-brand-ink antialiased;
+  background-image: linear-gradient(180deg, #0a1324 0%, #0f172a 18%, #0f172a 28%, rgba(12, 26, 42, 0.92) 38%, rgba(12, 26, 42, 0.86) 45%, #f6f1e4 65%);
+}
+
+#root {
+  @apply min-h-screen max-w-screen-md mx-auto px-4 pb-32 pt-4 sm:px-6;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-brand-sand;
+  }
+
+  h1 {
+    @apply text-3xl font-semibold leading-tight sm:text-4xl;
+  }
+  h2 {
+    @apply text-2xl font-semibold leading-snug sm:text-3xl;
+  }
+  h3 {
+    @apply text-xl font-semibold leading-snug;
+  }
+  p {
+    @apply text-sm text-brand-ink/80;
+  }
+}
+
+@layer components {
+  .surface {
+    @apply rounded-2xl bg-white/90 p-4 shadow-card backdrop-blur;
+  }
+  .card-sheen {
+    @apply bg-card-glow;
+  }
+}
