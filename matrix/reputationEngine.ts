@@ -48,6 +48,8 @@ export function applyReputationEvent(
     case 'integrity':
       next.integrity += event.value;
       break;
+    default:
+      throw new Error(`Unknown reputation event type: ${String(event.type)}`);
   }
 
   // Clamp base dimensions
