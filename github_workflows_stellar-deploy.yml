@@ -1,0 +1,47 @@
+name: Stellar Matrix Deployment
+
+on:
+  repository_dispatch:
+    types: [stellar_deploy]
+  push:
+    branches:
+      - main
+    paths:
+      - 'Ministry/**'
+      - 'index.html'
+
+jobs:
+  integrate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install googleapis
+
+      - name: Path Verification
+        run: |
+          echo "Verifying Ministry Directory..."
+          ls -R Ministry/Integration/
+
+      - name: Run Grace Matrix Integration
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          GRACE_MATRIX_FOLDER_ID: "1bXBaDMH47RafqbOymfBqESnvRkJxzMfr"
+        run: node Ministry/Integration/index.mjs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          cname: amazinggracehomeliving.com
