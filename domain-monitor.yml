@@ -1,70 +1,44 @@
-Gamified Learning
-<!DOCTYPE html>
-<html>
-<head>
-  <title>GulfNexus SSL Status</title>
-  <style>
-    body { background:#0a0a0f; color:white; font-family:system-ui; padding:2rem; }
-    h1 { color:#7ec8e3; text-align:center; }
-    .domain { margin:1rem 0; padding:1rem; background:#111; border-radius:8px; }
-  </style>
-</head>
-<body>
+domains:
+  - name: Amazing Grace Home Living
+    domain: amazinggracehomeliving.com
+    repo: NicholaiMadias/Amazing-Grace
+    pages: https://nicholaimadias.github.io/Amazing-Grace/
+    cname: amazinggracehomeliving.com
+    dns:
+      - type: A
+        host: "@"
+        value: 185.199.108.153
+      - type: A
+        host: "@"
+        value: 185.199.109.153
+      - type: A
+        host: "@"
+        value: 185.199.110.153
+      - type: A
+        host: "@"
+        value: 185.199.111.153
+      - type: CNAME
+        host: www
+        value: nicholaimadias.github.io
 
-<h1>GulfNexus SSL Certificate Status</h1>
-
-<div id="results"></div>
-
-<script>
-const domains = [
-  "amazinggracehomeliving.com",
-  "gamifiedlearning.org",
-  "limitlessnexus.com"
-];
-
-async function checkSSL(domain) {
-  try {
-    const res = await fetch(`https://${domain}`, { method: "HEAD" });
-    return res.ok ? "Active" : "Error";
-  } catch {
-    return "Unreachable";
-  }
-}
-
-(async () => {
-  const container = document.getElementById("results");
-
-  for (const domain of domains) {
-    const status = await checkSSL(domain);
-    const div = document.createElement("div");
-    div.className = "domain";
-    div.innerHTML = `<strong>${domain}</strong>: ${status}`;
-    container.appendChild(div);
-  }
-})();
-</script>
-
-</body>
-</html>
-
-─────────────────────────────────────────────
-Domain: gamifiedlearning.org
-Repo:   NicholaiMadias/gamifiedlearning.github.io
-Pages:  https://nicholaimadias.github.io/gamifiedlearning.github.io/
-CNAME:  gamifiedlearning.org
-
-DNS Requirements:
-  A @ → 185.199.108.153
-  A @ → 185.199.109.153
-  A @ → 185.199.110.153
-  A @ → 185.199.111.153
-  CNAME www → nicholaimadias.github.io
-
-
-- name: Check Gamified Learning
-  run: |
-    echo "Checking gamifiedlearning.org"
-    dig +short gamifiedlearning.org A
-    dig +short www.gamifiedlearning.org CNAMEAnd include it in the SSL loop:
-
-for domain in amazinggracehomeliving.com gamifiedlearning.org
+  - name: House of Gamified Learning
+    domain: gamifiedlearning.org
+    repo: NicholaiMadias/gamifiedlearning.github.io
+    pages: https://nicholaimadias.github.io/gamifiedlearning.github.io/
+    cname: gamifiedlearning.org
+    dns:
+      - type: A
+        host: "@"
+        value: 185.199.108.153
+      - type: A
+        host: "@"
+        value: 185.199.109.153
+      - type: A
+        host: "@"
+        value: 185.199.110.153
+      - type: A
+        host: "@"
+        value: 185.199.111.153
+      - type: CNAME
+        host: www
+        value: nicholaimadias.github.io
