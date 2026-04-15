@@ -1,9 +1,9 @@
-House of Gamified Learning
+Amazing Grace Home Living
 ─────────────────────────────────────────────
-Domain: gamifiedlearning.org
-Repo:   NicholaiMadias/gamifiedlearning.github.io
-Pages:  https://nicholaimadias.github.io/gamifiedlearning.github.io/
-CNAME:  gamifiedlearning.org
+Domain: amazinggracehomeliving.com
+Repo:   NicholaiMadias/amazinggrace.github.io
+Pages:  https://nicholaimadias.github.io/amazinggrace.github.io/
+CNAME:  amazinggracehomeliving.com/
 
 DNS Requirements:
   A @ → 185.199.108.153
