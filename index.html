@@ -1,241 +1,667 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#00ff41">
-    <meta name="description" content="Amazing Grace Home Living: Secure housing, Ministry outreach, and The Seven Stars Arcade.">
-    
-    <meta property="og:title" content="Amazing Grace Home Living">
-    <meta property="og:description" content="Access Amazing Grace Home Living listings, Voice of Jesus Ministry, and the Seven Stars Arcade.">
-    <meta property="og:type" content="website">
-    
-    <link rel="manifest" href="manifest.json">
-    <title>Amazing Grace Home Living | Nexus</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: { colors: { nexus: { black: '#050505', green: '#00ff41', darkGreen: '#004411', muted: '#a1a1aa' } } }
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#00ff41" />
+  <meta name="description" content="Amazing Grace Home Living: Secure housing, Ministry outreach, and The Seven Stars Arcade." />
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@400;600;800&family=VT323&family=Cochin:wght@400;700&display=swap');
-        
-        :root {
-            --fiesta-pink: #ff6699; --tropical-sun: #ffcc33; --celestial-blue: #33ccff; --deep-nebula: #120626;
-            --glass: rgba(255, 255, 255, 0.08); --game-bg: #0d0c1d; --primary-btn: #4a235a;
-        }
+  <meta property="og:title" content="Amazing Grace Home Living" />
+  <meta property="og:description" content="Access Amazing Grace Home Living listings, Voice of Jesus Ministry, and the Seven Stars Arcade." />
+  <meta property="og:type" content="website" />
 
-        body { margin: 0; background: radial-gradient(circle at center, #1e0b36 0%, var(--deep-nebula) 100%); color: #fdf6e3; font-family: 'Quicksand', sans-serif; min-height: 100vh; }
-        .terminal { font-family: 'VT323', monospace; }
-        
-        /* Updated Main Title Styling to look more elegant yet modern */
-        .title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; background: linear-gradient(45deg, #00ff41, #33ccff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.3)); margin: 0; text-transform: uppercase; letter-spacing: 2px;}
-        
-        .glass-card { background: var(--glass); border-radius: 24px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); }
-        .tab-btn { background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); color: #ccc; padding: 10px 20px; border-radius: 50px; cursor: pointer; transition: 0.3s; font-weight: 600; }
-        .tab-btn.active { background: var(--tropical-sun); color: var(--deep-nebula); border: none; box-shadow: 0 0 15px rgba(255, 204, 51, 0.4); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  <link rel="manifest" href="manifest.json" />
+  <title>Amazing Grace Home Living | Nexus</title>
 
-        /* Game Scoped CSS */
-        #game-wrapper { font-family: 'Cochin', serif; background-color: var(--game-bg); color: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 600px; border-radius: 24px; position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); }
-        #game-wrapper .stars-layer { position: absolute; inset: 0; background: radial-gradient(2px 2px at 20% 20%, #fff 0, transparent 60%), radial-gradient(1.5px 1.5px at 80% 30%, #fff 0, transparent 60%); background-size: 100px 100px, 120px 120px; animation: twinkle 5s linear infinite; opacity: 0.8; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-        #game-wrapper .game-container { text-align: center; background: rgba(25, 23, 43, 0.9); border-radius: 1rem; padding: 2.5rem; max-width: 90%; width: 550px; position: relative; z-index: 10; border: 3px solid #ffd700; }
-        #game-wrapper button { padding: 1rem; font-size: 1.1rem; border: none; border-radius: 0.75rem; cursor: pointer; background-color: var(--primary-btn); color: #fff; margin: 0.5rem; width: 100%; transition: 0.3s; }
-        #game-wrapper button:hover { background-color: #6a3480; transform: translateY(-2px); }
-        #game-wrapper input { padding: 0.75rem; border-radius: 0.5rem; border: 2px solid var(--primary-btn); width: 80%; background: var(--game-bg); color: #fff; text-align: center; margin-bottom: 1rem; }
-    </style>
+  <!-- Prefer link-based font loading over @import for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@400;600;800&family=VT323&family=Cochin:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --fiesta-pink: #ff6699;
+      --tropical-sun: #ffcc33;
+      --celestial-blue: #33ccff;
+      --deep-nebula: #120626;
+
+      --glass: rgba(255, 255, 255, 0.08);
+      --game-bg: #0d0c1d;
+      --primary-btn: #4a235a;
+
+      --nexus-green: #00ff41;
+      --nexus-black: #050505;
+
+      --border: rgba(255, 255, 255, 0.1);
+      --text-muted: rgba(255, 255, 255, 0.70);
+    }
+
+    /* Basic layout (replaces Tailwind spacing/containers) */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at center, #1e0b36 0%, var(--deep-nebula) 100%);
+      color: #fdf6e3;
+      font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    .page {
+      padding: 16px;
+    }
+    @media (min-width: 768px) {
+      .page { padding: 32px; }
+    }
+
+    .container {
+      max-width: 1152px; /* ~max-w-6xl */
+      margin: 0 auto;
+    }
+
+    .terminal { font-family: "VT323", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+    .title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(45deg, #00ff41, #33ccff, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.3));
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    .subhead {
+      margin-top: 8px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      font-size: 12px;
+      color: var(--celestial-blue);
+    }
+    @media (min-width: 768px) {
+      .subhead { font-size: 14px; }
+    }
+
+    /* Glass UI */
+    .glass-card {
+      background: var(--glass);
+      border-radius: 24px;
+      padding: 30px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(15px);
+    }
+
+    /* Tabs */
+    .tablist {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 0 40px;
+      padding: 0;
+    }
+
+    .tab-btn {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 10px 20px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 700;
+    }
+    .tab-btn[aria-selected="true"] {
+      background: var(--tropical-sun);
+      color: var(--deep-nebula);
+      border: none;
+      box-shadow: 0 0 15px rgba(255, 204, 51, 0.4);
+    }
+    .tab-btn:focus-visible {
+      outline: 3px solid rgba(51, 204, 255, 0.65);
+      outline-offset: 3px;
+    }
+
+    /* Panels */
+    .tabpanel[hidden] { display: none; }
+    .tabpanel {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Housing header */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .section-header h2 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--nexus-green);
+    }
+    .section-header p {
+      margin: 8px 0 0;
+      color: var(--text-muted);
+    }
+
+    /* Grid utilities (replace Tailwind grid classes used here) */
+    .grid { display: grid; gap: 24px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    @media (min-width: 1024px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.40);
+      border: 1px solid rgba(113, 113, 122, 0.8);
+      padding: 24px;
+      border-radius: 16px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .card:hover { border-color: rgba(0, 255, 65, 0.75); transform: translateY(-1px); }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--nexus-green);
+    }
+    .badge {
+      background: rgba(0, 255, 65, 0.1);
+      color: var(--nexus-green);
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .card p {
+      margin: 0 0 24px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.80);
+      line-height: 1.5;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 24px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .actions { flex-direction: row; }
+    }
+
+    .btn-link {
+      flex: 1;
+      text-align: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 1px solid rgba(113, 113, 122, 0.9);
+      color: rgba(255, 255, 255, 0.90);
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .btn-link:hover { background: rgba(39, 39, 42, 0.55); }
+
+    .btn-primary {
+      flex: 1;
+      text-align: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      text-decoration: none;
+      background: var(--nexus-green);
+      color: #000;
+      font-weight: 900;
+      transition: background-color 0.2s ease;
+    }
+    .btn-primary:hover { background: #fff; }
+
+    /* Toolbox */
+    .toolbox-grid {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .toolbox-grid { grid-template-columns: 1fr 1fr; }
+      .span-2 { grid-column: 1 / -1; }
+    }
+
+    .h2 {
+      margin: 0 0 16px;
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+    .tropical { color: var(--tropical-sun); }
+    .celestial { color: var(--celestial-blue); }
+    .fiesta { color: var(--fiesta-pink); }
+
+    .meter-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .meter-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .meter-fill { height: 100%; }
+
+    .job {
+      background: rgba(0, 0, 0, 0.20);
+      border-radius: 16px;
+      padding: 16px;
+      border-left: 4px solid #2ecc71;
+    }
+    .job-top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+    .job-rate { color: #2ecc71; font-size: 1.5rem; }
+
+    .weaver {
+      background: rgba(0,0,0,0.50);
+      border: 1px solid rgba(51, 204, 255, 0.30);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .weaver textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--celestial-blue);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      outline: none;
+      resize: none;
+      height: 96px;
+      font-size: 14px;
+    }
+    @media (min-width: 768px) {
+      .weaver textarea { font-size: 18px; }
+    }
+    .weaver-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
+    .weaver button {
+      background: var(--celestial-blue);
+      color: var(--deep-nebula);
+      border: none;
+      font-weight: 900;
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .weaver button:hover { background: #fff; }
+
+    /* Game scoped CSS (kept, just without Tailwind classes) */
+    #game-wrapper {
+      font-family: "Cochin", serif;
+      background-color: var(--game-bg);
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 600px;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    #game-wrapper .stars-layer {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(2px 2px at 20% 20%, #fff 0, transparent 60%),
+        radial-gradient(1.5px 1.5px at 80% 30%, #fff 0, transparent 60%);
+      background-size: 100px 100px, 120px 120px;
+      animation: twinkle 5s linear infinite;
+      opacity: 0.8;
+    }
+    @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+    #game-wrapper .game-container {
+      text-align: center;
+      background: rgba(25, 23, 43, 0.9);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 90%;
+      width: 550px;
+      position: relative;
+      z-index: 10;
+      border: 3px solid #ffd700;
+    }
+
+    #game-wrapper h1 {
+      margin: 0 0 16px;
+      color: #ffd700;
+      font-size: 2rem;
+      font-weight: 900;
+      font-family: "Quicksand", sans-serif;
+    }
+    @media (min-width: 768px) {
+      #game-wrapper h1 { font-size: 2.5rem; }
+    }
+
+    #game-wrapper button {
+      padding: 16px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background-color: var(--primary-btn);
+      color: #fff;
+      margin: 8px 0;
+      width: 100%;
+      transition: 0.3s;
+    }
+    #game-wrapper button:hover { background-color: #6a3480; transform: translateY(-2px); }
+
+    #game-wrapper input {
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px solid var(--primary-btn);
+      width: 80%;
+      background: var(--game-bg);
+      color: #fff;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* Game dynamic content helpers (replacing Tailwind classes in templates) */
+    .game-title { margin: 0 0 8px; font-size: 1.25rem; font-weight: 900; color: #fff; font-family: "Quicksand", sans-serif; }
+    .game-text { margin: 0 0 16px; font-size: 0.95rem; color: rgba(255,255,255,0.75); border-left: 2px solid var(--primary-btn); padding-left: 12px; text-align: left; }
+    .game-q { margin: 0 0 16px; color: #ffd700; font-style: italic; }
+    .result { margin-top: 16px; font-weight: 900; }
+    .ok { color: #34d399; } /* green-ish */
+    .bad { color: #f87171; } /* red-ish */
+  </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
+  <div class="page">
+    <div class="container">
+      <header style="margin-bottom: 40px;">
+        <h1 class="title">AMAZING GRACE HOME LIVING</h1>
+        <p class="subhead terminal">NEXUS COMMAND CENTER v5.2 // PWA ACTIVE</p>
+      </header>
 
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-10">
-            <h1 class="title">AMAZING GRACE HOME LIVING</h1>
-            <p class="text-celestial-blue tracking-widest font-bold mt-2 text-xs md:text-sm terminal text-[#33ccff]">NEXUS COMMAND CENTER v5.2 // PWA ACTIVE</p>
-        </header>
+      <!-- ARIA tabs -->
+      <nav class="tablist" role="tablist" aria-label="Main Navigation">
+        <button
+          class="tab-btn"
+          id="tab-housing"
+          role="tab"
+          type="button"
+          aria-selected="true"
+          aria-controls="housing"
+          data-tab="housing"
+        >
+          🏠 Amazing Grace
+        </button>
 
-        <nav class="flex flex-wrap justify-center gap-4 mb-10" aria-label="Main Navigation">
-            <button class="tab-btn active" onclick="switchTab('housing', event)">🏠 Amazing Grace</button>
-            <button class="tab-btn" onclick="switchTab('toolbox', event)">⚙️ Nexus Toolbox</button>
-            <button class="tab-btn" onclick="switchTab('arcade', event)">🎮 The Arcade</button>
-        </nav>
+        <button
+          class="tab-btn"
+          id="tab-toolbox"
+          role="tab"
+          type="button"
+          aria-selected="false"
+          aria-controls="toolbox"
+          data-tab="toolbox"
+          tabindex="-1"
+        >
+          ⚙️ Nexus Toolbox
+        </button>
 
-        <main id="housing" class="tab-content active">
-            <div class="glass-card">
-                <header class="text-center mb-10 border-b border-white/10 pb-6">
-                    <h2 class="text-4xl font-bold tracking-tight text-nexus-green terminal">Available Properties</h2>
-                    <p class="text-gray-400 mt-2">Providing secure housing and bridging the digital divide.</p>
-                </header>
-                <div class="grid lg:grid-cols-2 gap-8">
-                    <article class="bg-black/40 border border-zinc-700 p-6 rounded-xl hover:border-nexus-green transition-all">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-bold text-nexus-green terminal mb-2">Tampa - $850/mo</h3>
-                            <span class="bg-nexus-green/10 text-nexus-green text-[10px] px-2 py-1 rounded font-bold uppercase">All Inclusive</span>
-                        </div>
-                        <p class="text-gray-300 mb-6 text-sm">926 E Poinsettia Ave. Includes utilities, trash pickup, and high-speed WiFi. Near Busch Gardens.</p>
-                        <div class="grid grid-cols-2 gap-4 text-sm mb-6 text-gray-400">
-                            <span class="flex items-center">✅ Washer/Dryer</span>
-                            <span class="flex items-center">✅ Full Kitchen</span>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="https://drive.google.com/drive/folders/1JVp5rKSMxX6PUWwh8s15ceHhN4qxBHxa" target="_blank" class="flex-1 text-center border border-zinc-600 py-2 rounded-lg hover:bg-zinc-800 transition-colors">View Photos</a>
-                            <a href="mailto:gulfnexus@gmail.com?subject=Tampa Inquiry" class="flex-1 text-center bg-nexus-green text-black font-bold py-2 rounded-lg hover:bg-white transition-colors">Contact Sheila</a>
-                        </div>
-                    </article>
+        <button
+          class="tab-btn"
+          id="tab-arcade"
+          role="tab"
+          type="button"
+          aria-selected="false"
+          aria-controls="arcade"
+          data-tab="arcade"
+          tabindex="-1"
+        >
+          🎮 The Arcade
+        </button>
+      </nav>
 
-                    <article class="bg-black/40 border border-zinc-700 p-6 rounded-xl hover:border-nexus-green transition-all">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-bold text-nexus-green terminal mb-2">Largo - $1,000/mo</h3>
-                            <span class="bg-nexus-green/10 text-nexus-green text-[10px] px-2 py-1 rounded font-bold uppercase">All Inclusive</span>
-                        </div>
-                        <p class="text-gray-300 mb-6 text-sm">1142 7th St NW. Spacious room in a well-maintained property close to dining, shopping, and Pinellas parks.</p>
-                        <div class="grid grid-cols-2 gap-4 text-sm mb-6 text-gray-400">
-                            <span class="flex items-center">✅ WiFi & Trash Incl.</span>
-                            <span class="flex items-center">✅ Parking Available</span>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <a href="https://drive.google.com/drive/folders/1rq4JYVN-X7xNK-JRJL_yLGMoB9EfGswp" target="_blank" class="flex-1 text-center border border-zinc-600 py-2 rounded-lg hover:bg-zinc-800 transition-colors">View Photos</a>
-                            <a href="mailto:gulfnexus@gmail.com?subject=Largo Inquiry" class="flex-1 text-center bg-nexus-green text-black font-bold py-2 rounded-lg hover:bg-white transition-colors">Contact Sheila</a>
-                        </div>
-                    </article>
+      <!-- Prefer ONE main, multiple section tabpanels -->
+      <main>
+        <section
+          id="housing"
+          class="tabpanel"
+          role="tabpanel"
+          aria-labelledby="tab-housing"
+        >
+          <div class="glass-card">
+            <header class="section-header">
+              <h2 class="terminal">Available Properties</h2>
+              <p>Providing secure housing and bridging the digital divide.</p>
+            </header>
+
+            <div class="grid grid-2">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3 class="terminal">Tampa - $850/mo</h3>
+                  </div>
+                  <span class="badge">All Inclusive</span>
                 </div>
-            </div>
-        </main>
 
-        <main id="toolbox" class="tab-content space-y-8">
-            <div class="grid md:grid-cols-2 gap-8">
-                <section class="glass-card">
-                    <h2 class="text-2xl font-bold mb-6 text-tropical-sun">Matrix of Conscience</h2>
-                    <div class="mb-4">
-                        <div class="flex justify-between text-sm mb-1"><span>Kindness Shield</span><span class="text-fiesta-pink">95%</span></div>
-                        <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-[#ff6699] w-[95%]"></div></div>
-                    </div>
-                    <div class="mb-4">
-                        <div class="flex justify-between text-sm mb-1"><span>Generosity Multiplier</span><span class="text-tropical-sun">81%</span></div>
-                        <div class="h-2 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-[#ffcc33] w-[81%]"></div></div>
-                    </div>
-                </section>
+                <p>926 E Poinsettia Ave. Includes utilities, trash pickup, and high-speed WiFi. Near Busch Gardens.</p>
 
-                <section class="glass-card">
-                    <h2 class="text-2xl font-bold mb-6 text-celestial-blue">Professional Defense</h2>
-                    <div class="bg-black/20 rounded-xl p-4 mb-4 border-l-4 border-[#2ecc71]">
-                        <div class="flex justify-between"><strong class="text-lg">Remote Sr. Architect</strong><span class="text-[#2ecc71] terminal text-xl">$28/hr</span></div>
-                        <div class="text-xs text-gray-400">Status: <strong class="text-white">RTR CONFIRMED</strong></div>
-                    </div>
-                </section>
-                
-                <section class="glass-card md:col-span-2 border-t-4 border-[#33ccff]">
-                    <h2 class="text-2xl font-bold mb-4 text-fiesta-pink">Gemini Weaver Terminal</h2>
-                    <div class="bg-black/50 border border-[#33ccff]/30 rounded-xl p-4">
-                        <textarea class="w-full bg-transparent border-none text-[#33ccff] font-mono outline-none resize-none h-20 text-sm md:text-lg" placeholder="Awaiting prompt..."></textarea>
-                        <div class="flex justify-end mt-2">
-                            <button class="bg-[#33ccff] text-[#120626] font-bold px-6 py-2 rounded-lg hover:bg-white transition-colors">WEAVE REALITY</button>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <main id="arcade" class="tab-content">
-            <div id="game-wrapper">
-                <div class="stars-layer"></div>
-                <div class="game-container" id="game-container">
-                    <h1 class="text-[#ffd700] text-3xl md:text-4xl font-bold mb-4">The Seven Stars</h1>
-                    <div id="game-state"></div>
+                <div class="features">
+                  <span>✅ Washer/Dryer</span>
+                  <span>✅ Full Kitchen</span>
                 </div>
+
+                <div class="actions">
+                  <a
+                    class="btn-link"
+                    href="https://drive.google.com/drive/folders/1JVp5rKSMxX6PUWwh8s15ceHhN4qxBHxa"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Photos
+                  </a>
+                  <a class="btn-primary" href="mailto:gulfnexus@gmail.com?subject=Tampa Inquiry">
+                    Contact Sheila
+                  </a>
+                </div>
+              </article>
+
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3 class="terminal">Largo - $1,000/mo</h3>
+                  </div>
+                  <span class="badge">All Inclusive</span>
+                </div>
+
+                <p>1142 7th St NW. Spacious room in a well-maintained property close to dining, shopping, and Pinellas parks.</p>
+
+                <div class="features">
+                  <span>✅ WiFi & Trash Incl.</span>
+                  <span>✅ Parking Available</span>
+                </div>
+
+                <div class="actions">
+                  <a
+                    class="btn-link"
+                    href="https://drive.google.com/drive/folders/1rq4JYVN-X7xNK-JRJL_yLGMoB9EfGswp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Photos
+                  </a>
+                  <a class="btn-primary" href="mailto:gulfnexus@gmail.com?subject=Largo Inquiry">
+                    Contact Sheila
+                  </a>
+                </div>
+              </article>
             </div>
-        </main>
+          </div>
+        </section>
+
+        <section
+          id="toolbox"
+          class="tabpanel"
+          role="tabpanel"
+          aria-labelledby="tab-toolbox"
+          hidden
+        >
+          <div class="toolbox-grid">
+            <section class="glass-card">
+              <h2 class="h2 tropical">Matrix of Conscience</h2>
+
+              <div>
+                <div class="meter-row"><span>Kindness Shield</span><span class="fiesta">95%</span></div>
+                <div class="meter-track"><div class="meter-fill" style="width:95%; background: var(--fiesta-pink);"></div></div>
+
+                <div class="meter-row"><span>Generosity Multiplier</span><span class="tropical">81%</span></div>
+                <div class="meter-track"><div class="meter-fill" style="width:81%; background: var(--tropical-sun);"></div></div>
+              </div>
+            </section>
+
+            <section class="glass-card">
+              <h2 class="h2 celestial">Professional Defense</h2>
+
+              <div class="job">
+                <div class="job-top">
+                  <strong style="font-size: 1.1rem;">Remote Sr. Architect</strong>
+                  <span class="job-rate terminal">$28/hr</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted);">
+                  Status: <strong style="color: #fff;">RTR CONFIRMED</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="glass-card span-2" style="border-top: 4px solid var(--celestial-blue);">
+              <h2 class="h2 fiesta">Gemini Weaver Terminal</h2>
+              <div class="weaver">
+                <textarea placeholder="Awaiting prompt..."></textarea>
+                <div class="weaver-actions">
+                  <button type="button">WEAVE REALITY</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section
+          id="arcade"
+          class="tabpanel"
+          role="tabpanel"
+          aria-labelledby="tab-arcade"
+          hidden
+        >
+          <div id="game-wrapper">
+            <div class="stars-layer"></div>
+            <div class="game-container" id="game-container">
+              <h1>The Seven Stars</h1>
+              <div id="game-state"></div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
+  </div>
 
-    <script>
-        // Tab Routing
-        function switchTab(tabId, event) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
+  <script>
+    // ---------------------------
+    // Tabs: unobtrusive + ARIA
+    // ---------------------------
+    const tablist = document.querySelector('[role="tablist"]');
+    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
+
+    function activateTab(nextTab) {
+      tabs.forEach((tab) => {
+        const isSelected = tab === nextTab;
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.tabIndex = isSelected ? 0 : -1;
+      });
+
+      panels.forEach((panel) => {
+        const labelledBy = panel.getAttribute('aria-labelledby');
+        const ownerTab = document.getElementById(labelledBy);
+        const isActive = ownerTab === nextTab;
+        panel.hidden = !isActive;
+      });
+
+      nextTab.focus();
+    }
+
+    tablist.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (!tab) return;
+      activateTab(tab);
+    });
+
+    tablist.addEventListener('keydown', (e) => {
+      const currentIndex = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      if (currentIndex < 0) return;
+
+      let nextIndex = null;
+      if (e.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') nextIndex = 0;
+      if (e.key === 'End') nextIndex = tabs.length - 1;
+
+      if (nextIndex === null) return;
+      e.preventDefault();
+      activateTab(tabs[nextIndex]);
+    });
+
+    // ---------------------------
+    // Service Worker Registration (GitHub Pages-safe)
+    // ---------------------------
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          await navigator.serviceWorker.register(new URL('sw.js', location.href));
+        } catch (err) {
+          console.log('Service worker registration failed', err);
         }
+      });
+    }
 
-        // Service Worker Registration for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('Service worker registration failed', err));
-            });
-        }
-
-        // Arcade Logic
-        const gameData = {
-            intro: { title: "A Crime in Stellara", text: "The priceless 'Seven Stars' lens has been stolen. **Clue 1:** 'The light is out. Look for the Lavender trail...'", buttons: [{ text: "Begin Investigation", next: "location1" }] },
-            location1: { title: "The Observatory", type: "quiz", question: "Which suspect is associated with Lavender?", answers: [{text:"Lord Blackwood", correct:false}, {text:"Dr. Evelyn Reed", correct:true}, {text:"Marcus", correct:false}], next: "location2", correct_response: "Correct! You found Clue 2: 'Check the ledger.'" },
-            location2: { title: "Blackwood Residence", type: "input", question: "Ledger entry: 'Deliver to the [BLANK]'", answer: "docks", next: "conclusion", correct_response: "Success! The word is 'docks'." },
-            conclusion: { title: "The Reveal", type: "final", question: "Who is the accomplice?", answers: [{text:"Marcus the Janitor", correct:true}, {text:"The Curator", correct:false}], final_reveal: "Solved! Marcus took the payoff.", fail_reveal: "The culprits escaped!" }
-        };
-
-        let currentStage = 'intro';
-        function renderStage(stageKey) {
-            const stage = gameData[stageKey];
-            let html = `<h2 class="text-xl font-bold mb-2 text-white">${stage.title}</h2>`;
-            if(stage.text) html += `<p class="mb-4 text-sm text-gray-300 border-l-2 border-[#4a235a] pl-3">${stage.text}</p>`;
-            
-            if (stage.type === 'quiz' || stage.type === 'final') {
-                html += `<p class="text-[#ffd700] italic mb-4">${stage.question}</p><div class="grid gap-2">`;
-                stage.answers.forEach((ans, i) => html += `<button onclick="handleAns('${stageKey}', ${i})">${ans.text}</button>`);
-                html += `</div>`;
-            } else if (stage.type === 'input') {
-                html += `<p class="text-[#ffd700] italic mb-4">${stage.question}</p>
-                         <input type="text" id="ans-input" placeholder="Enter deduction..."><br>
-                         <button onclick="handleInput('${stageKey}')">Submit Clue</button>`;
-            } else if (stage.buttons) {
-                stage.buttons.forEach(btn => html += `<button onclick="renderStage('${btn.next}')">${btn.text}</button>`);
-            }
-            html += `<div id="result" class="mt-4 font-bold"></div>`;
-            document.getElementById('game-state').innerHTML = html;
-        }
-
-        function showGameEnd(success, stage) {
-            const heading = success
-                ? `<h2 class="text-green-400 text-2xl">Case Closed!</h2><p>${stage.final_reveal}</p>`
-                : `<h2 class="text-red-400 text-2xl">Failed!</h2><p>${stage.fail_reveal}</p>`;
-            document.getElementById('game-state').innerHTML =
-                heading + `<button onclick="renderStage('intro')">Play Again</button>`;
-        }
-
-        function handleAns(key, idx) {
-            const stage = gameData[key];
-            const res = document.getElementById('result');
-            if (stage.answers[idx].correct) {
-                res.innerHTML = `<span class="text-green-400">${stage.correct_response || 'Correct!'}</span>`;
-                if (stage.type === 'final') {
-                    setTimeout(() => showGameEnd(true, stage), 1500);
-                } else {
-                    setTimeout(() => renderStage(stage.next), 1500);
-                }
-            } else {
-                res.innerHTML = `<span class="text-red-400">Incorrect deduction.</span>`;
-                if (stage.type === 'final') {
-                    setTimeout(() => showGameEnd(false, stage), 1500);
-                }
-            }
-        }
-
-        function handleInput(key) {
-            const stage = gameData[key];
-            const val = document.getElementById('ans-input').value.trim().toLowerCase();
-            const res = document.getElementById('result');
-            if (val === stage.answer) {
-                res.innerHTML = `<span class="text-green-400">${stage.correct_response}</span>`;
-                setTimeout(() => renderStage(stage.next), 1500);
-            } else res.innerHTML = `<span class="text-red-400">Incorrect. Try again.</span>`;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => renderStage('intro'));
-    </script>
-</body>
-</html>
+    // ---------------------------
+    // Arcade Logic (no inline handlers)
+    // ---------------------------
+    const gameData = {
+      intro: {
+        title: "A Crime in Stellara",
+        text: "The priceless 'Seven Stars' lens has been stolen. **Clue 1:** 'The light is out. Look for the Lavender trail...'",
