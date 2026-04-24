@@ -668,41 +668,37 @@
                 <p class="text-xl text-gray-600 italic">where stability begins, and new chapters start</p>
             </div>
 
-            <!-- Property Listings Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl mx-auto px-4">
-                
-                <!-- Largo Listing -->
-                <div class="property-card flex flex-col">
-                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
-                    
-                    <div class="mb-4">
-                        <p class="font-bold text-lg text-blue-800">1142 7th St NW, Largo, FL</p>
-                        <p class="text-gray-700 font-semibold mt-1">Pricing:</p>
-                        <ul class="list-disc pl-5 text-gray-600">
-                            <li>$900/month</li>
-                            <li>$1,000/month <span class="text-sm">(spacious room)</span></li>
-                        </ul>
-                        <p class="text-gray-600 mt-2 text-sm italic">Well‑maintained property close to dining, shopping, and Pinellas parks.</p>
-                    </div>
+        <a
+          class="tab-btn"
+          href="https://arcade.amazinggracehl.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          🎮 The Arcade
+        </a>
+      </nav>
 
-                    <div class="mb-4 pt-4 border-t border-gray-100">
-                        <p class="font-bold text-lg text-blue-800">1144 7th St NW, Largo, FL</p>
-                        <p class="text-gray-700 font-semibold mt-1">$900/month</p>
-                        <p class="text-gray-600 mt-2 text-sm italic">Located next door to 1142, offering the same clean, comfortable environment with easy access to local amenities.</p>
-                    </div>
+      <!-- Prefer ONE main, multiple section tabpanels -->
+      <main>
+        <section
+          id="housing"
+          class="tabpanel"
+          role="tabpanel"
+          aria-labelledby="tab-housing"
+        >
+          <div class="glass-card">
+            <header class="section-header">
+              <h2 class="terminal">Available Properties</h2>
+              <p>Providing secure housing and bridging the digital divide.</p>
+            </header>
 
-                    <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-gray-800 mb-2">Included at both Largo properties:</h3>
-                        <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                            <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                            <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                            <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                            <li class="flex items-center gap-1">✔️ Parking Available</li>
-                        </ul>
-                        <a href="https://lnkd.in/eFhD8Uqm" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                            📸 View Photos (1142)
-                        </a>
-                    </div>
+            <div class="grid grid-2">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3 class="terminal">Tampa - $850/mo</h3>
+                  </div>
+                  <span class="badge">All Inclusive</span>
                 </div>
 
                 <!-- Tampa Listing -->
@@ -1118,137 +1114,78 @@
                         ← Return to Map
                     </button>
                 </div>
-            `;
-            
-            document.getElementById('back-map-btn').addEventListener('click', renderMapScreen);
+              </div>
+            </section>
+          </div>
+        </section>
 
-            if (isCompleted) {
-                document.getElementById('quiz-container').innerHTML = `
-                    <p class="text-center text-green-600 font-semibold py-4">You have successfully uncovered the truth of ${church.name}.</p>
-                `;
-            } else {
-                renderQuiz(index);
-            }
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------
+    // Tabs: unobtrusive + ARIA
+    // ---------------------------
+    const tablist = document.querySelector('[role="tablist"]');
+    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
+
+    function activateTab(nextTab) {
+      tabs.forEach((tab) => {
+        const isSelected = tab === nextTab;
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.tabIndex = isSelected ? 0 : -1;
+      });
+
+      panels.forEach((panel) => {
+        const labelledBy = panel.getAttribute('aria-labelledby');
+        const ownerTab = document.getElementById(labelledBy);
+        const isActive = ownerTab === nextTab;
+        panel.hidden = !isActive;
+      });
+
+      nextTab.focus();
+    }
+
+    tablist.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (!tab) return;
+      activateTab(tab);
+    });
+
+    tablist.addEventListener('keydown', (e) => {
+      const currentIndex = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      if (currentIndex < 0) return;
+
+      let nextIndex = null;
+      if (e.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') nextIndex = 0;
+      if (e.key === 'End') nextIndex = tabs.length - 1;
+
+      if (nextIndex === null) return;
+      e.preventDefault();
+      activateTab(tabs[nextIndex]);
+    });
+
+    // ---------------------------
+    // Service Worker Registration (GitHub Pages-safe)
+    // ---------------------------
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          await navigator.serviceWorker.register(new URL('sw.js', location.href));
+        } catch (err) {
+          console.log('Service worker registration failed', err);
         }
+      });
+    }
 
-        function renderQuiz(index) {
-            const church = churches[index];
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <div class="mt-2">
-                    <p class="font-semibold text-gray-800 mb-3">${church.question}</p>
-                    <div class="flex flex-col gap-2">
-                        ${church.options.map((option) => `
-                            <button class="option-button" data-index="${index}" data-option="${option}">${option}</button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            
-            document.querySelectorAll('.option-button').forEach(btn => {
-                btn.addEventListener('click', (e) => handleQuizAnswer(e, index));
-            });
-        }
-
-        function handleQuizAnswer(event, index) {
-            const selectedOption = event.currentTarget.dataset.option;
-            const church = churches[index];
-            const buttons = document.querySelectorAll('.option-button');
-            
-            buttons.forEach(b => b.disabled = true);
-
-            if (selectedOption === church.answer) {
-                event.currentTarget.classList.add('correct');
-                if (!completedStars.includes(church.name)) {
-                    completedStars.push(church.name);
-                    localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
-                }
-                
-                setTimeout(() => {
-                    if (completedStars.length === churches.length) {
-                        renderEndScreen();
-                    } else {
-                        showGameAlert(`Correct! You retrieved the star of ${church.name}.`, renderMapScreen);
-                    }
-                }, 800);
-            } else {
-                event.currentTarget.classList.add('wrong');
-                const correctBtn = Array.from(buttons).find(b => b.dataset.option === church.answer);
-                if(correctBtn) correctBtn.classList.add('correct');
-                
-                setTimeout(() => {
-                    showGameAlert("Incorrect. Reflect on the message and try again.", () => renderChurchScreen(index));
-                }, 1200);
-            }
-        }
-
-        function renderEndScreen() {
-            gameScreen.innerHTML = `
-                <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto">
-                    <h2 class="text-3xl sm:text-4xl font-bold font-playfair-display text-yellow-600 mb-4">Journey Complete</h2>
-                    <p class="text-gray-700 mb-6 text-lg">You have gathered all seven stars. You have learned valuable lessons from each church's message regarding faith, endurance, and avoiding complacency.</p>
-                    <button id="reset-game-btn" class="game-btn shadow-lg">Start Anew</button>
-                </div>
-            `;
-            document.getElementById('reset-game-btn').addEventListener('click', () => {
-                completedStars = [];
-                localStorage.removeItem('aghl_sevenStarsCompleted');
-                renderTitleScreen();
-            });
-        }
-
-        // Initialize Game
-        renderTitleScreen();
-
-        // ==========================================
-        // 3. CONTACT FORM HANDLER
-        // ==========================================
-        const contactForm = document.getElementById('contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const name = document.getElementById('contact-name').value;
-                const email = document.getElementById('contact-email').value;
-                const message = document.getElementById('contact-message').value;
-
-                // Create mailto link with form data
-                const subject = encodeURIComponent(`Housing Inquiry from ${name}`);
-                const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-                const mailtoLink = `mailto:gulfnexus@gmail.com?subject=${subject}&body=${body}`;
-
-                // Open mailto link
-                window.location.href = mailtoLink;
-            });
-        }
-
-        // ==========================================
-        // 4. SERVICE WORKER REGISTRATION
-        // ==========================================
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registered successfully:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            });
-        }
-
-    </script>
-
-    <script type="module">
-        import { initMatchMaker } from './match-maker-ui.js';
-
-        // Initialize Match Maker on page load
-        initMatchMaker();
-
-        // Re-initialize on restart button click
-        document.getElementById('match-restart-btn').addEventListener('click', () => {
-            initMatchMaker();
-        });
-    </script>
-</body>
-</html>
+    // ---------------------------
+    // Arcade Logic (no inline handlers)
+    // ---------------------------
+    const gameData = {
+      intro: {
+        title: "A Crime in Stellara",
+        text: "The priceless 'Seven Stars' lens has been stolen. **Clue 1:** 'The light is out. Look for the Lavender trail...'",
