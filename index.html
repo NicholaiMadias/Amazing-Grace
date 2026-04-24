@@ -31,6 +31,13 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
         }
 
         /* Top Navigation Bar */
@@ -322,17 +329,17 @@
             <span>Amazing Grace Home Living</span>
         </a>
 
-        <nav role="tablist" class="main-nav">
-            <button role="tab" aria-selected="true" data-target="tab-home" class="btn">
+        <nav role="tablist" class="main-nav" aria-label="Main navigation">
+            <button role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
                 🏠 Home
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-arcade" class="btn">
+            <button role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
                 🎮 Arcade
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-ministry" class="btn">
+            <button role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
                 🕊️ Ministry
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-contact" class="btn">
+            <button role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
                 ✉️ Contact
             </button>
         </nav>
@@ -527,6 +534,30 @@
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer style="background-color: #1f2937; color: #d1d5db; padding: 2rem 1rem; text-align: center; margin-top: auto;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; text-align: left;">
+                <div>
+                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Amazing Grace Home Living</h3>
+                    <p style="font-size: 0.875rem; line-height: 1.5;">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
+                </div>
+                <div>
+                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Contact</h3>
+                    <p style="font-size: 0.875rem;">Email: <a href="mailto:gulfnexus@gmail.com" style="color: #60a5fa; text-decoration: none;">gulfnexus@gmail.com</a></p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Locations: Tampa & Largo, FL</p>
+                </div>
+                <div>
+                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Our Mission</h3>
+                    <p style="font-size: 0.875rem; line-height: 1.5;">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #374151; padding-top: 1.5rem;">
+                <p style="font-size: 0.875rem;">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         // ==========================================
         // 1. MOBILE MENU TOGGLE & TAB SWITCHING LOGIC
@@ -546,9 +577,44 @@
             // Find the button even if user clicks emoji/text inside it
             const tab = e.target.closest('button[role="tab"]');
             if (!tab) return;
-            
-            e.preventDefault();
 
+            e.preventDefault();
+            activateTab(tab);
+        });
+
+        // Keyboard navigation for tabs
+        tablist.addEventListener('keydown', (e) => {
+            const currentTab = document.querySelector('[role="tab"][aria-selected="true"]');
+            const tabArray = Array.from(tabs);
+            const currentIndex = tabArray.indexOf(currentTab);
+            let nextIndex = currentIndex;
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    nextIndex = (currentIndex + 1) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'Home':
+                    nextIndex = 0;
+                    e.preventDefault();
+                    break;
+                case 'End':
+                    nextIndex = tabArray.length - 1;
+                    e.preventDefault();
+                    break;
+            }
+
+            if (nextIndex !== currentIndex) {
+                activateTab(tabArray[nextIndex]);
+                tabArray[nextIndex].focus();
+            }
+        });
+
+        function activateTab(tab) {
             // Deactivate all tabs and hide all panels
             tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
             panels.forEach(p => p.classList.remove('active'));
@@ -562,7 +628,7 @@
             if (window.innerWidth <= 768) {
                 nav.classList.remove('show');
             }
-        });
+        }
 
 
         // ==========================================
