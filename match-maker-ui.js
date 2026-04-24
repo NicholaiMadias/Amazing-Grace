@@ -47,7 +47,7 @@ const GEM_IMAGES = {
   wild: null,
 };
 
-export function initMatchMaker(dbRef, userRef) {
+export function initMatchMaker(dbRef = null, userRef = null) {
   db = dbRef;
   user = userRef;
   runId++;
