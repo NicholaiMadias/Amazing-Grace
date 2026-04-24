@@ -1,8 +1,8 @@
-const CACHE_NAME = 'amazing-grace-v1';
+const CACHE_NAME = 'amazing-grace-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/manifest.json'
+    '/assets/logo.png'
 ];
 
 self.addEventListener('install', event => {
@@ -22,16 +22,14 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+    // Network First strategy to ensure updates are seen
     event.respondWith(
-        caches.match(event.request).then(cached => {
-            const networkFetch = fetch(event.request).then(response => {
-                if (response && response.ok) {
-                    const clone = response.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-                }
-                return response;
-            }).catch(() => cached);
-            return cached || networkFetch;
-        })
+        fetch(event.request).then(response => {
+            if (response && response.ok) {
+                const clone = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+            }
+            return response;
+        }).catch(() => caches.match(event.request))
     );
 });
