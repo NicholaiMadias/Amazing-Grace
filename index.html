@@ -193,9 +193,9 @@
             max-width: 700px;
             height: 75vh;
             max-height: 800px;
-            background: #fff;
+            background: #1a1a2e; /* Deep space theme */
             border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -204,13 +204,14 @@
         }
 
         .game-header {
-            background-color: #1a202c;
-            color: #fff;
+            background-color: #0f0f1e;
+            color: #FFD700;
             padding: 1.25rem;
             text-align: center;
             font-size: 1.5rem;
             font-family: 'Playfair Display', serif;
             letter-spacing: 2px;
+            border-bottom: 2px solid #4e4e6a;
         }
 
         .game-content {
@@ -222,6 +223,55 @@
             align-items: center;
             text-align: center;
             overflow-y: auto;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Deep space theme for Mystery of the Seven Stars game */
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        #game-grid {
+            display: grid;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #4e4e6a;
+        }
+
+        .tile {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            object-fit: cover;
+        }
+
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        .tile:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile responsive tweak for tiles */
+        @media (max-width: 600px) {
+            .tile {
+                width: 40px;
+                height: 40px;
+            }
         }
 
         .map-grid {
@@ -238,32 +288,34 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            background-color: #f9fafb;
-            border: 2px solid #e5e7eb;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4e4e6a;
             border-radius: 1rem;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             cursor: pointer;
+            color: white;
         }
 
         .map-item:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-            border-color: #9ca3af;
+            box-shadow: 0 0 10px #FFD700;
+            border-color: #FFD700;
         }
 
         .map-item.completed {
-            background-color: #f0fdf4;
-            border-color: #86efac;
+            background-color: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
         }
 
         .star-svg {
             width: 32px;
             height: 32px;
             margin-bottom: 0.5rem;
+            stroke: #FFD700;
         }
 
         .map-item.completed .star-svg polygon {
-            fill: #f59e0b;
+            fill: #FFD700;
         }
 
         .option-button {
@@ -272,42 +324,48 @@
             margin-bottom: 0.5rem;
             border-radius: 0.75rem;
             text-align: left;
-            border: 2px solid #d1d5db;
-            background-color: #f3f4f6;
+            border: 2px solid #4e4e6a;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
             transition: all 0.2s;
             cursor: pointer;
             font-size: 1rem;
         }
 
         .option-button:hover:not(:disabled) {
-            background-color: #e5e7eb;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
         }
 
         .option-button.correct {
-            background-color: #d1fae5;
-            border-color: #34d399;
-            color: #065f46;
+            background-color: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+            color: #86efac;
         }
         .option-button.wrong {
-            background-color: #fee2e2;
+            background-color: rgba(239, 68, 68, 0.3);
             border-color: #ef4444;
-            color: #991b1b;
+            color: #fca5a5;
         }
 
         .game-btn {
             padding: 0.75rem 1.5rem;
-            background-color: #3b82f6;
-            color: white;
+            background-color: #FFD700;
+            color: #1a1a2e;
             border-radius: 0.75rem;
             font-weight: 600;
             transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
         }
-        .game-btn:hover { background-color: #2563eb; }
+        .game-btn:hover {
+            background-color: #FFC700;
+        }
         
         .game-message-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.85);
             display: none;
             justify-content: center;
             align-items: center;
@@ -315,12 +373,14 @@
         }
 
         .game-message-box {
-            background: white;
+            background: #1a1a2e;
             padding: 2rem;
             border-radius: 1rem;
             text-align: center;
             max-width: 80%;
-            color: #1f2937;
+            color: white;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
 
         /* --- MATCH MAKER GAME STYLES --- */
