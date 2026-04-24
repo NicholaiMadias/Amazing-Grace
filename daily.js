@@ -4,9 +4,9 @@
  */
 
 const list = [
-  { "id": "score500", "desc": "Score 500 points today",  "check": "score >= 500" },
-  { "id": "clear20",  "desc": "Clear 20 gems today",     "check": "clears >= 20" },
-  { "id": "reach3",   "desc": "Reach level 3 today",     "check": "level >= 3"   }
+  { "id": "score500", "desc": "Score 500 points today",  "check": (s, l, c) => s >= 500 },
+  { "id": "clear20",  "desc": "Clear 20 gems today",     "check": (s, l, c) => c >= 20  },
+  { "id": "reach3",   "desc": "Reach level 3 today",     "check": (s, l, c) => l >= 3   }
 ];
 
 export function getTodayChallenge() {
@@ -15,9 +15,10 @@ export function getTodayChallenge() {
 
   if (saved.date === today) return saved;
 
-  const challenge = list[Math.floor(Math.random() * list.length)];
-
-  const newData = { date: today, challenge, progress: {} };
+  // Pick by index only — strip the non-serialisable check function before storing
+  const idx = Math.floor(Math.random() * list.length);
+  const { id, desc } = list[idx];
+  const newData = { date: today, challenge: { id, desc }, progress: {} };
   localStorage.setItem('daily', JSON.stringify(newData));
   return newData;
 }
@@ -30,19 +31,23 @@ export function updateDailyProgress(key, value) {
 
 export function checkDailyCompletion(state) {
   const data = getTodayChallenge();
-  const expr = data.challenge?.check;
-  if (!expr) return false;
+  const id = data.challenge?.id;
+  if (!id) return false;
 
-  try {
-    // Destructure state so that `score`, `level`, `clears` are in scope
-    const { score, level, clears } = state;
-    const fn = new Function('score', 'level', 'clears', `return ${expr}`);
-    if (fn(score, level, clears)) {
-      localStorage.setItem('dailyComplete', 'true');
-      return true;
-    }
-  } catch (e) {
-    console.warn('Daily challenge check failed:', e);
+  const { score, level, clears } = state;
+
+  // Safe predefined checks — no eval/new Function needed
+  const checks = {
+    score500: (s, l, c) => s >= 500,
+    clear20:  (s, l, c) => c >= 20,
+    reach3:   (s, l, c) => l >= 3,
+  };
+
+  const fn = checks[id];
+  if (fn && fn(score, level, clears)) {
+    localStorage.setItem('dailyComplete', 'true');
+    return true;
   }
   return false;
 }
+
