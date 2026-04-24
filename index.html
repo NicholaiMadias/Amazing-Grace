@@ -296,6 +296,91 @@
             max-width: 80%;
             color: #1f2937;
         }
+
+        /* ---- Arcade Switcher Buttons ---- */
+        .arcade-switch-btn {
+            background-color: #1e40af;
+            border: 2px solid transparent;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            color: #bfdbfe;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .arcade-switch-btn:hover { background-color: #2563eb; color: white; }
+        .arcade-switch-btn[aria-pressed="true"] {
+            background-color: white;
+            color: #1e3a8a;
+            border-color: #1e3a8a;
+        }
+
+        /* ---- Match Maker Grid ---- */
+        .mm-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            max-width: 420px;
+            width: 100%;
+            padding: 8px;
+            background: #1e293b;
+            border-radius: 12px;
+        }
+        .gem-cell {
+            aspect-ratio: 1;
+            font-size: 1.35rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #334155;
+            transition: transform 0.1s, background 0.1s, outline 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .gem-cell:hover  { background: #475569; transform: scale(1.05); }
+        .gem-cell.selected {
+            background: #f59e0b;
+            transform: scale(1.1);
+            outline: 2px solid #fbbf24;
+            outline-offset: 1px;
+        }
+        .gem-cell.matched { animation: gemPop 0.3s ease; background: #22c55e; }
+        @keyframes gemPop {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.25); }
+            100% { transform: scale(1); }
+        }
+
+        /* ---- Match Maker HUD ---- */
+        .mm-hud { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .mm-stat {
+            background: white;
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            min-width: 72px;
+            text-align: center;
+        }
+        .mm-stat-label { font-size: 0.65rem; text-transform: uppercase; color: #6b7280; font-weight: 700; letter-spacing: 0.05em; }
+        .mm-stat-value { font-size: 1.2rem; font-weight: 700; color: #1e3a8a; }
+
+        /* ---- Conscience Bars ---- */
+        .mm-conscience {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 420px;
+            width: 100%;
+        }
+        .mm-bar-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .mm-bar-label { font-size: 0.7rem; font-weight: 600; color: #374151; width: 56px; flex-shrink: 0; }
+        .mm-bar-track { flex: 1; background: #e5e7eb; border-radius: 999px; height: 8px; overflow: hidden; }
+        .mm-bar-fill  { height: 100%; border-radius: 999px; transition: width 0.4s ease; width: 0%; }
+        .mm-bar-pct   { font-size: 0.7rem; color: #6b7280; width: 26px; text-align: right; flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -411,23 +496,96 @@
                 <h2 class="text-3xl font-bold text-blue-900 font-playfair-display">Nexus Arcade</h2>
                 <p class="text-gray-600 mt-2">Play, learn, and grow through interactive stories.</p>
             </div>
-            
-            <!-- Game Container -->
-            <div class="game-wrapper relative mx-auto">
-                <div class="game-header">The Mystery of the Seven Stars</div>
-                <div id="game-screen" class="game-content">
-                    <!-- Game dynamically rendered here -->
-                </div>
-                
-                <!-- Custom Game Alert Box -->
-                <div id="game-alert-overlay" class="game-message-overlay">
-                    <div class="game-message-box shadow-xl">
-                        <p id="game-alert-text" class="text-lg font-semibold mb-4"></p>
-                        <button id="game-alert-close" class="game-btn">Continue</button>
+
+            <!-- Arcade Game Switcher -->
+            <div class="flex justify-center gap-3 mb-6">
+                <button id="arcade-btn-sevenstars" class="arcade-switch-btn" aria-pressed="true">⭐ Seven Stars</button>
+                <button id="arcade-btn-matchmaker" class="arcade-switch-btn" aria-pressed="false">🔮 Match Maker</button>
+            </div>
+
+            <!-- Seven Stars Wrapper -->
+            <div id="sevenstars-wrapper" class="w-full">
+                <div class="game-wrapper relative mx-auto">
+                    <div class="game-header">The Mystery of the Seven Stars</div>
+                    <div id="game-screen" class="game-content">
+                        <!-- Game dynamically rendered here -->
+                    </div>
+
+                    <!-- Custom Game Alert Box -->
+                    <div id="game-alert-overlay" class="game-message-overlay">
+                        <div class="game-message-box shadow-xl">
+                            <p id="game-alert-text" class="text-lg font-semibold mb-4"></p>
+                            <button id="game-alert-close" class="game-btn">Continue</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Match Maker Wrapper (hidden until selected) -->
+            <div id="matchmaker-wrapper" class="w-full flex flex-col items-center gap-4" style="display:none">
+
+                <!-- HUD -->
+                <div class="mm-hud">
+                    <div class="mm-stat">
+                        <div class="mm-stat-label">Score</div>
+                        <div id="match-score" class="mm-stat-value">0</div>
+                    </div>
+                    <div class="mm-stat">
+                        <div class="mm-stat-label">Level</div>
+                        <div id="match-level" class="mm-stat-value">1</div>
+                    </div>
+                    <div class="mm-stat">
+                        <div class="mm-stat-label">Moves</div>
+                        <div id="match-moves" class="mm-stat-value">20</div>
+                    </div>
+                </div>
+
+                <div id="match-msg" class="text-sm text-blue-600 font-medium text-center min-h-[1.4em]"></div>
+
+                <!-- Badge Banner -->
+                <div id="match-badge-banner" class="hidden text-center bg-yellow-400 text-black font-bold py-2 px-4 rounded max-w-sm w-full"></div>
+
+                <!-- 7×7 Gem Grid -->
+                <div id="match-grid" class="mm-grid" role="grid" aria-label="Match Maker game board"></div>
+
+                <!-- Conscience Meter -->
+                <div class="mm-conscience">
+                    <h3 class="text-xs font-bold text-gray-700 mb-2 text-center uppercase tracking-wide">Conscience Meter</h3>
+                    <div class="mm-bar-row">
+                        <span class="mm-bar-label">Empathy</span>
+                        <div class="mm-bar-track"><div id="mc-empathy-bar" class="mm-bar-fill bg-pink-400"></div></div>
+                        <span id="mc-empathy" class="mm-bar-pct">0</span>
+                    </div>
+                    <div class="mm-bar-row">
+                        <span class="mm-bar-label">Justice</span>
+                        <div class="mm-bar-track"><div id="mc-justice-bar" class="mm-bar-fill bg-blue-400"></div></div>
+                        <span id="mc-justice" class="mm-bar-pct">0</span>
+                    </div>
+                    <div class="mm-bar-row">
+                        <span class="mm-bar-label">Wisdom</span>
+                        <div class="mm-bar-track"><div id="mc-wisdom-bar" class="mm-bar-fill bg-purple-400"></div></div>
+                        <span id="mc-wisdom" class="mm-bar-pct">0</span>
+                    </div>
+                    <div class="mm-bar-row">
+                        <span class="mm-bar-label">Growth</span>
+                        <div class="mm-bar-track"><div id="mc-growth-bar" class="mm-bar-fill bg-green-400"></div></div>
+                        <span id="mc-growth" class="mm-bar-pct">0</span>
+                    </div>
+                </div>
+
+                <!-- Save Slot Selector -->
+                <div class="text-center">
+                    <label for="save-slot" class="text-sm text-gray-600 font-medium mr-2">Save Slot:</label>
+                    <select id="save-slot" class="border border-gray-300 rounded px-2 py-1 text-sm">
+                        <option value="slot1">Slot 1</option>
+                        <option value="slot2">Slot 2</option>
+                        <option value="slot3">Slot 3</option>
+                    </select>
+                </div>
+
+            </div><!-- /#matchmaker-wrapper -->
+
+        </div><!-- /#tab-arcade -->
 
         <!-- ================= MINISTRY TAB ================= -->
         <div id="tab-ministry" role="tabpanel" class="tab-panel text-center pt-10">
@@ -713,6 +871,52 @@
 
         // Initialize Game
         renderTitleScreen();
+
+        // ==========================================
+        // 3. ARCADE GAME SWITCHER
+        // ==========================================
+        (function () {
+            const btnSevenStars   = document.getElementById('arcade-btn-sevenstars');
+            const btnMatchMaker   = document.getElementById('arcade-btn-matchmaker');
+            const wrapperSeven    = document.getElementById('sevenstars-wrapper');
+            const wrapperMatch    = document.getElementById('matchmaker-wrapper');
+            let matchMakerInitialized = false;
+
+            function setActive(btn) {
+                [btnSevenStars, btnMatchMaker].forEach(b => b.setAttribute('aria-pressed', 'false'));
+                btn.setAttribute('aria-pressed', 'true');
+            }
+
+            function showSevenStars() {
+                wrapperSeven.style.display = '';
+                wrapperMatch.style.display = 'none';
+                setActive(btnSevenStars);
+            }
+
+            async function showMatchMaker() {
+                wrapperSeven.style.display = 'none';
+                wrapperMatch.style.display = '';
+                setActive(btnMatchMaker);
+
+                if (!matchMakerInitialized) {
+                    try {
+                        const { initMatchMaker } = await import('./match-maker-ui.js');
+                        initMatchMaker(null, null);
+                        matchMakerInitialized = true;
+                    } catch (err) {
+                        console.error('Match Maker failed to load:', err);
+                        wrapperMatch.innerHTML = `
+                            <div class="text-center p-8">
+                                <p class="text-gray-600 text-lg font-medium">🔮 Match Maker is coming soon!</p>
+                                <p class="text-sm text-gray-400 mt-2">Stay tuned for the next update.</p>
+                            </div>`;
+                    }
+                }
+            }
+
+            btnSevenStars.addEventListener('click', showSevenStars);
+            btnMatchMaker.addEventListener('click', showMatchMaker);
+        })();
 
     </script>
 </body>
