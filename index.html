@@ -1,446 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#00ff41" />
-  <meta name="description" content="Amazing Grace Home Living: Secure housing, Ministry outreach, and The Seven Stars Arcade." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Amazing Grace Home Living provides secure, all-inclusive housing in Tampa and Largo, FL. Affordable rooms with utilities, Wi-Fi, and full amenities included.">
+    <meta name="keywords" content="Tampa housing, Largo housing, affordable rooms, all-inclusive housing, Tampa rentals, Largo rentals, Florida housing">
+    <meta name="theme-color" content="#1e3a8a">
 
-  <meta property="og:title" content="Amazing Grace Home Living" />
-  <meta property="og:description" content="Access Amazing Grace Home Living listings, Voice of Jesus Ministry, and the Seven Stars Arcade." />
-  <meta property="og:type" content="website" />
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Amazing Grace Home Living - Affordable Housing in Tampa & Largo">
+    <meta property="og:description" content="Secure, all-inclusive housing with utilities, Wi-Fi, and full amenities. Rooms available in Tampa and Largo, FL.">
+    <meta property="og:url" content="https://amazinggracehl.org">
 
-  <link rel="manifest" href="manifest.json" />
-  <title>Amazing Grace Home Living | Nexus</title>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 
-  <!-- Prefer link-based font loading over @import for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@400;600;800&family=VT323&family=Cochin:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+    <title>Amazing Grace Home Living | Affordable Housing in Tampa & Largo, FL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-  <style>
-    :root {
-      --fiesta-pink: #ff6699;
-      --tropical-sun: #ffcc33;
-      --celestial-blue: #33ccff;
-      --deep-nebula: #120626;
+        @media (prefers-reduced-motion: no-preference) {
+            body {
+                scroll-behavior: smooth;
+            }
+        }
 
-      --glass: rgba(255, 255, 255, 0.08);
-      --game-bg: #0d0c1d;
-      --primary-btn: #4a235a;
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+        }
 
-      --nexus-green: #00ff41;
-      --nexus-black: #050505;
+        /* Top Navigation Bar */
+        .site-header {
+            background-color: #1e3a8a; /* Deep blue */
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
 
-      --border: rgba(255, 255, 255, 0.1);
-      --text-muted: rgba(255, 255, 255, 0.70);
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: white;
+        }
 
-    /* Basic layout (replaces Tailwind spacing/containers) */
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: radial-gradient(circle at center, #1e0b36 0%, var(--deep-nebula) 100%);
-      color: #fdf6e3;
-      font-family: "Quicksand", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      min-height: 100vh;
-    }
+        .logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 4px;
+        }
 
-    .page {
-      padding: 16px;
-    }
-    @media (min-width: 768px) {
-      .page { padding: 32px; }
-    }
+        /* Responsive Tab Navigation */
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
 
-    .container {
-      max-width: 1152px; /* ~max-w-6xl */
-      margin: 0 auto;
-    }
+        .btn {
+            background-color: #1e40af;
+            border: 1px solid transparent;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #bfdbfe;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .terminal { font-family: "VT323", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+        .btn:hover {
+            background-color: #2563eb;
+            color: white;
+        }
 
-    .title {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 800;
-      background: linear-gradient(45deg, #00ff41, #33ccff, #ffd700);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.3));
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-align: center;
-    }
+        .btn[aria-selected="true"] {
+            background-color: white;
+            color: #1e3a8a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-    .subhead {
-      margin-top: 8px;
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      font-size: 12px;
-      color: var(--celestial-blue);
-    }
-    @media (min-width: 768px) {
-      .subhead { font-size: 14px; }
-    }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+        }
 
-    /* Glass UI */
-    .glass-card {
-      background: var(--glass);
-      border-radius: 24px;
-      padding: 30px;
-      border: 1px solid var(--border);
-      backdrop-filter: blur(15px);
-    }
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #1e3a8a;
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                gap: 0.5rem;
+            }
+            .main-nav.show {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .btn {
+                width: 100%;
+                justify-content: flex-start;
+                padding: 0.75rem 1rem;
+            }
+        }
 
-    /* Tabs */
-    .tablist {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin: 0 0 40px;
-      padding: 0;
-    }
+        /* Main Content Area */
+        main {
+            flex-grow: 1;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
 
-    .tab-btn {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      color: rgba(255, 255, 255, 0.8);
-      padding: 10px 20px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: 700;
-    }
-    .tab-btn[aria-selected="true"] {
-      background: var(--tropical-sun);
-      color: var(--deep-nebula);
-      border: none;
-      box-shadow: 0 0 15px rgba(255, 204, 51, 0.4);
-    }
-    .tab-btn:focus-visible {
-      outline: 3px solid rgba(51, 204, 255, 0.65);
-      outline-offset: 3px;
-    }
+        .tab-panel {
+            display: none; /* Hidden by default */
+            width: 100%;
+            max-width: 1000px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
 
-    /* Panels */
-    .tabpanel[hidden] { display: none; }
-    .tabpanel {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .tab-panel.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    /* Housing header */
-    .section-header {
-      text-align: center;
-      margin-bottom: 40px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 24px;
-    }
-    .section-header h2 {
-      margin: 0;
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--nexus-green);
-    }
-    .section-header p {
-      margin: 8px 0 0;
-      color: var(--text-muted);
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    /* Grid utilities (replace Tailwind grid classes used here) */
-    .grid { display: grid; gap: 24px; }
-    .grid-2 { grid-template-columns: 1fr; }
-    @media (min-width: 1024px) {
-      .grid-2 { grid-template-columns: 1fr 1fr; gap: 32px; }
-    }
+        /* Property Card Enhancements */
+        .property-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .card {
-      background: rgba(0, 0, 0, 0.40);
-      border: 1px solid rgba(113, 113, 122, 0.8);
-      padding: 24px;
-      border-radius: 16px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
-    }
-    .card:hover { border-color: rgba(0, 255, 65, 0.75); transform: translateY(-1px); }
+        /* --- GAME SPECIFIC STYLES (Scoped to Arcade Tab) --- */
+        .game-wrapper {
+            width: 100%;
+            max-width: 700px;
+            height: 75vh;
+            max-height: 800px;
+            background: #1a1a2e; /* Deep space theme */
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            margin-top: 1rem;
+        }
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .card h3 {
-      margin: 0 0 8px;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--nexus-green);
-    }
-    .badge {
-      background: rgba(0, 255, 65, 0.1);
-      color: var(--nexus-green);
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 8px;
-      font-weight: 800;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    .card p {
-      margin: 0 0 24px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.80);
-      line-height: 1.5;
-    }
+        .game-header {
+            background-color: #0f0f1e;
+            color: #FFD700;
+            padding: 1.25rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #4e4e6a;
+        }
 
-    .features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.65);
-      margin-bottom: 24px;
-    }
+        .game-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+            background: #1a1a2e;
+            color: white;
+        }
 
-    .actions {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    @media (min-width: 640px) {
-      .actions { flex-direction: row; }
-    }
+        /* Deep space theme for Mystery of the Seven Stars game */
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
 
-    .btn-link {
-      flex: 1;
-      text-align: center;
-      padding: 10px 12px;
-      border-radius: 12px;
-      text-decoration: none;
-      border: 1px solid rgba(113, 113, 122, 0.9);
-      color: rgba(255, 255, 255, 0.90);
-      transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-    .btn-link:hover { background: rgba(39, 39, 42, 0.55); }
+        #game-grid {
+            display: grid;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #4e4e6a;
+        }
 
-    .btn-primary {
-      flex: 1;
-      text-align: center;
-      padding: 10px 12px;
-      border-radius: 12px;
-      text-decoration: none;
-      background: var(--nexus-green);
-      color: #000;
-      font-weight: 900;
-      transition: background-color 0.2s ease;
-    }
-    .btn-primary:hover { background: #fff; }
+        .tile {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            object-fit: cover;
+        }
 
-    /* Toolbox */
-    .toolbox-grid {
-      display: grid;
-      gap: 32px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 768px) {
-      .toolbox-grid { grid-template-columns: 1fr 1fr; }
-      .span-2 { grid-column: 1 / -1; }
-    }
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #FFD700;
+        }
 
-    .h2 {
-      margin: 0 0 16px;
-      font-size: 1.5rem;
-      font-weight: 900;
-    }
-    .tropical { color: var(--tropical-sun); }
-    .celestial { color: var(--celestial-blue); }
-    .fiesta { color: var(--fiesta-pink); }
+        .tile:active {
+            transform: scale(0.95);
+        }
 
-    .meter-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
-    .meter-track {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.10);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-    .meter-fill { height: 100%; }
+        /* Mobile responsive tweak for tiles */
+        @media (max-width: 600px) {
+            .tile {
+                width: 40px;
+                height: 40px;
+            }
+        }
 
-    .job {
-      background: rgba(0, 0, 0, 0.20);
-      border-radius: 16px;
-      padding: 16px;
-      border-left: 4px solid #2ecc71;
-    }
-    .job-top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
-    .job-rate { color: #2ecc71; font-size: 1.5rem; }
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        
+        .map-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4e4e6a;
+            border-radius: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+            color: white;
+        }
 
-    .weaver {
-      background: rgba(0,0,0,0.50);
-      border: 1px solid rgba(51, 204, 255, 0.30);
-      border-radius: 16px;
-      padding: 16px;
-    }
-    .weaver textarea {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--celestial-blue);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      outline: none;
-      resize: none;
-      height: 96px;
-      font-size: 14px;
-    }
-    @media (min-width: 768px) {
-      .weaver textarea { font-size: 18px; }
-    }
-    .weaver-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
-    .weaver button {
-      background: var(--celestial-blue);
-      color: var(--deep-nebula);
-      border: none;
-      font-weight: 900;
-      padding: 10px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    .weaver button:hover { background: #fff; }
+        .map-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px #FFD700;
+            border-color: #FFD700;
+        }
 
-    /* Game scoped CSS (kept, just without Tailwind classes) */
-    #game-wrapper {
-      font-family: "Cochin", serif;
-      background-color: var(--game-bg);
-      color: #e0e0e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 600px;
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    #game-wrapper .stars-layer {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(2px 2px at 20% 20%, #fff 0, transparent 60%),
-        radial-gradient(1.5px 1.5px at 80% 30%, #fff 0, transparent 60%);
-      background-size: 100px 100px, 120px 120px;
-      animation: twinkle 5s linear infinite;
-      opacity: 0.8;
-    }
-    @keyframes twinkle { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        .map-item.completed {
+            background-color: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
+        }
 
-    #game-wrapper .game-container {
-      text-align: center;
-      background: rgba(25, 23, 43, 0.9);
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 90%;
-      width: 550px;
-      position: relative;
-      z-index: 10;
-      border: 3px solid #ffd700;
-    }
+        .star-svg {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 0.5rem;
+            stroke: #FFD700;
+        }
 
-    #game-wrapper h1 {
-      margin: 0 0 16px;
-      color: #ffd700;
-      font-size: 2rem;
-      font-weight: 900;
-      font-family: "Quicksand", sans-serif;
-    }
-    @media (min-width: 768px) {
-      #game-wrapper h1 { font-size: 2.5rem; }
-    }
+        .map-item.completed .star-svg polygon {
+            fill: #FFD700;
+        }
 
-    #game-wrapper button {
-      padding: 16px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background-color: var(--primary-btn);
-      color: #fff;
-      margin: 8px 0;
-      width: 100%;
-      transition: 0.3s;
-    }
-    #game-wrapper button:hover { background-color: #6a3480; transform: translateY(-2px); }
+        .option-button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.75rem;
+            text-align: left;
+            border: 2px solid #4e4e6a;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-size: 1rem;
+        }
 
-    #game-wrapper input {
-      padding: 12px;
-      border-radius: 10px;
-      border: 2px solid var(--primary-btn);
-      width: 80%;
-      background: var(--game-bg);
-      color: #fff;
-      text-align: center;
-      margin-bottom: 16px;
-    }
+        .option-button:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
 
-    /* Game dynamic content helpers (replacing Tailwind classes in templates) */
-    .game-title { margin: 0 0 8px; font-size: 1.25rem; font-weight: 900; color: #fff; font-family: "Quicksand", sans-serif; }
-    .game-text { margin: 0 0 16px; font-size: 0.95rem; color: rgba(255,255,255,0.75); border-left: 2px solid var(--primary-btn); padding-left: 12px; text-align: left; }
-    .game-q { margin: 0 0 16px; color: #ffd700; font-style: italic; }
-    .result { margin-top: 16px; font-weight: 900; }
-    .ok { color: #34d399; } /* green-ish */
-    .bad { color: #f87171; } /* red-ish */
-  </style>
+        .option-button.correct {
+            background-color: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+            color: #86efac;
+        }
+        .option-button.wrong {
+            background-color: rgba(239, 68, 68, 0.3);
+            border-color: #ef4444;
+            color: #fca5a5;
+        }
+
+        .game-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #FFD700;
+            color: #1a1a2e;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .game-btn:hover {
+            background-color: #FFC700;
+        }
+        
+        .game-message-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .game-message-box {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            max-width: 80%;
+            color: white;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* --- MATCH MAKER GAME STYLES --- */
+        .match-card {
+            background: linear-gradient(135deg, rgba(10, 14, 30, 0.97), rgba(8, 10, 22, 0.95));
+            border: 1px solid #1d3042;
+            border-radius: 16px;
+            padding: 1rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .match-card h2 {
+            text-align: center;
+            font-size: 1.15rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #7effd8;
+            margin-bottom: 0.6rem;
+        }
+        .match-shell {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 860px) {
+            .match-shell { grid-template-columns: 1fr; }
+        }
+        .match-stats {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.85rem;
+            color: #a6b7c6;
+            margin-bottom: 0.65rem;
+        }
+        .match-stats > div { transition: all 0.3s ease; }
+        .match-stats > div.score-pop { animation: mmScorePop 0.5s ease; }
+        .match-stats span { color: #7effd8; font-weight: 700; }
+        .match-momentum {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.4rem;
+        }
+        .momentum-chip {
+            background: linear-gradient(135deg, #0e1a2b, #0c1b24);
+            border: 1px solid #12324b;
+            border-radius: 10px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.78rem;
+            color: #d9f5ff;
+            display: inline-flex;
+            gap: 0.3rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .momentum-chip.active {
+            background: linear-gradient(135deg, #1a2e3b, #1c3544);
+            border-color: #7effd8;
+            box-shadow: 0 0 12px rgba(126, 255, 216, 0.3);
+            transform: scale(1.05);
+        }
+        .momentum-chip strong { color: #7effd8; transition: color 0.3s ease; }
+        .momentum-chip.active strong { color: #fff; text-shadow: 0 0 8px rgba(126, 255, 216, 0.6); }
+        .board-wrap {
+            background: linear-gradient(145deg, #0b0f1c, #0f1324);
+            border-radius: 14px;
+            border: 1px solid #18283a;
+            padding: 0.8rem;
+            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .match-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.4rem;
+            padding: 0.8rem;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: radial-gradient(circle at 40% 20%, rgba(126, 255, 216, 0.12), transparent 45%), #0b0f1c;
+            border-radius: 12px;
+            border: 1px solid #12324b;
+        }
+        .match-cell {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #0c1b24, #112436);
+            box-shadow: 0 0 6px rgba(0,0,0,0.6), 0 0 16px rgba(126, 255, 216, 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            user-select: none;
+            overflow: visible;
+            border: 1px solid rgba(126, 255, 216, 0.05);
+        }
+        .match-cell:hover { transform: scale(1.05); box-shadow: 0 0 18px rgba(126, 255, 216, 0.18); }
+        .match-cell:active { transform: scale(0.94); }
+        .match-cell.selected {
+            box-shadow: 0 0 0 3px #7effd8, 0 0 20px rgba(126, 255, 216, 0.6);
+            transform: scale(1.08);
+        }
+        .match-cell.matching {
+            animation: mmPop 0.28s ease;
+            filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.5));
+        }
+        .glyph {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+            width: 80%;
+            height: 80%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .glyph.emoji { width: auto; height: auto; background: none; }
+        .special-chip {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 6px;
+            padding: 0.1rem 0.35rem;
+            font-size: 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+        }
+        .gem-heart { background: linear-gradient(135deg, #1b0e18, #2a1322); border-color: rgba(255, 107, 157, 0.2); }
+        .gem-star  { background: linear-gradient(135deg, #201c0f, #2a2213); border-color: rgba(255, 215, 0, 0.2); }
+        .gem-cross { background: linear-gradient(135deg, #12141f, #1c2033); border-color: rgba(126, 166, 255, 0.2); }
+        .gem-flame { background: linear-gradient(135deg, #24130f, #35180f); border-color: rgba(255, 99, 71, 0.2); }
+        .gem-drop  { background: linear-gradient(135deg, #0f1b24, #0f2432); border-color: rgba(79, 195, 247, 0.2); }
+        .gem-wild  { background: linear-gradient(135deg, #1a1030, #10301a); border-color: rgba(126, 255, 216, 0.3); }
+        .special-row, .special-col, .special-bomb, .special-wild {
+            box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1);
+            border-color: rgba(126, 255, 216, 0.5);
+            animation: mmSpecialPulse 2s ease-in-out infinite;
+        }
+        .match-badge-banner {
+            text-align: center;
+            font-size: 0.92rem;
+            color: #7effd8;
+            background: #0d2a19;
+            border: 1px solid #00ff4160;
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            margin-top: 0.6rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .match-badge-banner.hidden { display: none; }
+        .match-restart-btn {
+            display: block;
+            margin: 0.8rem auto 0;
+            background: linear-gradient(135deg, #0c1c2a, #0f2536);
+            border: 1px solid #7effd8;
+            color: #7effd8;
+            padding: 0.45rem 1.4rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            letter-spacing: 0.08em;
+            transition: transform 0.15s, box-shadow 0.2s, background 0.15s;
+            box-shadow: 0 8px 18px rgba(0, 255, 65, 0.12);
+        }
+        .match-restart-btn:hover { background: #113042; transform: translateY(-1px); }
+        .match-restart-btn:active { transform: translateY(1px); }
+        .store {
+            background: linear-gradient(135deg, #0c1324, #0f1a2f);
+            border: 1px solid #18283a;
+            border-radius: 12px;
+            padding: 0.75rem;
+            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .store-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            color: #d9f5ff;
+        }
+        .store-head h3 {
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #7effd8;
+        }
+        .store-currency {
+            background: rgba(126, 255, 216, 0.08);
+            border: 1px solid rgba(126, 255, 216, 0.3);
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .store-items { display: grid; gap: 0.5rem; }
+        .store-item {
+            background: linear-gradient(135deg, #0f1f33, #0f2742);
+            color: #d9f5ff;
+            border: 1px solid rgba(126, 255, 216, 0.25);
+            border-radius: 10px;
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+        .store-item:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35); }
+        .store-item:active { transform: translateY(1px); }
+        .store-title { font-weight: 700; color: #7effd8; }
+        .store-meta { font-size: 0.82rem; color: #a6b7c6; margin-top: 0.1rem; }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: mmParticleFloat 0.8s ease-out forwards;
+            z-index: 100;
+        }
+        @keyframes mmPop {
+            0% { transform: scale(1); }
+            35% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+        @keyframes mmSpecialPulse {
+            0%, 100% { box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(126, 255, 216, 0.4), inset 0 0 18px rgba(126, 255, 216, 0.2); }
+        }
+        @keyframes mmParticleFloat {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+        @keyframes mmScorePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); color: #7effd8; }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <div class="container">
-      <header style="margin-bottom: 40px;">
-        <h1 class="title">AMAZING GRACE HOME LIVING</h1>
-        <p class="subhead terminal">NEXUS COMMAND CENTER v5.2 // PWA ACTIVE</p>
-      </header>
 
-      <!-- ARIA tabs -->
-      <nav class="tablist" role="tablist" aria-label="Main Navigation">
-        <button
-          class="tab-btn"
-          id="tab-housing"
-          role="tab"
-          type="button"
-          aria-selected="true"
-          aria-controls="housing"
-          data-tab="housing"
-        >
-          🏠 Amazing Grace
-        </button>
+    <!-- Header & Responsive Tab Navigation -->
+    <header class="site-header">
+        <a href="#" class="logo" aria-label="Amazing Grace Home Living - Home">
+            <!-- SVG logo that always loads -->
+            <img src="assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace Home Living</span>
+        </a>
 
-        <button
-          class="tab-btn"
-          id="tab-toolbox"
-          role="tab"
-          type="button"
-          aria-selected="false"
-          aria-controls="toolbox"
-          data-tab="toolbox"
-          tabindex="-1"
-        >
-          ⚙️ Nexus Toolbox
+        <nav id="main-nav" role="tablist" class="main-nav" aria-label="Main navigation">
+            <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
+                🏠 Home
+            </button>
+            <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
+                🎮 Arcade
+            </button>
+            <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
+                🕊️ Ministry
+            </button>
+            <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
+                ✉️ Contact
+            </button>
+        </nav>
+
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
+            ☰
         </button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        
+        <!-- ================= HOME TAB ================= -->
+        <div id="tab-home" role="tabpanel" aria-labelledby="tab-btn-home" tabindex="0" class="tab-panel active w-full pt-6">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 font-playfair-display px-4">
+                    Amazing Grace
+                </h1>
+                <p class="text-xl text-gray-600 italic">where stability begins, and new chapters start</p>
+            </div>
 
         <a
           class="tab-btn"
@@ -475,101 +701,418 @@
                   <span class="badge">All Inclusive</span>
                 </div>
 
-                <p>926 E Poinsettia Ave. Includes utilities, trash pickup, and high-speed WiFi. Near Busch Gardens.</p>
+                <!-- Tampa Listing -->
+                <div class="property-card flex flex-col">
+                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Tampa Rooms for Rent</h2>
+                    
+                    <div class="mb-4">
+                        <p class="font-bold text-lg text-blue-800">926 E Poinsettia Ave, Tampa, FL</p>
+                        <p class="text-green-700 font-bold text-xl mt-2 mb-2">$850/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
+                        <p class="text-gray-600 text-sm mt-2">Includes utilities, trash pickup, laundry, and a large fenced yard.</p>
+                        <p class="text-gray-600 text-sm mt-2 italic">Located near Busch Gardens, the zoo, USF, and 15 minutes from Tampa Hospital.</p>
+                    </div>
 
-                <div class="features">
-                  <span>✅ Washer/Dryer</span>
-                  <span>✅ Full Kitchen</span>
+                    <div class="mt-auto bg-blue-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
+                        <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
+                            <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
+                            <li class="flex items-center gap-1">✔️ Full Kitchen</li>
+                            <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
+                            <li class="flex items-center gap-1">✔️ Parking Available</li>
+                        </ul>
+                        <a href="https://lnkd.in/e3j9N-hb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                            📸 View Photos (Tampa)
+                        </a>
+                    </div>
                 </div>
-
-                <div class="actions">
-                  <a
-                    class="btn-link"
-                    href="https://drive.google.com/drive/folders/1JVp5rKSMxX6PUWwh8s15ceHhN4qxBHxa"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Photos
-                  </a>
-                  <a class="btn-primary" href="mailto:gulfnexus@gmail.com?subject=Tampa Inquiry">
-                    Contact Sheila
-                  </a>
-                </div>
-              </article>
-
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3 class="terminal">Largo - $1,000/mo</h3>
-                  </div>
-                  <span class="badge">All Inclusive</span>
-                </div>
-
-                <p>1142 7th St NW. Spacious room in a well-maintained property close to dining, shopping, and Pinellas parks.</p>
-
-                <div class="features">
-                  <span>✅ WiFi & Trash Incl.</span>
-                  <span>✅ Parking Available</span>
-                </div>
-
-                <div class="actions">
-                  <a
-                    class="btn-link"
-                    href="https://drive.google.com/drive/folders/1rq4JYVN-X7xNK-JRJL_yLGMoB9EfGswp"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Photos
-                  </a>
-                  <a class="btn-primary" href="mailto:gulfnexus@gmail.com?subject=Largo Inquiry">
-                    Contact Sheila
-                  </a>
-                </div>
-              </article>
+                
             </div>
-          </div>
-        </section>
+        </div>
 
-        <section
-          id="toolbox"
-          class="tabpanel"
-          role="tabpanel"
-          aria-labelledby="tab-toolbox"
-          hidden
-        >
-          <div class="toolbox-grid">
-            <section class="glass-card">
-              <h2 class="h2 tropical">Matrix of Conscience</h2>
-
-              <div>
-                <div class="meter-row"><span>Kindness Shield</span><span class="fiesta">95%</span></div>
-                <div class="meter-track"><div class="meter-fill" style="width:95%; background: var(--fiesta-pink);"></div></div>
-
-                <div class="meter-row"><span>Generosity Multiplier</span><span class="tropical">81%</span></div>
-                <div class="meter-track"><div class="meter-fill" style="width:81%; background: var(--tropical-sun);"></div></div>
-              </div>
-            </section>
-
-            <section class="glass-card">
-              <h2 class="h2 celestial">Professional Defense</h2>
-
-              <div class="job">
-                <div class="job-top">
-                  <strong style="font-size: 1.1rem;">Remote Sr. Architect</strong>
-                  <span class="job-rate terminal">$28/hr</span>
+        <!-- ================= NEXUS ARCADE TAB ================= -->
+        <div id="tab-arcade" role="tabpanel" aria-labelledby="tab-btn-arcade" tabindex="0" hidden class="tab-panel w-full pt-6">
+            <div class="w-full text-center mb-4">
+                <h2 class="text-3xl font-bold text-blue-900 font-playfair-display">Nexus Arcade</h2>
+                <p class="text-gray-600 mt-2">Play, learn, and grow through interactive stories.</p>
+            </div>
+            
+            <!-- Game Container -->
+            <div class="game-wrapper relative mx-auto">
+                <div class="game-header">The Mystery of the Seven Stars</div>
+                <div id="game-screen" class="game-content">
+                    <!-- Game dynamically rendered here -->
                 </div>
-                <div style="font-size: 12px; color: var(--text-muted);">
-                  Status: <strong style="color: #fff;">RTR CONFIRMED</strong>
+                
+                <!-- Custom Game Alert Box -->
+                <div id="game-alert-overlay" class="game-message-overlay">
+                    <div class="game-message-box shadow-xl">
+                        <p id="game-alert-text" class="text-lg font-semibold mb-4"></p>
+                        <button id="game-alert-close" class="game-btn">Continue</button>
+                    </div>
                 </div>
-              </div>
-            </section>
+            </div>
 
-            <section class="glass-card span-2" style="border-top: 4px solid var(--celestial-blue);">
-              <h2 class="h2 fiesta">Gemini Weaver Terminal</h2>
-              <div class="weaver">
-                <textarea placeholder="Awaiting prompt..."></textarea>
-                <div class="weaver-actions">
-                  <button type="button">WEAVE REALITY</button>
+            <!-- Match Maker Game -->
+            <div class="w-full text-center mb-4 mt-8">
+                <h3 class="text-2xl font-bold text-blue-900 font-playfair-display">Match Maker</h3>
+                <p class="text-gray-600 mt-1 text-sm">Align the gems, build chains, and grow your conscience.</p>
+            </div>
+            <section class="match-card" id="match-maker-screen">
+                <h2>⚡ Match Maker</h2>
+
+                <div class="match-stats">
+                    <div>Score: <span id="match-score">0</span></div>
+                    <div>Moves: <span id="match-moves">20</span></div>
+                    <div>Level: <span id="match-level">1</span></div>
+                </div>
+
+                <div class="match-momentum">
+                    <div class="momentum-chip">Combo <strong id="match-combo">1.0x</strong></div>
+                    <div class="momentum-chip">Chain <strong id="match-chain">Chain 0</strong></div>
+                </div>
+
+                <div class="match-shell">
+                    <div class="board-wrap">
+                        <div class="match-grid" id="match-grid"></div>
+                        <div id="match-badge-banner" class="match-badge-banner hidden"></div>
+                    </div>
+
+                    <div class="store">
+                        <div class="store-head">
+                            <h3>Arcade Store</h3>
+                            <div class="store-currency">Shards: <span id="match-shards">0</span></div>
+                        </div>
+                        <div class="store-items" id="match-store-items"></div>
+                        <button class="match-restart-btn" id="match-restart-btn">↺ Restart</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= MINISTRY TAB ================= -->
+        <div id="tab-ministry" role="tabpanel" aria-labelledby="tab-btn-ministry" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
+            <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Seven-Star Ministry</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                Explore our faith-based resources, the Voice of Jesus teachings, and community outreach programs.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Voice of Jesus Ministry</h3>
+                    <p class="text-gray-600 leading-relaxed">Bringing the teachings and love of Jesus Christ to communities worldwide through outreach, spiritual guidance, and support.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">The Seven Stars Educational Arcade</h3>
+                    <p class="text-gray-600 leading-relaxed">Interactive spiritual learning through engaging games that teach biblical wisdom and principles from the seven churches of Revelation.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Community Outreach</h3>
+                    <p class="text-gray-600 leading-relaxed">Supporting those in need through housing assistance, spiritual counseling, and building stronger faith communities.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Global Mission</h3>
+                    <p class="text-gray-600 leading-relaxed">Expanding our reach to serve communities internationally with the message of grace, hope, and transformation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= CONTACT TAB ================= -->
+        <div id="tab-contact" role="tabpanel" aria-labelledby="tab-btn-contact" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
+            <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Get in Touch</h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
+                Interested in a room, or have questions about our properties? Reach out to us.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
+                <!-- Contact Information -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Contact Information</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Property Manager</h3>
+                            <p class="text-gray-600">Sheila - Amazing Grace Home Living</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Email</h3>
+                            <a href="mailto:gulfnexus@gmail.com" class="text-blue-600 hover:text-blue-800 underline">gulfnexus@gmail.com</a>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Locations</h3>
+                            <p class="text-gray-600">Tampa & Largo, Florida</p>
+                        </div>
+                        <div class="pt-4 border-t">
+                            <a href="mailto:gulfnexus@gmail.com?subject=Housing%20Inquiry%20-%20Amazing%20Grace" class="inline-block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition text-center">
+                                📧 Email Us Directly
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Contact Form -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Quick Message</h2>
+                    <form id="contact-form" class="flex flex-col gap-4">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+                            <input type="text" id="contact-name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                        </div>
+                        <div>
+                            <label for="contact-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+                            <input type="email" id="contact-email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <label for="contact-message" class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
+                            <textarea id="contact-message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
+                            Send Message
+                        </button>
+                        <p class="text-xs text-gray-500 text-center">This will open your email client</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 px-4 py-8 text-center mt-auto">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
+                <div>
+                    <h3 class="text-white font-bold mb-4">Amazing Grace Home Living</h3>
+                    <p class="text-sm leading-relaxed">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Contact</h3>
+                    <p class="text-sm">Email: <a href="mailto:gulfnexus@gmail.com" class="text-blue-400 hover:underline">gulfnexus@gmail.com</a></p>
+                    <p class="text-sm mt-2">Locations: Tampa & Largo, FL</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Our Mission</h3>
+                    <p class="text-sm leading-relaxed">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-sm">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // 1. MOBILE MENU TOGGLE & TAB SWITCHING LOGIC
+        // ==========================================
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('.main-nav');
+        const tablist = document.querySelector('.main-nav'); // Corrected from role="tablist"
+        const tabs = document.querySelectorAll('[role="tab"]');
+        const panels = document.querySelectorAll('[role="tabpanel"]');
+
+        // Toggle mobile menu visibility
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = nav.classList.toggle('show');
+            menuToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+        });
+
+        tablist.addEventListener('click', (e) => {
+            // Find the button even if user clicks emoji/text inside it
+            const tab = e.target.closest('button[role="tab"]');
+            if (!tab) return;
+
+            e.preventDefault();
+            activateTab(tab);
+        });
+
+        // Keyboard navigation for tabs
+        tablist.addEventListener('keydown', (e) => {
+            const currentTab = document.querySelector('[role="tab"][aria-selected="true"]');
+            const tabArray = Array.from(tabs);
+            const currentIndex = tabArray.indexOf(currentTab);
+            let nextIndex = currentIndex;
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    nextIndex = (currentIndex + 1) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'Home':
+                    nextIndex = 0;
+                    e.preventDefault();
+                    break;
+                case 'End':
+                    nextIndex = tabArray.length - 1;
+                    e.preventDefault();
+                    break;
+            }
+
+            if (nextIndex !== currentIndex) {
+                activateTab(tabArray[nextIndex]);
+                tabArray[nextIndex].focus();
+            }
+        });
+
+        function activateTab(tab) {
+            // Deactivate all tabs and hide all panels
+            tabs.forEach(t => {
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            panels.forEach(p => {
+                p.classList.remove('active');
+                p.hidden = true;
+            });
+
+            // Activate clicked tab and show corresponding panel
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+            const targetId = tab.getAttribute('data-target');
+            const panel = document.getElementById(targetId);
+            panel.classList.add('active');
+            panel.hidden = false;
+
+            // Automatically close the mobile menu if clicked on a small screen
+            if (window.innerWidth <= 768) {
+                nav.classList.remove('show');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        // Set correct tabindex on initial load (only active tab is in tab order)
+        tabs.forEach(t => {
+            if (t.getAttribute('aria-selected') !== 'true') {
+                t.setAttribute('tabindex', '-1');
+            }
+        });
+
+
+        // ==========================================
+        // 2. NEXUS ARCADE GAME LOGIC (Seven Stars)
+        // ==========================================
+        const churches = [
+            {
+                name: "Ephesus",
+                message: "The church in Ephesus was known for its hard work and perseverance. However, Jesus warned them that they had abandoned their 'first love.'",
+                question: "What did Jesus say the church in Ephesus had forsaken?",
+                options: ["Their wealth", "Their first love", "Their good deeds", "Their leader"],
+                answer: "Their first love",
+            },
+            {
+                name: "Smyrna",
+                message: "The church in Smyrna faced tribulation and poverty, but Jesus commended their faithfulness. He had no words of rebuke for them and encouraged them to be faithful, even to death.",
+                question: "What was the church in Smyrna's main challenge?",
+                options: ["False prophets", "Lukewarm faith", "Persecution and poverty", "Spiritual pride"],
+                answer: "Persecution and poverty",
+            },
+            {
+                name: "Pergamum",
+                message: "Pergamum was where 'Satan's throne' was, and the church was praised for holding fast to Jesus' name despite living in a very worldly city. But some tolerated false teachings.",
+                question: "What was the main problem for the church in Pergamum?",
+                options: ["They were too busy", "They were persecuted", "They compromised with false teachings", "They were arrogant"],
+                answer: "They compromised with false teachings",
+            },
+            {
+                name: "Thyatira",
+                message: "This church was praised for its love, faith, and service, and its good works were increasing. But they were rebuked for tolerating a false prophetess who led people into immorality.",
+                question: "What did Jesus rebuke the church in Thyatira for?",
+                options: ["Leaving their first love", "Being spiritually dead", "Tolerating a false prophetess", "Being poor"],
+                answer: "Tolerating a false prophetess",
+            },
+            {
+                name: "Sardis",
+                message: "The church in Sardis had a reputation for being alive, but Jesus said they were 'dead.' He urged them to wake up and strengthen what remained.",
+                question: "What was the condition of the church in Sardis?",
+                options: ["Faithful and enduring", "Spiritually dead", "Rich and prosperous", "Facing persecution"],
+                answer: "Spiritually dead",
+            },
+            {
+                name: "Philadelphia",
+                message: "The church in Philadelphia was commended for having little strength but keeping Jesus' word and not denying His name. He promised them an 'open door' and protection.",
+                question: "What did Jesus praise the church in Philadelphia for?",
+                options: ["Being rich and prosperous", "Having a strong leader", "Keeping His word and not denying His name", "Their many good works"],
+                answer: "Keeping His word and not denying His name",
+            },
+            {
+                name: "Laodicea",
+                message: "This church was wealthy and self-sufficient, but Jesus called them 'lukewarm.' He wanted them to be either hot or cold, not complacent in their faith.",
+                question: "What was the main problem with the church in Laodicea?",
+                options: ["They were facing persecution", "They were compromising with false teachings", "They were lukewarm and complacent", "They were poor and starving"],
+                answer: "They were lukewarm and complacent",
+            },
+        ];
+
+        const gameScreen = document.getElementById('game-screen');
+        const overlay = document.getElementById('game-alert-overlay');
+        const alertText = document.getElementById('game-alert-text');
+        const alertCloseBtn = document.getElementById('game-alert-close');
+        let completedStars = JSON.parse(localStorage.getItem('aghl_sevenStarsCompleted')) || [];
+
+        function showGameAlert(text, callback) {
+            alertText.textContent = text;
+            overlay.style.display = 'flex';
+            alertCloseBtn.onclick = () => {
+                overlay.style.display = 'none';
+                if (callback) callback();
+            };
+        }
+
+        function renderTitleScreen() {
+            gameScreen.innerHTML = `
+                <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-playfair-display">Find the Seven Stars</h1>
+                    <p class="text-gray-600 mb-8">Embark on a spiritual journey to the seven churches of Asia Minor. Read their messages and test your knowledge to collect the stars.</p>
+                    <button id="start-journey-btn" class="game-btn text-lg px-8 py-3 shadow-lg">Start Journey</button>
+                </div>
+            `;
+            document.getElementById('start-journey-btn').addEventListener('click', renderMapScreen);
+        }
+
+        function renderMapScreen() {
+            gameScreen.innerHTML = `
+                <p class="text-lg text-gray-700 font-semibold mt-4">Select a destination to explore:</p>
+                <div class="map-grid pb-6">
+                    ${churches.map((church, index) => `
+                        <div class="map-item ${completedStars.includes(church.name) ? 'completed' : ''}" data-index="${index}">
+                            <svg class="star-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span class="font-bold text-gray-800">${church.name}</span>
+                            <span class="text-xs mt-1 ${completedStars.includes(church.name) ? 'text-green-600 font-semibold' : 'text-gray-400'}">
+                                ${completedStars.includes(church.name) ? 'Collected' : 'Unexplored'}
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            document.querySelectorAll('.map-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const index = parseInt(e.currentTarget.dataset.index);
+                    renderChurchScreen(index);
+                });
+            });
+        }
+
+        function renderChurchScreen(index) {
+            const church = churches[index];
+            const isCompleted = completedStars.includes(church.name);
+            
+            gameScreen.innerHTML = `
+                <div class="w-full max-w-lg bg-gray-50 rounded-xl p-6 shadow-sm border border-gray-100 text-left mt-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800 font-playfair-display">${church.name}</h2>
+                        ${isCompleted ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">Star Collected</span>' : ''}
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6 bg-white p-4 rounded-lg border border-gray-200">
+                        "${church.message}"
+                    </p>
+                    
+                    <div id="quiz-container"></div>
+                    
+                    <button id="back-map-btn" class="mt-6 text-sm font-semibold text-gray-500 hover:text-gray-800 flex items-center">
+                        ← Return to Map
+                    </button>
                 </div>
               </div>
             </section>
