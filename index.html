@@ -31,7 +31,12 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            scroll-behavior: smooth;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            body {
+                scroll-behavior: smooth;
+            }
         }
 
         /* Focus visible for accessibility */
@@ -329,22 +334,22 @@
             <span>Amazing Grace Home Living</span>
         </a>
 
-        <nav role="tablist" class="main-nav" aria-label="Main navigation">
-            <button role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
+        <nav id="main-nav" role="tablist" class="main-nav" aria-label="Main navigation">
+            <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
                 🏠 Home
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
+            <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
                 🎮 Arcade
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
+            <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
                 🕊️ Ministry
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
+            <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
                 ✉️ Contact
             </button>
         </nav>
 
-        <button class="menu-toggle" aria-label="Toggle navigation">
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
             ☰
         </button>
     </header>
@@ -353,7 +358,7 @@
     <main>
         
         <!-- ================= HOME TAB ================= -->
-        <div id="tab-home" role="tabpanel" class="tab-panel active w-full pt-6">
+        <div id="tab-home" role="tabpanel" aria-labelledby="tab-btn-home" tabindex="0" class="tab-panel active w-full pt-6">
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 font-playfair-display px-4">
                     Amazing Grace
@@ -427,7 +432,7 @@
         </div>
 
         <!-- ================= NEXUS ARCADE TAB ================= -->
-        <div id="tab-arcade" role="tabpanel" class="tab-panel w-full pt-6">
+        <div id="tab-arcade" role="tabpanel" aria-labelledby="tab-btn-arcade" tabindex="0" hidden class="tab-panel w-full pt-6">
             <div class="w-full text-center mb-4">
                 <h2 class="text-3xl font-bold text-blue-900 font-playfair-display">Nexus Arcade</h2>
                 <p class="text-gray-600 mt-2">Play, learn, and grow through interactive stories.</p>
@@ -451,7 +456,7 @@
         </div>
 
         <!-- ================= MINISTRY TAB ================= -->
-        <div id="tab-ministry" role="tabpanel" class="tab-panel text-center pt-10 px-4">
+        <div id="tab-ministry" role="tabpanel" aria-labelledby="tab-btn-ministry" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
             <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Seven-Star Ministry</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
                 Explore our faith-based resources, the Voice of Jesus teachings, and community outreach programs.
@@ -477,7 +482,7 @@
         </div>
 
         <!-- ================= CONTACT TAB ================= -->
-        <div id="tab-contact" role="tabpanel" class="tab-panel text-center pt-10 px-4">
+        <div id="tab-contact" role="tabpanel" aria-labelledby="tab-btn-contact" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
             <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Get in Touch</h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
                 Interested in a room, or have questions about our properties? Reach out to us.
@@ -513,15 +518,15 @@
                     <h2 class="text-2xl font-bold text-blue-900 mb-4">Quick Message</h2>
                     <form id="contact-form" class="flex flex-col gap-4">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+                            <label for="contact-name" class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
                             <input type="text" id="contact-name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+                            <label for="contact-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
                             <input type="email" id="contact-email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
+                            <label for="contact-message" class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
                             <textarea id="contact-message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
                         </div>
                         <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
@@ -535,25 +540,25 @@
     </main>
 
     <!-- Footer -->
-    <footer style="background-color: #1f2937; color: #d1d5db; padding: 2rem 1rem; text-align: center; margin-top: auto;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; text-align: left;">
+    <footer class="bg-gray-800 text-gray-300 px-4 py-8 text-center mt-auto">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
                 <div>
-                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Amazing Grace Home Living</h3>
-                    <p style="font-size: 0.875rem; line-height: 1.5;">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
+                    <h3 class="text-white font-bold mb-4">Amazing Grace Home Living</h3>
+                    <p class="text-sm leading-relaxed">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
                 </div>
                 <div>
-                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Contact</h3>
-                    <p style="font-size: 0.875rem;">Email: <a href="mailto:gulfnexus@gmail.com" style="color: #60a5fa; text-decoration: none;">gulfnexus@gmail.com</a></p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Locations: Tampa & Largo, FL</p>
+                    <h3 class="text-white font-bold mb-4">Contact</h3>
+                    <p class="text-sm">Email: <a href="mailto:gulfnexus@gmail.com" class="text-blue-400 hover:underline">gulfnexus@gmail.com</a></p>
+                    <p class="text-sm mt-2">Locations: Tampa & Largo, FL</p>
                 </div>
                 <div>
-                    <h3 style="color: white; font-weight: bold; margin-bottom: 1rem;">Our Mission</h3>
-                    <p style="font-size: 0.875rem; line-height: 1.5;">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
+                    <h3 class="text-white font-bold mb-4">Our Mission</h3>
+                    <p class="text-sm leading-relaxed">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
                 </div>
             </div>
-            <div style="border-top: 1px solid #374151; padding-top: 1.5rem;">
-                <p style="font-size: 0.875rem;">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-sm">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -570,7 +575,8 @@
 
         // Toggle mobile menu visibility
         menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('show');
+            const isExpanded = nav.classList.toggle('show');
+            menuToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
         });
 
         tablist.addEventListener('click', (e) => {
@@ -616,19 +622,36 @@
 
         function activateTab(tab) {
             // Deactivate all tabs and hide all panels
-            tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-            panels.forEach(p => p.classList.remove('active'));
+            tabs.forEach(t => {
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            panels.forEach(p => {
+                p.classList.remove('active');
+                p.hidden = true;
+            });
 
             // Activate clicked tab and show corresponding panel
             tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
             const targetId = tab.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
+            const panel = document.getElementById(targetId);
+            panel.classList.add('active');
+            panel.hidden = false;
 
             // Automatically close the mobile menu if clicked on a small screen
             if (window.innerWidth <= 768) {
                 nav.classList.remove('show');
+                menuToggle.setAttribute('aria-expanded', 'false');
             }
         }
+
+        // Set correct tabindex on initial load (only active tab is in tab order)
+        tabs.forEach(t => {
+            if (t.getAttribute('aria-selected') !== 'true') {
+                t.setAttribute('tabindex', '-1');
+            }
+        });
 
 
         // ==========================================
