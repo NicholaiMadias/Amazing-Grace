@@ -1,8 +1,11 @@
-const CACHE_NAME = 'amazing-grace-v2';
+const CACHE_NAME = 'amazing-grace-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/assets/logo.png'
+    '/assets/logo.png',
+    '/matchMakerState.js',
+    '/match-maker-ui.js',
+    '/badges.js'
 ];
 
 self.addEventListener('install', event => {
