@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazing Grace Home Living</title>
+    <meta name="description" content="Amazing Grace Home Living provides secure, all-inclusive housing in Tampa and Largo, FL. Affordable rooms with utilities, Wi-Fi, and full amenities included.">
+    <meta name="keywords" content="Tampa housing, Largo housing, affordable rooms, all-inclusive housing, Tampa rentals, Largo rentals, Florida housing">
+    <meta name="theme-color" content="#1e3a8a">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Amazing Grace Home Living - Affordable Housing in Tampa & Largo">
+    <meta property="og:description" content="Secure, all-inclusive housing with utilities, Wi-Fi, and full amenities. Rooms available in Tampa and Largo, FL.">
+    <meta property="og:url" content="https://amazinggracehl.org">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+    <title>Amazing Grace Home Living | Affordable Housing in Tampa & Largo, FL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
@@ -17,6 +31,18 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            body {
+                scroll-behavior: smooth;
+            }
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
         }
 
         /* Top Navigation Bar */
@@ -167,9 +193,9 @@
             max-width: 700px;
             height: 75vh;
             max-height: 800px;
-            background: #fff;
+            background: #1a1a2e; /* Deep space theme */
             border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -178,13 +204,14 @@
         }
 
         .game-header {
-            background-color: #1a202c;
-            color: #fff;
+            background-color: #0f0f1e;
+            color: #FFD700;
             padding: 1.25rem;
             text-align: center;
             font-size: 1.5rem;
             font-family: 'Playfair Display', serif;
             letter-spacing: 2px;
+            border-bottom: 2px solid #4e4e6a;
         }
 
         .game-content {
@@ -196,6 +223,55 @@
             align-items: center;
             text-align: center;
             overflow-y: auto;
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Deep space theme for Mystery of the Seven Stars game */
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #1a1a2e;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        #game-grid {
+            display: grid;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #4e4e6a;
+        }
+
+        .tile {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            object-fit: cover;
+        }
+
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        .tile:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile responsive tweak for tiles */
+        @media (max-width: 600px) {
+            .tile {
+                width: 40px;
+                height: 40px;
+            }
         }
 
         .map-grid {
@@ -212,32 +288,34 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
-            background-color: #f9fafb;
-            border: 2px solid #e5e7eb;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4e4e6a;
             border-radius: 1rem;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             cursor: pointer;
+            color: white;
         }
 
         .map-item:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-            border-color: #9ca3af;
+            box-shadow: 0 0 10px #FFD700;
+            border-color: #FFD700;
         }
 
         .map-item.completed {
-            background-color: #f0fdf4;
-            border-color: #86efac;
+            background-color: rgba(255, 215, 0, 0.2);
+            border-color: #FFD700;
         }
 
         .star-svg {
             width: 32px;
             height: 32px;
             margin-bottom: 0.5rem;
+            stroke: #FFD700;
         }
 
         .map-item.completed .star-svg polygon {
-            fill: #f59e0b;
+            fill: #FFD700;
         }
 
         .option-button {
@@ -246,42 +324,48 @@
             margin-bottom: 0.5rem;
             border-radius: 0.75rem;
             text-align: left;
-            border: 2px solid #d1d5db;
-            background-color: #f3f4f6;
+            border: 2px solid #4e4e6a;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
             transition: all 0.2s;
             cursor: pointer;
             font-size: 1rem;
         }
 
         .option-button:hover:not(:disabled) {
-            background-color: #e5e7eb;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
         }
 
         .option-button.correct {
-            background-color: #d1fae5;
-            border-color: #34d399;
-            color: #065f46;
+            background-color: rgba(34, 197, 94, 0.3);
+            border-color: #22c55e;
+            color: #86efac;
         }
         .option-button.wrong {
-            background-color: #fee2e2;
+            background-color: rgba(239, 68, 68, 0.3);
             border-color: #ef4444;
-            color: #991b1b;
+            color: #fca5a5;
         }
 
         .game-btn {
             padding: 0.75rem 1.5rem;
-            background-color: #3b82f6;
-            color: white;
+            background-color: #FFD700;
+            color: #1a1a2e;
             border-radius: 0.75rem;
             font-weight: 600;
             transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
         }
-        .game-btn:hover { background-color: #2563eb; }
+        .game-btn:hover {
+            background-color: #FFC700;
+        }
         
         .game-message-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.85);
             display: none;
             justify-content: center;
             align-items: center;
@@ -289,12 +373,256 @@
         }
 
         .game-message-box {
-            background: white;
+            background: #1a1a2e;
             padding: 2rem;
             border-radius: 1rem;
             text-align: center;
             max-width: 80%;
-            color: #1f2937;
+            color: white;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* --- MATCH MAKER GAME STYLES --- */
+        .match-card {
+            background: linear-gradient(135deg, rgba(10, 14, 30, 0.97), rgba(8, 10, 22, 0.95));
+            border: 1px solid #1d3042;
+            border-radius: 16px;
+            padding: 1rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .match-card h2 {
+            text-align: center;
+            font-size: 1.15rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #7effd8;
+            margin-bottom: 0.6rem;
+        }
+        .match-shell {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 860px) {
+            .match-shell { grid-template-columns: 1fr; }
+        }
+        .match-stats {
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.85rem;
+            color: #a6b7c6;
+            margin-bottom: 0.65rem;
+        }
+        .match-stats > div { transition: all 0.3s ease; }
+        .match-stats > div.score-pop { animation: mmScorePop 0.5s ease; }
+        .match-stats span { color: #7effd8; font-weight: 700; }
+        .match-momentum {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.4rem;
+        }
+        .momentum-chip {
+            background: linear-gradient(135deg, #0e1a2b, #0c1b24);
+            border: 1px solid #12324b;
+            border-radius: 10px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.78rem;
+            color: #d9f5ff;
+            display: inline-flex;
+            gap: 0.3rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .momentum-chip.active {
+            background: linear-gradient(135deg, #1a2e3b, #1c3544);
+            border-color: #7effd8;
+            box-shadow: 0 0 12px rgba(126, 255, 216, 0.3);
+            transform: scale(1.05);
+        }
+        .momentum-chip strong { color: #7effd8; transition: color 0.3s ease; }
+        .momentum-chip.active strong { color: #fff; text-shadow: 0 0 8px rgba(126, 255, 216, 0.6); }
+        .board-wrap {
+            background: linear-gradient(145deg, #0b0f1c, #0f1324);
+            border-radius: 14px;
+            border: 1px solid #18283a;
+            padding: 0.8rem;
+            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .match-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.4rem;
+            padding: 0.8rem;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            background: radial-gradient(circle at 40% 20%, rgba(126, 255, 216, 0.12), transparent 45%), #0b0f1c;
+            border-radius: 12px;
+            border: 1px solid #12324b;
+        }
+        .match-cell {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #0c1b24, #112436);
+            box-shadow: 0 0 6px rgba(0,0,0,0.6), 0 0 16px rgba(126, 255, 216, 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+            user-select: none;
+            overflow: visible;
+            border: 1px solid rgba(126, 255, 216, 0.05);
+        }
+        .match-cell:hover { transform: scale(1.05); box-shadow: 0 0 18px rgba(126, 255, 216, 0.18); }
+        .match-cell:active { transform: scale(0.94); }
+        .match-cell.selected {
+            box-shadow: 0 0 0 3px #7effd8, 0 0 20px rgba(126, 255, 216, 0.6);
+            transform: scale(1.08);
+        }
+        .match-cell.matching {
+            animation: mmPop 0.28s ease;
+            filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.5));
+        }
+        .glyph {
+            position: relative;
+            z-index: 1;
+            pointer-events: none;
+            width: 80%;
+            height: 80%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .glyph.emoji { width: auto; height: auto; background: none; }
+        .special-chip {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 6px;
+            padding: 0.1rem 0.35rem;
+            font-size: 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+        }
+        .gem-heart { background: linear-gradient(135deg, #1b0e18, #2a1322); border-color: rgba(255, 107, 157, 0.2); }
+        .gem-star  { background: linear-gradient(135deg, #201c0f, #2a2213); border-color: rgba(255, 215, 0, 0.2); }
+        .gem-cross { background: linear-gradient(135deg, #12141f, #1c2033); border-color: rgba(126, 166, 255, 0.2); }
+        .gem-flame { background: linear-gradient(135deg, #24130f, #35180f); border-color: rgba(255, 99, 71, 0.2); }
+        .gem-drop  { background: linear-gradient(135deg, #0f1b24, #0f2432); border-color: rgba(79, 195, 247, 0.2); }
+        .gem-wild  { background: linear-gradient(135deg, #1a1030, #10301a); border-color: rgba(126, 255, 216, 0.3); }
+        .special-row, .special-col, .special-bomb, .special-wild {
+            box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1);
+            border-color: rgba(126, 255, 216, 0.5);
+            animation: mmSpecialPulse 2s ease-in-out infinite;
+        }
+        .match-badge-banner {
+            text-align: center;
+            font-size: 0.92rem;
+            color: #7effd8;
+            background: #0d2a19;
+            border: 1px solid #00ff4160;
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            margin-top: 0.6rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .match-badge-banner.hidden { display: none; }
+        .match-restart-btn {
+            display: block;
+            margin: 0.8rem auto 0;
+            background: linear-gradient(135deg, #0c1c2a, #0f2536);
+            border: 1px solid #7effd8;
+            color: #7effd8;
+            padding: 0.45rem 1.4rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            letter-spacing: 0.08em;
+            transition: transform 0.15s, box-shadow 0.2s, background 0.15s;
+            box-shadow: 0 8px 18px rgba(0, 255, 65, 0.12);
+        }
+        .match-restart-btn:hover { background: #113042; transform: translateY(-1px); }
+        .match-restart-btn:active { transform: translateY(1px); }
+        .store {
+            background: linear-gradient(135deg, #0c1324, #0f1a2f);
+            border: 1px solid #18283a;
+            border-radius: 12px;
+            padding: 0.75rem;
+            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
+        }
+        .store-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            color: #d9f5ff;
+        }
+        .store-head h3 {
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #7effd8;
+        }
+        .store-currency {
+            background: rgba(126, 255, 216, 0.08);
+            border: 1px solid rgba(126, 255, 216, 0.3);
+            padding: 0.35rem 0.6rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .store-items { display: grid; gap: 0.5rem; }
+        .store-item {
+            background: linear-gradient(135deg, #0f1f33, #0f2742);
+            color: #d9f5ff;
+            border: 1px solid rgba(126, 255, 216, 0.25);
+            border-radius: 10px;
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+        .store-item:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35); }
+        .store-item:active { transform: translateY(1px); }
+        .store-title { font-weight: 700; color: #7effd8; }
+        .store-meta { font-size: 0.82rem; color: #a6b7c6; margin-top: 0.1rem; }
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: mmParticleFloat 0.8s ease-out forwards;
+            z-index: 100;
+        }
+        @keyframes mmPop {
+            0% { transform: scale(1); }
+            35% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+        @keyframes mmSpecialPulse {
+            0%, 100% { box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(126, 255, 216, 0.4), inset 0 0 18px rgba(126, 255, 216, 0.2); }
+        }
+        @keyframes mmParticleFloat {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+        @keyframes mmScorePop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); color: #7effd8; }
+            100% { transform: scale(1); }
         }
 
         /* ---- Arcade Switcher Buttons ---- */
@@ -387,28 +715,28 @@
 
     <!-- Header & Responsive Tab Navigation -->
     <header class="site-header">
-        <a href="#" class="logo">
-            <!-- Fallback text used if logo.png fails to load -->
-            <img src="/assets/logo.png" alt="Amazing Grace Home Living Logo" onerror="this.style.display='none'">
+        <a href="#" class="logo" aria-label="Amazing Grace Home Living - Home">
+            <!-- SVG logo that always loads -->
+            <img src="assets/logo.svg" alt="Amazing Grace Home Living Logo">
             <span>Amazing Grace Home Living</span>
         </a>
 
-        <nav role="tablist" class="main-nav">
-            <button role="tab" aria-selected="true" data-target="tab-home" class="btn">
+        <nav id="main-nav" role="tablist" class="main-nav" aria-label="Main navigation">
+            <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
                 🏠 Home
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-arcade" class="btn">
+            <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
                 🎮 Arcade
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-ministry" class="btn">
+            <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
                 🕊️ Ministry
             </button>
-            <button role="tab" aria-selected="false" data-target="tab-contact" class="btn">
+            <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
                 ✉️ Contact
             </button>
         </nav>
 
-        <button class="menu-toggle" aria-label="Toggle navigation">
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
             ☰
         </button>
     </header>
@@ -417,7 +745,7 @@
     <main>
         
         <!-- ================= HOME TAB ================= -->
-        <div id="tab-home" role="tabpanel" class="tab-panel active w-full pt-6">
+        <div id="tab-home" role="tabpanel" aria-labelledby="tab-btn-home" tabindex="0" class="tab-panel active w-full pt-6">
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 font-playfair-display px-4">
                     Amazing Grace
@@ -425,41 +753,37 @@
                 <p class="text-xl text-gray-600 italic">where stability begins, and new chapters start</p>
             </div>
 
-            <!-- Property Listings Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-5xl mx-auto px-4">
-                
-                <!-- Largo Listing -->
-                <div class="property-card flex flex-col">
-                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
-                    
-                    <div class="mb-4">
-                        <p class="font-bold text-lg text-blue-800">1142 7th St NW, Largo, FL</p>
-                        <p class="text-gray-700 font-semibold mt-1">Pricing:</p>
-                        <ul class="list-disc pl-5 text-gray-600">
-                            <li>$900/month</li>
-                            <li>$1,000/month <span class="text-sm">(spacious room)</span></li>
-                        </ul>
-                        <p class="text-gray-600 mt-2 text-sm italic">Well‑maintained property close to dining, shopping, and Pinellas parks.</p>
-                    </div>
+        <a
+          class="tab-btn"
+          href="https://arcade.amazinggracehl.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          🎮 The Arcade
+        </a>
+      </nav>
 
-                    <div class="mb-4 pt-4 border-t border-gray-100">
-                        <p class="font-bold text-lg text-blue-800">1144 7th St NW, Largo, FL</p>
-                        <p class="text-gray-700 font-semibold mt-1">$900/month</p>
-                        <p class="text-gray-600 mt-2 text-sm italic">Located next door to 1142, offering the same clean, comfortable environment with easy access to local amenities.</p>
-                    </div>
+      <!-- Prefer ONE main, multiple section tabpanels -->
+      <main>
+        <section
+          id="housing"
+          class="tabpanel"
+          role="tabpanel"
+          aria-labelledby="tab-housing"
+        >
+          <div class="glass-card">
+            <header class="section-header">
+              <h2 class="terminal">Available Properties</h2>
+              <p>Providing secure housing and bridging the digital divide.</p>
+            </header>
 
-                    <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-gray-800 mb-2">Included at both Largo properties:</h3>
-                        <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                            <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                            <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                            <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                            <li class="flex items-center gap-1">✔️ Parking Available</li>
-                        </ul>
-                        <a href="https://lnkd.in/eFhD8Uqm" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                            📸 View Photos (1142)
-                        </a>
-                    </div>
+            <div class="grid grid-2">
+              <article class="card">
+                <div class="card-top">
+                  <div>
+                    <h3 class="terminal">Tampa - $850/mo</h3>
+                  </div>
+                  <span class="badge">All Inclusive</span>
                 </div>
 
                 <!-- Tampa Listing -->
@@ -481,7 +805,7 @@
                             <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
                             <li class="flex items-center gap-1">✔️ Parking Available</li>
                         </ul>
-                        <a href="https://lnkd.in/e3j9N-hb" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                        <a href="https://lnkd.in/e3j9N-hb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
                             📸 View Photos (Tampa)
                         </a>
                     </div>
@@ -491,7 +815,7 @@
         </div>
 
         <!-- ================= NEXUS ARCADE TAB ================= -->
-        <div id="tab-arcade" role="tabpanel" class="tab-panel w-full pt-6">
+        <div id="tab-arcade" role="tabpanel" aria-labelledby="tab-btn-arcade" tabindex="0" hidden class="tab-panel w-full pt-6">
             <div class="w-full text-center mb-4">
                 <h2 class="text-3xl font-bold text-blue-900 font-playfair-display">Nexus Arcade</h2>
                 <p class="text-gray-600 mt-2">Play, learn, and grow through interactive stories.</p>
@@ -588,43 +912,112 @@
         </div><!-- /#tab-arcade -->
 
         <!-- ================= MINISTRY TAB ================= -->
-        <div id="tab-ministry" role="tabpanel" class="tab-panel text-center pt-10">
+        <div id="tab-ministry" role="tabpanel" aria-labelledby="tab-btn-ministry" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
             <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Seven-Star Ministry</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
                 Explore our faith-based resources, the Voice of Jesus teachings, and community outreach programs.
             </p>
-            <div class="mt-8 p-8 bg-white rounded-xl shadow-sm border border-gray-200 max-w-2xl mx-auto">
-                <p class="text-gray-500 italic">Ministry content coming soon...</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Voice of Jesus Ministry</h3>
+                    <p class="text-gray-600 leading-relaxed">Bringing the teachings and love of Jesus Christ to communities worldwide through outreach, spiritual guidance, and support.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">The Seven Stars Educational Arcade</h3>
+                    <p class="text-gray-600 leading-relaxed">Interactive spiritual learning through engaging games that teach biblical wisdom and principles from the seven churches of Revelation.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Community Outreach</h3>
+                    <p class="text-gray-600 leading-relaxed">Supporting those in need through housing assistance, spiritual counseling, and building stronger faith communities.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Global Mission</h3>
+                    <p class="text-gray-600 leading-relaxed">Expanding our reach to serve communities internationally with the message of grace, hope, and transformation.</p>
+                </div>
             </div>
         </div>
 
         <!-- ================= CONTACT TAB ================= -->
-        <div id="tab-contact" role="tabpanel" class="tab-panel text-center pt-10">
+        <div id="tab-contact" role="tabpanel" aria-labelledby="tab-btn-contact" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
             <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Get in Touch</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
                 Interested in a room, or have questions about our properties? Reach out to us.
             </p>
-            <div class="mt-8 p-8 bg-white rounded-xl shadow-sm border border-gray-200 max-w-md mx-auto text-left">
-                <form class="flex flex-col gap-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
-                        <input type="text" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
+                <!-- Contact Information -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Contact Information</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Property Manager</h3>
+                            <p class="text-gray-600">Sheila - Amazing Grace Home Living</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Email</h3>
+                            <a href="mailto:gulfnexus@gmail.com" class="text-blue-600 hover:text-blue-800 underline">gulfnexus@gmail.com</a>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-1">Locations</h3>
+                            <p class="text-gray-600">Tampa & Largo, Florida</p>
+                        </div>
+                        <div class="pt-4 border-t">
+                            <a href="mailto:gulfnexus@gmail.com?subject=Housing%20Inquiry%20-%20Amazing%20Grace" class="inline-block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition text-center">
+                                📧 Email Us Directly
+                            </a>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Email</label>
-                        <input type="email" class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Message</label>
-                        <textarea class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in the Largo property..."></textarea>
-                    </div>
-                    <button type="button" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
-                        Send Message
-                    </button>
-                </form>
+                </div>
+
+                <!-- Quick Contact Form -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Quick Message</h2>
+                    <form id="contact-form" class="flex flex-col gap-4">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+                            <input type="text" id="contact-name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                        </div>
+                        <div>
+                            <label for="contact-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+                            <input type="email" id="contact-email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
+                        </div>
+                        <div>
+                            <label for="contact-message" class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
+                            <textarea id="contact-message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
+                            Send Message
+                        </button>
+                        <p class="text-xs text-gray-500 text-center">This will open your email client</p>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 px-4 py-8 text-center mt-auto">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
+                <div>
+                    <h3 class="text-white font-bold mb-4">Amazing Grace Home Living</h3>
+                    <p class="text-sm leading-relaxed">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Contact</h3>
+                    <p class="text-sm">Email: <a href="mailto:gulfnexus@gmail.com" class="text-blue-400 hover:underline">gulfnexus@gmail.com</a></p>
+                    <p class="text-sm mt-2">Locations: Tampa & Largo, FL</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Our Mission</h3>
+                    <p class="text-sm leading-relaxed">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-sm">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
         // ==========================================
@@ -638,28 +1031,81 @@
 
         // Toggle mobile menu visibility
         menuToggle.addEventListener('click', () => {
-            nav.classList.toggle('show');
+            const isExpanded = nav.classList.toggle('show');
+            menuToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
         });
 
         tablist.addEventListener('click', (e) => {
             // Find the button even if user clicks emoji/text inside it
             const tab = e.target.closest('button[role="tab"]');
             if (!tab) return;
-            
-            e.preventDefault();
 
+            e.preventDefault();
+            activateTab(tab);
+        });
+
+        // Keyboard navigation for tabs
+        tablist.addEventListener('keydown', (e) => {
+            const currentTab = document.querySelector('[role="tab"][aria-selected="true"]');
+            const tabArray = Array.from(tabs);
+            const currentIndex = tabArray.indexOf(currentTab);
+            let nextIndex = currentIndex;
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    nextIndex = (currentIndex + 1) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'ArrowLeft':
+                    nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
+                    e.preventDefault();
+                    break;
+                case 'Home':
+                    nextIndex = 0;
+                    e.preventDefault();
+                    break;
+                case 'End':
+                    nextIndex = tabArray.length - 1;
+                    e.preventDefault();
+                    break;
+            }
+
+            if (nextIndex !== currentIndex) {
+                activateTab(tabArray[nextIndex]);
+                tabArray[nextIndex].focus();
+            }
+        });
+
+        function activateTab(tab) {
             // Deactivate all tabs and hide all panels
-            tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
-            panels.forEach(p => p.classList.remove('active'));
+            tabs.forEach(t => {
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            panels.forEach(p => {
+                p.classList.remove('active');
+                p.hidden = true;
+            });
 
             // Activate clicked tab and show corresponding panel
             tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
             const targetId = tab.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
+            const panel = document.getElementById(targetId);
+            panel.classList.add('active');
+            panel.hidden = false;
 
             // Automatically close the mobile menu if clicked on a small screen
             if (window.innerWidth <= 768) {
                 nav.classList.remove('show');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        // Set correct tabindex on initial load (only active tab is in tab order)
+        tabs.forEach(t => {
+            if (t.getAttribute('aria-selected') !== 'true') {
+                t.setAttribute('tabindex', '-1');
             }
         });
 
@@ -790,87 +1236,73 @@
                         ← Return to Map
                     </button>
                 </div>
-            `;
-            
-            document.getElementById('back-map-btn').addEventListener('click', renderMapScreen);
+              </div>
+            </section>
+          </div>
+        </section>
 
-            if (isCompleted) {
-                document.getElementById('quiz-container').innerHTML = `
-                    <p class="text-center text-green-600 font-semibold py-4">You have successfully uncovered the truth of ${church.name}.</p>
-                `;
-            } else {
-                renderQuiz(index);
-            }
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------
+    // Tabs: unobtrusive + ARIA
+    // ---------------------------
+    const tablist = document.querySelector('[role="tablist"]');
+    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')));
+
+    function activateTab(nextTab) {
+      tabs.forEach((tab) => {
+        const isSelected = tab === nextTab;
+        tab.setAttribute('aria-selected', String(isSelected));
+        tab.tabIndex = isSelected ? 0 : -1;
+      });
+
+      panels.forEach((panel) => {
+        const labelledBy = panel.getAttribute('aria-labelledby');
+        const ownerTab = document.getElementById(labelledBy);
+        const isActive = ownerTab === nextTab;
+        panel.hidden = !isActive;
+      });
+
+      nextTab.focus();
+    }
+
+    tablist.addEventListener('click', (e) => {
+      const tab = e.target.closest('[role="tab"]');
+      if (!tab) return;
+      activateTab(tab);
+    });
+
+    tablist.addEventListener('keydown', (e) => {
+      const currentIndex = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      if (currentIndex < 0) return;
+
+      let nextIndex = null;
+      if (e.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') nextIndex = 0;
+      if (e.key === 'End') nextIndex = tabs.length - 1;
+
+      if (nextIndex === null) return;
+      e.preventDefault();
+      activateTab(tabs[nextIndex]);
+    });
+
+    // ---------------------------
+    // Service Worker Registration (GitHub Pages-safe)
+    // ---------------------------
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          await navigator.serviceWorker.register(new URL('sw.js', location.href));
+        } catch (err) {
+          console.log('Service worker registration failed', err);
         }
-
-        function renderQuiz(index) {
-            const church = churches[index];
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <div class="mt-2">
-                    <p class="font-semibold text-gray-800 mb-3">${church.question}</p>
-                    <div class="flex flex-col gap-2">
-                        ${church.options.map((option) => `
-                            <button class="option-button" data-index="${index}" data-option="${option}">${option}</button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            
-            document.querySelectorAll('.option-button').forEach(btn => {
-                btn.addEventListener('click', (e) => handleQuizAnswer(e, index));
-            });
-        }
-
-        function handleQuizAnswer(event, index) {
-            const selectedOption = event.currentTarget.dataset.option;
-            const church = churches[index];
-            const buttons = document.querySelectorAll('.option-button');
-            
-            buttons.forEach(b => b.disabled = true);
-
-            if (selectedOption === church.answer) {
-                event.currentTarget.classList.add('correct');
-                if (!completedStars.includes(church.name)) {
-                    completedStars.push(church.name);
-                    localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
-                }
-                
-                setTimeout(() => {
-                    if (completedStars.length === churches.length) {
-                        renderEndScreen();
-                    } else {
-                        showGameAlert(`Correct! You retrieved the star of ${church.name}.`, renderMapScreen);
-                    }
-                }, 800);
-            } else {
-                event.currentTarget.classList.add('wrong');
-                const correctBtn = Array.from(buttons).find(b => b.dataset.option === church.answer);
-                if(correctBtn) correctBtn.classList.add('correct');
-                
-                setTimeout(() => {
-                    showGameAlert("Incorrect. Reflect on the message and try again.", () => renderChurchScreen(index));
-                }, 1200);
-            }
-        }
-
-        function renderEndScreen() {
-            gameScreen.innerHTML = `
-                <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto">
-                    <h2 class="text-3xl sm:text-4xl font-bold font-playfair-display text-yellow-600 mb-4">Journey Complete</h2>
-                    <p class="text-gray-700 mb-6 text-lg">You have gathered all seven stars. You have learned valuable lessons from each church's message regarding faith, endurance, and avoiding complacency.</p>
-                    <button id="reset-game-btn" class="game-btn shadow-lg">Start Anew</button>
-                </div>
-            `;
-            document.getElementById('reset-game-btn').addEventListener('click', () => {
-                completedStars = [];
-                localStorage.removeItem('aghl_sevenStarsCompleted');
-                renderTitleScreen();
-            });
-        }
-
-        // Initialize Game
-        renderTitleScreen();
+      });
+    }
 
         // ==========================================
         // 3. ARCADE GAME SWITCHER
@@ -908,7 +1340,7 @@
                         wrapperMatch.innerHTML = `
                             <div class="text-center p-8">
                                 <p class="text-gray-600 text-lg font-medium">🔮 Match Maker is coming soon!</p>
-                                <p class="text-sm text-gray-400 mt-2">Stay tuned for the next update.</p>
+                                <p class="text-sm text-gray-400 mt-2">Stay tuned for the next u
                             </div>`;
                     }
                 }
