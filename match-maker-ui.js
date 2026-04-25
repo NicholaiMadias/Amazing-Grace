@@ -1,452 +1,364 @@
-// match-maker-ui.js
-import {
-  createInitialGrid,
-  canSwap,
-  applySwap,
-  findMatches,
-  clearMatches,
-  applyGravity,
-  GRID_SIZE,
-} from './matchMakerState.js';
+/**
+ * match-maker-ui.js — Game UI Layer for Match Maker
+ * Renders the 7×7 grid, handles input (click, touch, keyboard),
+ * animates cascades, manages levels, and updates the HUD + Conscience bars.
+ * (c) 2026 NicholaiMadias — MIT License
+ */
+
+import { GRID_SIZE, createInitialGrid, canSwap, applySwap, findMatches, clearMatches, applyGravity } from './matchMakerState.js';
 import { onLevelComplete } from './badges.js';
+import { saveGame, loadGame } from './saveSystem.js';
+import { getLevelConfig, checkLevelUp } from './levelSystem.js';
+import { updateDailyProgress, checkDailyCompletion } from './daily.js';
+import { unlockStar } from './sevenStars.js';
 
-let grid;
-let selected = null;
-let score = 0;
-let moves = 20;
-let level = 1;
-let shards = 0;
-let comboChain = 0;
-let comboMultiplier = 1;
-let db = null;
-let user = null;
-let storeBound = false;
-let resolveTimeoutId = null;
-let statusTimeoutId = null;
-let runId = 0;
-let resolving = false;
+const COLS = GRID_SIZE;
+const ROWS = GRID_SIZE;
+const CASCADE_DELAY = 200;
+const BASE_POINTS = 50;
+const CHAIN_BONUS = 25;
+const CONSCIENCE_KEYS = ['empathy', 'justice', 'wisdom', 'growth'];
 
-const SCORE_PER_LEVEL = 500;
-const CHAIN_REACTION_DELAY_MS = 320;
-const MAX_COMBO_MULTIPLIER = 5;
-
-const STORE_ITEMS = [
-  { id: 'moves', label: '+5 Moves Flask', cost: 4, detail: 'Refill your focus and gain +5 moves.', action: () => addMoves(5) },
-  { id: 'line', label: 'Line Clear Rune', cost: 3, detail: 'Drop a rune that clears a whole line when matched.', action: () => injectSpecial('row') },
-  { id: 'bomb', label: 'Crystal Bomb', cost: 5, detail: 'Place a radiant bomb for a 3×3 blast.', action: () => injectSpecial('bomb') },
-  { id: 'wild', label: 'Rainbow Wild', cost: 4, detail: 'Adds a wild gem that links any combo.', action: () => injectSpecial('wild') },
-];
-
-// Use emoji for all gem types (no external image dependencies)
-const GEM_IMAGES = {
-  heart: null,
-  star: null,
-  cross: null,
-  flame: null,
-  drop: null,
-  wild: null,
+const GEM_DISPLAY = {
+  heart: { emoji: '❤️', cls: 'gem-heart', label: 'Heart' },
+  star:  { emoji: '⭐', cls: 'gem-star',  label: 'Star'  },
+  cross: { emoji: '✝️', cls: 'gem-cross', label: 'Cross' },
+  flame: { emoji: '🔥', cls: 'gem-flame', label: 'Flame' },
+  drop:  { emoji: '💧', cls: 'gem-drop',  label: 'Drop'  }
 };
 
-export function initMatchMaker(dbRef = null, userRef = null) {
-  db = dbRef;
-  user = userRef;
-  runId++;
-  score = 0;
-  moves = 20;
-  level = 1;
-  shards = 0;
-  comboChain = 0;
-  comboMultiplier = 1;
-  selected = null;
-  resolving = false;
-  if (resolveTimeoutId) {
-    clearTimeout(resolveTimeoutId);
-    resolveTimeoutId = null;
+let grid         = [];
+let score        = 0;
+let moves        = 0;
+let level        = 1;
+let selected     = null;
+let locked       = false;
+let conscience   = { empathy: 0, justice: 0, wisdom: 0, growth: 0 };
+let totalClears  = 0;
+let combo        = 0;
+let explosions   = 0;
+let daysPlayed   = 1;
+let slotSelect   = null;
+
+const dom = {};
+
+function maybePlay(soundId) {
+  if (typeof window !== 'undefined' && typeof window.play === 'function') {
+    window.play(soundId);
   }
-  // Fix: clear any pending flashStatus timeout so a stale hide-banner callback
-  // from a prior run cannot fire and unexpectedly hide the banner in the new run.
-  if (statusTimeoutId) {
-    clearTimeout(statusTimeoutId);
-    statusTimeoutId = null;
-  }
-  grid = createInitialGrid();
-  renderGrid();
-  renderStore();
-  updateStats();
-  const banner = document.getElementById('match-badge-banner');
-  if (banner) banner.classList.add('hidden');
 }
 
-function renderGrid(highlightSet = new Set()) {
-  const container = document.getElementById('match-grid');
-  if (!container) return;
-  container.innerHTML = '';
+function maybeUnlock(key) {
+  if (typeof window !== 'undefined' && typeof window.unlock === 'function') {
+    window.unlock(key);
+  }
+}
 
-  for (let r = 0; r < GRID_SIZE; r++) {
-    for (let c = 0; c < GRID_SIZE; c++) {
-      const cellData = grid[r][c];
-      const cell = document.createElement('div');
-      cell.className = 'match-cell';
+function cacheDom() {
+  dom.board      = document.getElementById('match-grid');
+  dom.score      = document.getElementById('match-score');
+  dom.level      = document.getElementById('match-level');
+  dom.moves      = document.getElementById('match-moves');
+  dom.msg        = document.getElementById('match-msg');
+  dom.barEmpathy = document.getElementById('mc-empathy-bar');
+  dom.barJustice = document.getElementById('mc-justice-bar');
+  dom.barWisdom  = document.getElementById('mc-wisdom-bar');
+  dom.barGrowth  = document.getElementById('mc-growth-bar');
+  dom.pctEmpathy = document.getElementById('mc-empathy');
+  dom.pctJustice = document.getElementById('mc-justice');
+  dom.pctWisdom  = document.getElementById('mc-wisdom');
+  dom.pctGrowth  = document.getElementById('mc-growth');
+  slotSelect     = document.getElementById('save-slot');
+}
+
+function safeSlotValue() {
+  return slotSelect?.value || 'slot1';
+}
+
+function saveState() {
+  saveGame(safeSlotValue(), {
+    score,
+    level,
+    moves,
+    grid,
+    totalClears,
+    combo,
+    explosions,
+    daysPlayed
+  });
+}
+
+function loadState() {
+  const data = loadGame(safeSlotValue());
+  if (!data) return false;
+
+  score       = data.score ?? 0;
+  level       = data.level ?? 1;
+  moves       = data.moves ?? getLevelConfig(level).moves;
+  grid        = data.grid ?? createInitialGrid();
+  totalClears = data.totalClears ?? 0;
+  combo       = data.combo ?? 0;
+  explosions  = data.explosions ?? 0;
+  daysPlayed  = data.daysPlayed ?? 1;
+
+  renderBoard();
+  updateHUD();
+  updateConscience();
+  return true;
+}
+
+function updateDayStreak() {
+  try {
+    const today = new Date().toDateString();
+    const saved = JSON.parse(localStorage.getItem('mm-streak') || '{}');
+    let streak = 1;
+    if (saved.date === today) {
+      streak = saved.streak || 1;
+    } else if (saved.date) {
+      const last = new Date(saved.date);
+      const diff = (new Date(today) - last) / (1000 * 60 * 60 * 24);
+      streak = diff <= 1.5 ? (saved.streak || 1) + 1 : 1;
+    }
+    daysPlayed = streak;
+    localStorage.setItem('mm-streak', JSON.stringify({ date: today, streak }));
+  } catch (e) {
+    daysPlayed = 1;
+  }
+}
+
+function updateHUD() {
+  if (dom.score) dom.score.textContent = score;
+  if (dom.level) dom.level.textContent = level;
+  if (dom.moves) dom.moves.textContent = moves;
+}
+
+function showMsg(text) {
+  if (dom.msg) dom.msg.textContent = text;
+}
+
+function updateConscience() {
+  CONSCIENCE_KEYS.forEach(key => {
+    const val  = Math.min(conscience[key], 100);
+    const bar  = dom['bar' + key.charAt(0).toUpperCase() + key.slice(1)];
+    const pct  = dom['pct' + key.charAt(0).toUpperCase() + key.slice(1)];
+    if (bar) bar.style.width = val + '%';
+    if (pct) pct.textContent = val;
+  });
+}
+
+function bumpConscience(matchCount) {
+  const boost = Math.ceil(matchCount * 1.5);
+  conscience.empathy = Math.min(100, conscience.empathy + boost + Math.floor(Math.random() * 3));
+  conscience.justice = Math.min(100, conscience.justice + boost + Math.floor(Math.random() * 2));
+  conscience.wisdom  = Math.min(100, conscience.wisdom  + Math.floor(boost * 0.8));
+  conscience.growth  = Math.min(100, conscience.growth  + Math.floor(boost * 1.2));
+  updateConscience();
+}
+
+function renderBoard() {
+  if (!dom.board) return;
+  dom.board.innerHTML = '';
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const gemType = grid[r]?.[c];
+      const info    = GEM_DISPLAY[gemType] || { emoji: '?', cls: '', label: gemType };
+      const cell    = document.createElement('button');
+      const idx     = r * COLS + c;
+
+      cell.className = 'gem-cell ' + info.cls;
+      cell.textContent = info.emoji;
       cell.dataset.row = r;
       cell.dataset.col = c;
-      cell.classList.add(`gem-${cellData.kind}`);
-      if (cellData.special) cell.classList.add(`special-${cellData.special}`);
-      if (highlightSet.has(key(r, c))) cell.classList.add('matching');
-      if (selected && selected.r === r && selected.c === c) cell.classList.add('selected');
+      cell.setAttribute('role', 'gridcell');
+      cell.setAttribute('aria-label', info.label + ', row ' + (r + 1) + ' column ' + (c + 1));
+      cell.setAttribute('tabindex', idx === 0 ? '0' : '-1');
 
-      const glyph = document.createElement('div');
-      glyph.className = 'glyph';
-
-      if (GEM_IMAGES[cellData.kind]) {
-        glyph.style.backgroundImage = `url('${GEM_IMAGES[cellData.kind]}')`;
-      } else {
-        glyph.classList.add('emoji');
-        glyph.textContent = gemIcon(cellData);
+      if (selected && selected.row === r && selected.col === c) {
+        cell.classList.add('selected');
       }
 
-      cell.appendChild(glyph);
-
-      if (cellData.special) {
-        const badge = document.createElement('span');
-        badge.className = 'special-chip';
-        badge.textContent = specialBadge(cellData.special);
-        cell.appendChild(badge);
-      }
-
-      cell.onclick = () => onCellClick(r, c);
-      container.appendChild(cell);
+      cell.addEventListener('click', () => onCellClick(r, c));
+      cell.addEventListener('keydown', (e) => onCellKey(e, r, c));
+      dom.board.appendChild(cell);
     }
   }
 }
 
-function gemIcon(cell) {
-  switch (cell.kind) {
-    case 'heart': return '💖';
-    case 'star':  return '⭐';
-    case 'cross': return '✝️';
-    case 'flame': return '🔥';
-    case 'drop':  return '💧';
-    case 'wild':  return '🌈';
-    default:      return '⬛';
-  }
-}
-
-function specialBadge(special) {
-  if (special === 'row') return '─';
-  if (special === 'col') return '│';
-  if (special === 'bomb') return '✦';
-  return '☆';
-}
-
-function onCellClick(r, c) {
-  if (moves <= 0 || resolving) return;
-
+function onCellClick(row, col) {
+  if (locked) return;
   if (!selected) {
-    selected = { r, c };
-    renderGrid();
-    return;
-  }
-
-  const { r: r1, c: c1 } = selected;
-  if (r === r1 && c === c1) {
+    selected = { row, col };
+    renderBoard();
+  } else if (selected.row === row && selected.col === col) {
     selected = null;
-    renderGrid();
-    return;
-  }
-
-  if (!canSwap(grid, r1, c1, r, c)) {
-    selected = { r, c };
-    renderGrid();
-    return;
-  }
-
-  const swapped = applySwap(grid, r1, c1, r, c);
-  const matches = findMatches(swapped);
-
-  if (matches.length === 0) {
-    selected = null;
-    renderGrid();
-    return;
-  }
-
-  grid = swapped;
-  selected = null;
-  moves--;
-  updateStats();
-
-  resolveMatches();
-}
-
-function resolveMatches() {
-  const currentRun = runId;
-  resolving = true;
-  const groups = findMatches(grid);
-  if (groups.length === 0) {
-    comboChain = 0;
-    comboMultiplier = 1;
-    resolving = false;
-    renderGrid();
-    checkLevelUp();
-    checkGameOver();
-    return;
-  }
-
-  comboChain++;
-  comboMultiplier = Math.min(MAX_COMBO_MULTIPLIER, 1 + (comboChain - 1) * 0.4);
-
-  const matchSet = collectMatchSet(groups);
-  const explodedSet = expandSpecials(matchSet);
-  const matchCells = [...explodedSet].map(fromKey);
-
-  const spawns = deriveSpecialSpawns(groups);
-  const shardGain = Math.max(1, Math.floor(matchCells.length / 4)) + (comboChain > 1 ? 1 : 0);
-
-  shards += shardGain;
-  score += Math.round(matchCells.length * 12 * comboMultiplier);
-  flashStatus(`Chain x${comboChain}! +${shardGain} shards`);
-  updateStats();
-  renderGrid(explodedSet);
-
-  createParticles(matchCells);
-
-  grid = clearMatches(grid, matchCells, spawns);
-  grid = applyGravity(grid);
-
-  if (resolveTimeoutId) clearTimeout(resolveTimeoutId);
-  resolveTimeoutId = setTimeout(() => {
-    if (currentRun !== runId) return;
-    resolveMatches();
-  }, CHAIN_REACTION_DELAY_MS);
-}
-
-function deriveSpecialSpawns(groups) {
-  const spawns = [];
-  groups.forEach(group => {
-    if (group.length < 4) return;
-    const anchor = group[Math.floor(group.length / 2)];
-    const sameRow = group.every(p => p.r === group[0].r);
-    const sameCol = group.every(p => p.c === group[0].c);
-    const special = sameRow ? 'row' : sameCol ? 'col' : 'bomb';
-    const kind = grid[anchor.r][anchor.c]?.kind || 'star';
-    spawns.push({ r: anchor.r, c: anchor.c, kind, special });
-
-    if (group.length >= 5) {
-      const extra = group[0];
-      spawns.push({ r: extra.r, c: extra.c, kind: 'wild', special: 'wild' });
-    }
-  });
-
-  const unique = new Map();
-  spawns.forEach(s => unique.set(key(s.r, s.c), s));
-  return [...unique.values()];
-}
-
-function expandSpecials(matchSet) {
-  const expanded = new Set(matchSet);
-  matchSet.forEach(k => {
-    const { r, c } = fromKey(k);
-    const cell = grid[r][c];
-    if (!cell || !cell.special) return;
-    if (cell.special === 'wild') return;
-    if (cell.special === 'row') {
-      for (let col = 0; col < GRID_SIZE; col++) expanded.add(key(r, col));
-    } else if (cell.special === 'col') {
-      for (let row = 0; row < GRID_SIZE; row++) expanded.add(key(row, c));
-    } else {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          const nr = r + dr;
-          const nc = c + dc;
-          if (nr >= 0 && nr < GRID_SIZE && nc >= 0 && nc < GRID_SIZE) {
-            expanded.add(key(nr, nc));
-          }
-        }
-      }
-    }
-  });
-  return expanded;
-}
-
-function collectMatchSet(groups) {
-  const set = new Set();
-  groups.forEach(g => g.forEach(({ r, c }) => set.add(key(r, c))));
-  return set;
-}
-
-function addMoves(amount) {
-  moves += amount;
-  flashStatus(`+${amount} moves restored`);
-}
-
-function injectSpecial(special) {
-  const openCells = [];
-  for (let r = 0; r < GRID_SIZE; r++) {
-    for (let c = 0; c < GRID_SIZE; c++) {
-      openCells.push({ r, c });
-    }
-  }
-  const target = openCells[Math.floor(Math.random() * openCells.length)];
-  const existingKind = grid[target.r][target.c]?.kind || 'star';
-  grid[target.r][target.c] = { kind: special === 'wild' ? 'wild' : existingKind, special };
-  flashStatus(`${specialLabel(special)} placed`);
-  renderGrid();
-}
-
-function specialLabel(special) {
-  if (special === 'row') return 'Line rune';
-  if (special === 'col') return 'Column rune';
-  if (special === 'bomb') return 'Crystal bomb';
-  return 'Rainbow wild';
-}
-
-function purchase(item) {
-  if (shards < item.cost) {
-    flashStatus('Not enough shards');
-    return;
-  }
-  shards -= item.cost;
-  item.action();
-  updateStats();
-}
-
-function renderStore() {
-  if (storeBound) return;
-  const container = document.getElementById('match-store-items');
-  if (!container) return;
-  container.innerHTML = '';
-  STORE_ITEMS.forEach(item => {
-    const btn = document.createElement('button');
-    btn.className = 'store-item';
-    btn.dataset.itemId = item.id;
-    btn.innerHTML = `
-      <div class="store-title">${item.label}</div>
-      <div class="store-meta">Cost: ${item.cost} shards • ${item.detail}</div>
-    `;
-    btn.onclick = () => purchase(item);
-    container.appendChild(btn);
-  });
-  storeBound = true;
-}
-
-function updateStats() {
-  const scoreEl = document.getElementById('match-score');
-  const movesEl = document.getElementById('match-moves');
-  const levelEl = document.getElementById('match-level');
-  const comboEl = document.getElementById('match-combo');
-  const chainEl = document.getElementById('match-chain');
-  const shardEl = document.getElementById('match-shards');
-
-  const prevScore = parseInt(scoreEl?.textContent || '0');
-  const scoreChange = score - prevScore;
-
-  if (scoreEl) {
-    scoreEl.textContent = score;
-    if (scoreChange > 20) {
-      const scoreDiv = scoreEl.parentElement;
-      scoreDiv?.classList.add('score-pop');
-      setTimeout(() => scoreDiv?.classList.remove('score-pop'), 500);
-    }
-  }
-
-  if (movesEl) movesEl.textContent = moves;
-  if (levelEl) levelEl.textContent = level;
-  if (comboEl) comboEl.textContent = `${comboMultiplier.toFixed(1)}x`;
-  if (chainEl) chainEl.textContent = comboChain > 0 ? `Chain ${comboChain}` : 'Chain 0';
-  if (shardEl) shardEl.textContent = shards;
-
-  const comboChip = comboEl?.closest('.momentum-chip');
-  const chainChip = chainEl?.closest('.momentum-chip');
-
-  if (comboChip) {
-    comboChip.classList.toggle('active', comboMultiplier > 1);
-  }
-  if (chainChip) {
-    chainChip.classList.toggle('active', comboChain > 0);
+    renderBoard();
+  } else if (canSwap(grid, selected.row, selected.col, row, col)) {
+    attemptSwap(selected.row, selected.col, row, col);
+  } else {
+    selected = { row, col };
+    renderBoard();
   }
 }
 
-function checkLevelUp() {
-  const threshold = level * SCORE_PER_LEVEL;
-  if (score >= threshold) {
-    onLevelComplete(level, score, db, user);
-    level++;
-    moves += 10;
-    updateStats();
+function onCellKey(e, row, col) {
+  let targetR = row;
+  let targetC = col;
+
+  switch (e.key) {
+    case 'ArrowUp':    targetR = Math.max(0, row - 1); break;
+    case 'ArrowDown':  targetR = Math.min(ROWS - 1, row + 1); break;
+    case 'ArrowLeft':  targetC = Math.max(0, col - 1); break;
+    case 'ArrowRight': targetC = Math.min(COLS - 1, col + 1); break;
+    case 'Enter':
+    case ' ':
+      e.preventDefault();
+      onCellClick(row, col);
+      return;
+    case 'Escape':
+      selected = null;
+      renderBoard();
+      return;
+    default:
+      return;
   }
+
+  e.preventDefault();
+  const idx = targetR * COLS + targetC;
+  const cells = dom.board.querySelectorAll('.gem-cell');
+  if (cells[idx]) cells[idx].focus();
 }
 
-function checkGameOver() {
+function attemptSwap(r1, c1, r2, c2) {
   if (moves <= 0) {
-    const banner = document.getElementById('match-badge-banner');
-    if (banner) {
-      banner.textContent = `Game Over! Final score: ${score}`;
-      banner.classList.remove('hidden');
-    }
+    showMsg('No moves left');
+    return;
+  }
+
+  locked = true;
+  selected = null;
+  grid = applySwap(grid, r1, c1, r2, c2);
+  moves = Math.max(0, moves - 1);
+  updateHUD();
+  renderBoard();
+
+  const matches = findMatches(grid);
+  if (matches.length === 0) {
+    setTimeout(() => {
+      grid = applySwap(grid, r1, c1, r2, c2);
+      showMsg('No match — try again');
+      renderBoard();
+      setTimeout(() => showMsg(''), 1200);
+      locked = false;
+      finalizeMove();
+    }, CASCADE_DELAY);
+  } else {
+    processCascade(1);
   }
 }
 
-function flashStatus(text) {
-  const banner = document.getElementById('match-badge-banner');
-  if (banner) {
-    banner.textContent = text;
-    banner.classList.remove('hidden');
-    if (statusTimeoutId) clearTimeout(statusTimeoutId);
-    statusTimeoutId = setTimeout(() => banner.classList.add('hidden'), 2000);
+function processCascade(chain) {
+  const matches = findMatches(grid);
+  if (matches.length === 0) {
+    locked = false;
+    finalizeMove();
+    return;
   }
+
+  const clearedCells = matches.reduce((sum, group) => sum + group.length, 0);
+  const points = clearedCells * (BASE_POINTS + CHAIN_BONUS * (chain - 1));
+  score += points;
+  totalClears += clearedCells;
+  combo = Math.max(combo, ...matches.map(g => g.length));
+  if (matches.some(g => g.length >= 4)) explosions += 1;
+
+  if (chain > 1) {
+    showMsg('Chain x' + chain + '! +' + points);
+  }
+
+  bumpConscience(clearedCells);
+  highlightMatched(matches);
+  afterScoring();
+  updateHUD();
+
+  setTimeout(() => {
+    grid = clearMatches(grid, matches);
+    grid = applyGravity(grid);
+    renderBoard();
+    setTimeout(() => processCascade(chain + 1), CASCADE_DELAY);
+  }, CASCADE_DELAY);
 }
 
-function key(r, c) {
-  return `${r}:${c}`;
-}
-
-function fromKey(k) {
-  const [r, c] = k.split(':').map(Number);
-  return { r, c };
-}
-
-function createParticles(matchCells) {
-  const container = document.getElementById('match-grid');
-  if (!container) return;
-
-  matchCells.forEach(({ r, c }) => {
-    const cellEl = container.querySelector(`[data-row="${r}"][data-col="${c}"]`);
-    if (!cellEl) return;
-
-    const rect = cellEl.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    const particleCount = 6 + Math.floor(Math.random() * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-
-      const cell = grid[r] && grid[r][c];
-      const colors = {
-        heart: '#ff6b9d',
-        star:  '#ffd700',
-        cross: '#7ea6ff',
-        flame: '#ff6347',
-        drop:  '#4fc3f7',
-        wild:  '#7effd8',
-      };
-      particle.style.background = (cell && colors[cell.kind]) || '#7effd8';
-
-      const offsetX = rect.left - containerRect.left + rect.width / 2;
-      const offsetY = rect.top - containerRect.top + rect.height / 2;
-      particle.style.left = offsetX + 'px';
-      particle.style.top = offsetY + 'px';
-
-      const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
-      const distance = 30 + Math.random() * 40;
-      const tx = Math.cos(angle) * distance;
-      const ty = Math.sin(angle) * distance;
-      particle.style.setProperty('--tx', tx + 'px');
-      particle.style.setProperty('--ty', ty + 'px');
-
-      container.appendChild(particle);
-
-      setTimeout(() => particle.remove(), 800);
-    }
+function highlightMatched(matches) {
+  const cells = dom.board?.querySelectorAll('.gem-cell') || [];
+  matches.forEach(group => {
+    group.forEach(({ r, c }) => {
+      const idx = r * COLS + c;
+      if (cells[idx]) cells[idx].classList.add('matched');
+    });
   });
+}
+
+function initLevel() {
+  const cfg = getLevelConfig(level);
+  moves = cfg.moves;
+  updateHUD();
+}
+
+function afterScoring() {
+  if (checkLevelUp(score, level)) {
+    const completedLevel = level;
+    level++;
+    initLevel();
+    maybePlay('levelup');
+    maybeUnlock('level_' + level);
+    onLevelComplete(completedLevel, score, null, null);
+  }
+}
+
+function finalizeMove() {
+  updateDailyProgress('score', score);
+  updateDailyProgress('level', level);
+  updateDailyProgress('clears', totalClears);
+
+  const dailyDone = checkDailyCompletion({ score, level, clears: totalClears });
+  if (dailyDone) {
+    maybeUnlock('daily_complete');
+    unlockStar('silver');
+  }
+
+  if (level >= 3) unlockStar('gold');
+  if (score >= 1000) unlockStar('sapphire');
+  if (totalClears >= 50) unlockStar('emerald');
+  if (combo >= 5) unlockStar('ruby');
+  if (explosions >= 10) unlockStar('amethyst');
+  if (daysPlayed >= 7) unlockStar('obsidian');
+
+  saveState();
+}
+
+export function initMatchMaker(db, user) {
+  cacheDom();
+  updateDayStreak();
+
+  grid         = createInitialGrid();
+  score        = 0;
+  level        = 1;
+  totalClears  = 0;
+  combo        = 0;
+  explosions   = 0;
+  selected     = null;
+  locked       = false;
+  conscience   = { empathy: 0, justice: 0, wisdom: 0, growth: 0 };
+
+  initLevel();
+  if (!loadState()) {
+    renderBoard();
+    updateConscience();
+    showMsg('Match the gems — align your conscience');
+    saveState();
+  } else {
+    renderBoard();
+    showMsg('Loaded your save slot');
+  }
 }

@@ -1,23 +1,9 @@
 export const GRID_SIZE = 7;
 
-const BASE_GEM_TYPES = ['heart', 'star', 'cross', 'flame', 'drop'];
-
-export function makeGem(kind, special = null) {
-  return { kind, special };
-}
-
-function cloneGrid(grid) {
-  return grid.map(row => row.map(cell => (cell ? { ...cell } : null)));
-}
+const GEM_TYPES = ['heart', 'star', 'cross', 'flame', 'drop'];
 
 function randomGem() {
-  return makeGem(BASE_GEM_TYPES[Math.floor(Math.random() * BASE_GEM_TYPES.length)]);
-}
-
-function sameKind(a, b) {
-  if (!a || !b) return false;
-  if (a.kind === 'wild' || b.kind === 'wild') return true;
-  return a.kind === b.kind;
+  return GEM_TYPES[Math.floor(Math.random() * GEM_TYPES.length)];
 }
 
 /**
