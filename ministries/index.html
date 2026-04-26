@@ -294,6 +294,14 @@
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s;
             border: 2px solid transparent;
             position: relative;
+            /* Reset button defaults */
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 0;
+            background-color: transparent;
+            font: inherit;
+            /* Keep native focus ring visible in browsers that don't support :focus-visible
+               (the :focus-visible rule below overrides with a custom ring when supported) */
         }
 
         .square:hover {
@@ -305,6 +313,20 @@
             border-color: var(--gold);
             box-shadow: 0 0 14px rgba(255,215,0,0.6);
             transform: scale(1.1);
+        }
+
+        .square:focus-visible, .square.sq-focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(192,132,252,0.4);
+        }
+
+        /* When our custom .sq-focus ring is applied, suppress the redundant native ring */
+        .square.sq-focus:focus { outline: none; }
+
+        .square.sq-selected.sq-focus {
+            outline-color: var(--gold);
+            box-shadow: 0 0 14px rgba(255,215,0,0.6), 0 0 0 3px rgba(255,215,0,0.4);
         }
 
         /* Star crystal background images — SVG assets */
@@ -731,6 +753,8 @@ You have completed the journey.`,
 
     let board = [];
     let selected = null;   // { r, c }
+    let focusR = 0;        // keyboard cursor row
+    let focusC = 0;        // keyboard cursor col
     let puzzleScore = 0;
     let puzzleSolved = false;
     let boardLocked = false;
@@ -797,25 +821,91 @@ You have completed the journey.`,
         return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
     }
 
-    function renderBoard() {
+    function renderBoard(restoreFocus) {
         const el = document.getElementById('match-board');
         el.innerHTML = '';
         for (let r = 0; r < ROWS; r++) {
             for (let c = 0; c < COLS; c++) {
-                const sq = document.createElement('div');
+                const sq = document.createElement('button');
+                sq.type = 'button';
                 sq.className = `square star-${board[r][c]}`;
                 sq.setAttribute('data-r', r);
                 sq.setAttribute('data-c', c);
                 sq.setAttribute('role', 'gridcell');
                 sq.setAttribute('aria-label', `${board[r][c]} star crystal, row ${r+1} column ${c+1}`);
+                // Only the keyboard-focused cell is in the tab order
+                sq.setAttribute('tabindex', (r === focusR && c === focusC) ? '0' : '-1');
+
+                if (selected && selected.r === r && selected.c === c) {
+                    sq.classList.add('sq-selected');
+                }
+                if (r === focusR && c === focusC) {
+                    sq.classList.add('sq-focus');
+                }
+
                 sq.addEventListener('click', () => handleCellClick(r, c));
+                sq.addEventListener('keydown', (e) => handleCellKey(e, r, c));
                 el.appendChild(sq);
             }
         }
+        if (restoreFocus) {
+            const focusedCell = getCell(focusR, focusC);
+            if (focusedCell) focusedCell.focus();
+        }
+    }
+
+    // Move keyboard focus to (r, c) without changing game selection
+    function moveFocus(r, c) {
+        focusR = r;
+        focusC = c;
+        // Update tabindices — only focused cell is tabbable
+        document.querySelectorAll('#match-board .square').forEach(el => {
+            const er = parseInt(el.getAttribute('data-r'), 10);
+            const ec = parseInt(el.getAttribute('data-c'), 10);
+            const isFocused = er === r && ec === c;
+            el.setAttribute('tabindex', isFocused ? '0' : '-1');
+            el.classList.toggle('sq-focus', isFocused);
+        });
+        const target = getCell(r, c);
+        if (target) target.focus();
+    }
+
+    // Keyboard handler for each cell — mirrors match-maker-ui.js pattern
+    function handleCellKey(e, r, c) {
+        let tr = r, tc = c;
+
+        switch (e.key) {
+            case 'ArrowUp':    tr = Math.max(0, r - 1);        break;
+            case 'ArrowDown':  tr = Math.min(ROWS - 1, r + 1); break;
+            case 'ArrowLeft':  tc = Math.max(0, c - 1);        break;
+            case 'ArrowRight': tc = Math.min(COLS - 1, c + 1); break;
+            case 'Enter':
+            case ' ':
+                e.preventDefault();
+                handleCellClick(r, c);
+                return;
+            case 'Escape':
+                e.preventDefault();
+                if (selected) {
+                    const prev = getCell(selected.r, selected.c);
+                    if (prev) prev.classList.remove('sq-selected');
+                    selected = null;
+                }
+                return;
+            default:
+                return;
+        }
+
+        e.preventDefault();
+        moveFocus(tr, tc);
     }
 
     function handleCellClick(r, c) {
         if (puzzleSolved || boardLocked) return;
+
+        // Sync keyboard focus cursor to the clicked cell
+        focusR = r;
+        focusC = c;
 
         if (selected === null) {
             selected = { r, c };
@@ -837,10 +927,13 @@ You have completed the journey.`,
                 const matches = findMatches();
                 if (matches.length > 0) {
                     boardLocked = true;
+                    // sq-selected already removed from prevCell above; clear logic state before cascade
+                    selected = null;
                     processMatches(matches).then(() => { boardLocked = false; });
                 } else {
-                    // Revert
+                    // Revert swap — sq-selected already visually cleared from prevCell above
                     [board[pr][pc], board[r][c]] = [board[r][c], board[pr][pc]];
+                    selected = null;
                     const cell = getCell(r, c);
                     if (cell) {
                         cell.classList.add('shake');
@@ -853,7 +946,6 @@ You have completed the journey.`,
                 const newCell = getCell(r, c);
                 if (newCell) newCell.classList.add('sq-selected');
             }
-            if (isAdjacent(pr, pc, r, c)) selected = null;
         }
     }
 
@@ -888,7 +980,7 @@ You have completed the journey.`,
             }
         }
 
-        renderBoard();
+        renderBoard(true /* restoreFocus after cascade */);
 
         // Cascade check
         await sleep(120);
@@ -1003,13 +1095,15 @@ You have completed the journey.`,
             puzzleSolved = false;
             boardLocked = false;
             selected = null;
+            focusR = 0;
+            focusC = 0;
             document.getElementById('score').textContent = '0';
             document.getElementById('score-fill').style.width = '0%';
             document.getElementById('puzzle-msg').textContent = '';
             document.getElementById('puzzle-msg').className = '';
             document.getElementById('solve-btn').style.display = 'none';
             createBoard();
-            renderBoard();
+            renderBoard(false);
 
         } else if (node.type === 'ending') {
             const endContainer = document.getElementById('ending-container');
