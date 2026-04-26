@@ -734,12 +734,12 @@
                 stageMatch.classList.add('active');
                 if (!matchInitialized) {
                     matchInitialized = true;
-                    import('../match-maker-ui.js')
+                    import('/match-maker-ui.js')
                         .then(m => m.initMatchMaker(null, null))
                         .catch(err => {
                             console.error('Match Maker failed to load:', err);
                             document.getElementById('match-grid').innerHTML =
-                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">🔮 Match Maker is coming soon!</p>';
+                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">⚠️ Match Maker could not be loaded. Please refresh the page.</p>';
                         });
                 }
             }
