@@ -1,18 +1,19 @@
-const CACHE_NAME = 'amazing-grace-v3';
+const CACHE_NAME = 'amazing-grace-v4';
 
-// Merged assets from both branches to ensure PWA icons and Game Logic are cached
+// Core pages and game modules deployed at stable paths
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/assets/logo.svg',
-    '/assets/logo.png',
-    '/assets/icon-192.png',
-    '/assets/icon-512.png',
-    '/assets/icon-512-maskable.png',
+    '/arcade',
+    '/arcade/index.html',
     '/manifest.json',
-    '/matchMakerState.js',
     '/match-maker-ui.js',
-    '/badges.js'
+    '/matchMakerState.js',
+    '/badges.js',
+    '/saveSystem.js',
+    '/levelSystem.js',
+    '/daily.js',
+    '/sevenStars.js'
 ];
 
 self.addEventListener('install', event => {
