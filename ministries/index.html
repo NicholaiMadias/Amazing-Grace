@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Mystery of the Seven Stars: A Scriptural Journey — a branched narrative and Match-3 Refraction puzzle from Voice of Jesus Ministry.">
+    <meta name="theme-color" content="#0f0c1a">
+
+    <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+    <title>The Mystery of the Seven Stars | Voice of Jesus Ministry</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        /* ── Design tokens ───────────────────────────────── */
+        :root {
+            --gold:    #ffd700;
+            --nebula:  rgba(74, 35, 90, 0.8);
+            --bg:      #0f0c1a;
+            --surface: #1a1030;
+            --border:  #2e1f4a;
+            --accent:  #c084fc;
+            --text:    #e9d5ff;
+            --muted:   #7c6f9e;
+            --nav-btn: #1e3a8a;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            body { scroll-behavior: smooth; }
+        }
+
+        *:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+        /* ── Header / Nav ───────────────────────────────── */
+        .site-header {
+            background: linear-gradient(90deg, #0f0c1a 0%, #1a0d2e 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--gold);
+        }
+        .logo img { height: 36px; width: auto; border-radius: 4px; }
+
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            background-color: var(--nav-btn);
+            border: 1px solid transparent;
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #bfdbfe;
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .nav-btn:hover { background-color: #2563eb; color: white; }
+        .nav-btn.active { background-color: var(--accent); color: #0f0c1a; }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background: #0f0c1a;
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+                gap: 0.5rem;
+                border-bottom: 1px solid var(--border);
+            }
+            .main-nav.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; }
+        }
+
+        /* ── Main stage ─────────────────────────────────── */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .stage-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--gold);
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255,215,0,0.4);
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* ── Story card ─────────────────────────────────── */
+        .story-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 680px;
+            width: 100%;
+            box-shadow: 0 0 40px var(--nebula), 0 8px 32px rgba(0,0,0,0.5);
+            animation: fadeSlide 0.4s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(192, 132, 252, 0.15);
+            border: 1px solid rgba(192, 132, 252, 0.4);
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .story-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .story-scripture {
+            background: rgba(255,215,0,0.06);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            color: #d4b483;
+            font-size: 0.9rem;
+        }
+        .story-scripture strong {
+            font-style: normal;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* ── Choices ─────────────────────────────────────── */
+        #choices-container { display: flex; flex-direction: column; gap: 0.75rem; }
+
+        .choice-btn {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            text-align: left;
+            border: 2px solid var(--border);
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.15s;
+        }
+        .choice-btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(192,132,252,0.1);
+            transform: translateX(4px);
+        }
+
+        /* ── Puzzle area ─────────────────────────────────── */
+        #puzzle-container { display: none; flex-direction: column; align-items: center; gap: 1rem; }
+        #puzzle-container.visible { display: flex; }
+
+        .puzzle-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        .score-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        .score-bar .score-val { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
+
+        .score-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            min-width: 120px;
+        }
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            border-radius: 999px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        /* Match board — exactly as spec */
+        #match-board {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            width: 360px;
+            height: 360px;
+            margin: 4px auto;
+            padding: 15px;
+            background: radial-gradient(ellipse at 50% 30%, rgba(74,35,90,0.6), transparent 70%), var(--bg);
+            background-size: cover;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 20px var(--nebula);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        @media (max-width: 420px) {
+            #match-board { width: 100%; height: auto; }
+        }
+
+        .square {
+            width: 100%;
+            aspect-ratio: 1;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.15s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .square:hover {
+            transform: scale(1.15);
+            filter: brightness(1.2);
+        }
+
+        .square.sq-selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 14px rgba(255,215,0,0.6);
+            transform: scale(1.1);
+        }
+
+        /* Star crystal background images — SVG assets */
+        .star-gold   { background-image: url('../assets/star_crystal_gold.svg'); }
+        .star-blue   { background-image: url('../assets/star_crystal_blue.svg'); }
+        .star-purple { background-image: url('../assets/star_crystal_purple.svg'); }
+        .star-red    { background-image: url('../assets/star_crystal_red.svg'); }
+
+        /* Supernova explosion animation */
+        .match-explode {
+            animation: supernova 0.5s forwards;
+            background-image: url('../assets/supernova_explosion.svg') !important;
+            pointer-events: none;
+        }
+
+        @keyframes supernova {
+            0%   { transform: scale(1);   opacity: 1; }
+            50%  { transform: scale(1.8); opacity: 0.8; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        .square.shake {
+            animation: shake 0.35s ease;
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25%     { transform: translateX(-5px); }
+            75%     { transform: translateX(5px); }
+        }
+
+        /* Puzzle message */
+        #puzzle-msg {
+            font-size: 0.9rem;
+            color: var(--muted);
+            text-align: center;
+            min-height: 1.4em;
+            transition: color 0.3s;
+        }
+        #puzzle-msg.solved { color: var(--gold); font-weight: 700; font-size: 1rem; }
+
+        /* Continue / action buttons */
+        .story-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: linear-gradient(135deg, #6d28d9, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: filter 0.2s, transform 0.15s;
+            margin-top: 0.5rem;
+        }
+        .story-btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
+        .story-btn:active { transform: translateY(0); }
+        .story-btn.gold-btn {
+            background: linear-gradient(135deg, #b45309, var(--gold));
+            color: #1a1a2e;
+        }
+
+        #solve-btn { display: none; }
+
+        /* ── Ending / Certificate ───────────────────────── */
+        #ending-container { display: none; flex-direction: column; align-items: center; gap: 1.5rem; }
+        #ending-container.visible { display: flex; }
+
+        .cert-box {
+            background: linear-gradient(135deg, #1e0d3b, #2e1058);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255,215,0,0.25);
+            max-width: 560px;
+            width: 100%;
+        }
+
+        .cert-stars {
+            font-size: 2.5rem;
+            letter-spacing: 0.5rem;
+            margin-bottom: 1rem;
+            animation: starPulse 2s ease-in-out infinite;
+        }
+        @keyframes starPulse {
+            0%,100% { text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+            50%     { text-shadow: 0 0 30px rgba(255,215,0,0.9); }
+        }
+
+        .cert-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-sub {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-verse {
+            background: rgba(255,215,0,0.06);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            font-style: italic;
+            color: #d4b483;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-path-badge {
+            display: inline-block;
+            background: rgba(192,132,252,0.15);
+            border: 1px solid rgba(192,132,252,0.4);
+            color: var(--accent);
+            border-radius: 999px;
+            padding: 0.35rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── Progress dots ───────────────────────────────── */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .dot.done  { background: var(--gold); transform: scale(1.2); }
+        .dot.active { background: var(--accent); transform: scale(1.3); box-shadow: 0 0 8px var(--accent); }
+
+        /* ── Footer ─────────────────────────────────────── */
+        .site-footer {
+            background: #0a0818;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.8rem;
+        }
+        .site-footer a { color: var(--accent); text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+            <a href="/ministries/" class="nav-btn active" aria-current="page">✨ Seven Stars</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <!-- Main -->
+    <main>
+        <h1 class="stage-title">The Mystery of the Seven Stars</h1>
+        <p class="stage-subtitle">A Scriptural Journey &mdash; Voice of Jesus Ministry</p>
+
+        <!-- Progress indicator -->
+        <div class="progress-dots" id="progress-dots" aria-label="Chapter progress" role="img"></div>
+
+        <!-- Story card -->
+        <div class="story-card" id="story-card">
+
+            <!-- Chapter badge -->
+            <div class="chapter-badge" id="chapter-badge">Prologue</div>
+
+            <!-- Story title -->
+            <h2 class="story-title" id="story-title"></h2>
+
+            <!-- Narrative text -->
+            <p class="story-text" id="story-text"></p>
+
+            <!-- Scripture quote -->
+            <blockquote class="story-scripture" id="story-scripture" style="display:none"></blockquote>
+
+            <!-- Choice buttons -->
+            <div id="choices-container"></div>
+
+            <!-- Puzzle (only for refraction_trial node) -->
+            <div id="puzzle-container">
+                <h3 class="puzzle-header">⚡ Refraction Trial</h3>
+                <p style="font-size:0.85rem;color:var(--muted);text-align:center;margin:0">
+                    Select two adjacent star crystals to swap them. Match 3 or more of the same crystal to refract the starlight.
+                    <br>Reach <strong style="color:var(--gold)">1,000 alignment</strong> to decode the message.
+                </p>
+                <div class="score-bar">
+                    <span>Alignment:</span>
+                    <div class="score-track"><div class="score-fill" id="score-fill"></div></div>
+                    <span class="score-val"><span id="score">0</span> / 1000</span>
+                </div>
+                <div id="match-board" role="grid" aria-label="Refraction Match-3 board"></div>
+                <p id="puzzle-msg"></p>
+                <button id="solve-btn" class="story-btn gold-btn" onclick="onPuzzleSolved()">
+                    ✨ The Stars Are Aligned — Continue
+                </button>
+            </div>
+
+            <!-- Ending certificate -->
+            <div id="ending-container">
+                <div class="cert-box" id="cert-box">
+                    <div class="cert-stars">⭐⭐⭐⭐⭐⭐⭐</div>
+                    <div class="cert-title">Journey Complete</div>
+                    <div class="cert-sub">You have walked through the Mystery of the Seven Stars.</div>
+                    <div class="cert-path-badge" id="cert-path-badge"></div>
+                    <blockquote class="cert-verse">
+                        "In his right hand he held seven stars… This is the mystery of the seven stars that you saw in my right hand."
+                        <br><strong style="color:var(--gold);font-style:normal">— Revelation 1:16, 20</strong>
+                    </blockquote>
+                    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem">
+                        Each star is a church. Each church is a lesson. Each lesson is a step closer to the One who holds them.
+                    </p>
+                    <a href="/ministry" class="story-btn" style="text-decoration:none">🕊️ Return to Ministry</a>
+                </div>
+            </div>
+
+        </div><!-- /.story-card -->
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; Voice of Jesus Ministry &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════════
+    //  NARRATIVE DATA
+    // ═══════════════════════════════════════════════════════════════
+    const STORY_NODES = {
+
+        intro: {
+            act: 1,
+            chapter: 'Chapter 1',
+            title: 'The Call of the Stars',
+            text: `You stand at the threshold of an ancient observatory. Through the open dome, seven stars burn with unusual brilliance — each a different colour, each a different intensity. At your feet lies a worn scroll bound in golden cord.
+
+You feel the weight of a calling you cannot fully explain. The stars seem to be waiting.`,
+            scripture: { ref: 'Revelation 1:3', text: '"Blessed is the one who reads aloud the words of this prophecy, and blessed are those who hear it."' },
+            type: 'choice',
+            choices: [
+                { label: '📜 Unroll the scroll and read the full message', next: 'read_scroll' },
+                { label: '🙏 Look up at the seven stars and pray first', next: 'pray_first' }
+            ]
+        },
+
+        read_scroll: {
+            act: 1,
+            chapter: 'Chapter 1',
+            title: 'The Ancient Message',
+            text: `The scroll unrolls to reveal ancient text written in gold ink:
+
+"Seven churches. Seven messages. Seven mysteries. The One who holds the Seven Stars in His right hand speaks. Do you have ears to hear?
+
+Seek the Refraction — the lens through which all seven lights become one clear truth."`,
+            scripture: { ref: 'Revelation 1:20', text: '"The mystery of the seven stars that you saw in my right hand and of the seven golden lampstands is this: The seven stars are the angels of the seven churches."' },
+            type: 'choice',
+            choices: [
+                { label: '⚡ Enter the Refraction Trial', next: 'refraction_trial' }
+            ]
+        },
+
+        pray_first: {
+            act: 1,
+            chapter: 'Chapter 1',
+            title: 'Wisdom Before the Trial',
+            text: `As you bow your head in the starlight, a quiet warmth fills the observatory. The seven stars seem to brighten, as if responding to the posture of your heart.
+
+A still, small voice says: "Wisdom begins here. You are ready to see."
+
+Strengthened, you reach down and unroll the scroll.`,
+            scripture: { ref: 'Proverbs 9:10', text: '"The fear of the LORD is the beginning of wisdom, and knowledge of the Holy One is understanding."' },
+            type: 'choice',
+            choices: [
+                { label: '⚡ Begin the Refraction Trial, Strengthened', next: 'refraction_trial' }
+            ]
+        },
+
+        refraction_trial: {
+            act: 2,
+            chapter: 'Chapter 2',
+            title: 'The Refraction Trial',
+            text: `The scroll dissolves into beams of coloured light — gold, blue, purple, and red — each streaming from one of the seven stars above. To decode the message of the Stars, you must align them.
+
+A crystalline lens floats before you. Arrange the star crystals to refract their light into a single focused beam.`,
+            scripture: null,
+            type: 'puzzle'
+        },
+
+        seven_letters: {
+            act: 3,
+            chapter: 'Chapter 3',
+            title: 'The Seven Letters',
+            text: `The aligned starlight illuminates seven sealed letters on the observatory wall — each bearing the name of a church: Ephesus, Smyrna, Pergamum, Thyatira, Sardis, Philadelphia, Laodicea.
+
+One glows brighter than the others, pulsing gently, as though it knows your name.`,
+            scripture: { ref: 'Revelation 2:1', text: '"To the angel of the church in Ephesus write: These are the words of him who holds the seven stars in his right hand."' },
+            type: 'choice',
+            choices: [
+                { label: '💌 Open the letter of first love — Ephesus', next: 'letter_ephesus' },
+                { label: '🚪 Open the letter of the open door — Philadelphia', next: 'letter_philadelphia' }
+            ]
+        },
+
+        letter_ephesus: {
+            act: 3,
+            chapter: 'Chapter 3',
+            title: 'Letter to Ephesus: First Love',
+            text: `The letter reads: "You have abandoned the love you had at first. Remember from where you have fallen; repent, and do the works you did at first."
+
+The message lands deep — not as condemnation, but as an invitation to return. To first love. To first calling. To the reason you began.`,
+            scripture: { ref: 'Revelation 2:4–5', text: '"You have forsaken the love you had at first. Consider how far you have fallen! Repent and do the things you did at first."' },
+            type: 'choice',
+            choices: [
+                { label: '🌑 Follow the path deeper into the stars', next: 'the_dark_valley' }
+            ]
+        },
+
+        letter_philadelphia: {
+            act: 3,
+            chapter: 'Chapter 3',
+            title: 'Letter to Philadelphia: The Open Door',
+            text: `The letter reads: "See, I have placed before you an open door that no one can shut. I know that you have little strength, yet you have kept my word."
+
+Small faithfulness. Open doors. Not power, but presence. Not volume, but endurance.`,
+            scripture: { ref: 'Revelation 3:8', text: '"I have placed before you an open door that no one can shut. I know that you have little strength, yet you have kept my word."' },
+            type: 'choice',
+            choices: [
+                { label: '🌑 Follow the path deeper into the stars', next: 'the_dark_valley' }
+            ]
+        },
+
+        the_dark_valley: {
+            act: 4,
+            chapter: 'Chapter 4',
+            title: 'The Valley of Doubt',
+            text: `The path to the lens of clarity passes through a darkened valley. A voice whispers from the shadows:
+
+"Who are you to seek the Seven Stars? You have stumbled. You have fallen short. The stars are not for you."
+
+The voice is familiar — it is the voice of your own fear.`,
+            scripture: null,
+            type: 'choice',
+            choices: [
+                { label: '✝️ Answer: "Not by my strength — by grace I stand."', next: 'victory_grace' },
+                { label: '🔥 Answer: "I will press on. The work is not yet finished."', next: 'victory_perseverance' }
+            ]
+        },
+
+        victory_grace: {
+            act: 4,
+            chapter: 'Chapter 4',
+            title: 'Grace Breaks Through',
+            text: `The word "grace" hits the darkness like starlight striking a lens. The shadows scatter.
+
+You are not worthy by your deeds — you are worthy by the One who holds the seven stars. Grace is not earned; it is received. And in that receiving, doubt has no foothold.
+
+The path forward is clear.`,
+            scripture: { ref: 'Ephesians 2:8–9', text: '"For it is by grace you have been saved, through faith — and this is not from yourselves, it is the gift of God — not by works."' },
+            type: 'choice',
+            choices: [
+                { label: '⭐ Claim the Seven Stars Lens', next: 'the_revelation' }
+            ]
+        },
+
+        victory_perseverance: {
+            act: 4,
+            chapter: 'Chapter 4',
+            title: 'Endurance Triumphs',
+            text: `You step forward into the dark valley — not because the fear is gone, but because the calling is greater than the fear.
+
+The stars overhead do not flicker. They burn steady. Those who endure, inherit. The path opens before you.`,
+            scripture: { ref: 'Matthew 24:13', text: '"But the one who endures to the end will be saved."' },
+            type: 'choice',
+            choices: [
+                { label: '⭐ Claim the Seven Stars Lens', next: 'the_revelation' }
+            ]
+        },
+
+        the_revelation: {
+            act: 5,
+            chapter: 'Chapter 5',
+            title: 'The Seven Stars Revealed',
+            text: `The lens materialises in your hands — a crystal of pure clarity, containing the light of all seven stars unified into a single beam.
+
+Through it you see clearly: each star is a church, each church a lesson, each lesson a step toward the One who holds them in His right hand. The mystery is not solved by intellect alone — it is unveiled by faith, faithfulness, and the courage to keep walking.
+
+You have completed the journey.`,
+            scripture: { ref: 'Revelation 1:16', text: '"In his right hand he held seven stars, and coming out of his mouth was a sharp, double-edged sword. His face was like the sun shining in all its brilliance."' },
+            type: 'ending'
+        }
+    };
+
+    // Act → total steps (for progress dots)
+    const TOTAL_ACTS = 5;
+
+    // ═══════════════════════════════════════════════════════════════
+    //  MATCH-3 REFRACTION PUZZLE ENGINE
+    // ═══════════════════════════════════════════════════════════════
+    const COLS = 6, ROWS = 6;
+    const TYPES = ['gold', 'blue', 'purple', 'red'];
+    const SCORE_THRESHOLD = 1000;
+
+    let board = [];
+    let selected = null;   // { r, c }
+    let puzzleScore = 0;
+    let puzzleSolved = false;
+    let boardLocked = false;
+
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function randType() { return TYPES[Math.floor(Math.random() * TYPES.length)]; }
+
+    function createBoard() {
+        board = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, randType));
+        // Avoid starting with matches
+        let guard = 0;
+        while (findMatches().length > 0 && guard++ < 200) {
+            for (let r = 0; r < ROWS; r++)
+                for (let c = 0; c < COLS; c++)
+                    board[r][c] = randType();
+        }
+    }
+
+    function findMatches() {
+        const hits = new Set();
+        // Horizontal
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c <= COLS - 3; c++) {
+                const t = board[r][c];
+                if (t && t === board[r][c+1] && t === board[r][c+2]) {
+                    let len = 3;
+                    while (c + len < COLS && board[r][c + len] === t) len++;
+                    for (let i = 0; i < len; i++) hits.add(`${r},${c+i}`);
+                }
+            }
+        }
+        // Vertical
+        for (let c = 0; c < COLS; c++) {
+            for (let r = 0; r <= ROWS - 3; r++) {
+                const t = board[r][c];
+                if (t && t === board[r+1][c] && t === board[r+2][c]) {
+                    let len = 3;
+                    while (r + len < ROWS && board[r + len][c] === t) len++;
+                    for (let i = 0; i < len; i++) hits.add(`${r+i},${c}`);
+                }
+            }
+        }
+        return [...hits].map(s => s.split(',').map(Number));
+    }
+
+    function isAdjacent(r1, c1, r2, c2) {
+        return Math.abs(r1 - r2) + Math.abs(c1 - c2) === 1;
+    }
+
+    function getCell(r, c) {
+        return document.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+    }
+
+    function renderBoard() {
+        const el = document.getElementById('match-board');
+        el.innerHTML = '';
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                const sq = document.createElement('div');
+                sq.className = `square star-${board[r][c]}`;
+                sq.setAttribute('data-r', r);
+                sq.setAttribute('data-c', c);
+                sq.setAttribute('role', 'gridcell');
+                sq.setAttribute('aria-label', `${board[r][c]} star crystal, row ${r+1} column ${c+1}`);
+                sq.addEventListener('click', () => handleCellClick(r, c));
+                el.appendChild(sq);
+            }
+        }
+    }
+
+    function handleCellClick(r, c) {
+        if (puzzleSolved || boardLocked) return;
+
+        if (selected === null) {
+            selected = { r, c };
+            const cell = getCell(r, c);
+            if (cell) cell.classList.add('sq-selected');
+        } else {
+            const { r: pr, c: pc } = selected;
+            const prevCell = getCell(pr, pc);
+            if (prevCell) prevCell.classList.remove('sq-selected');
+
+            if (pr === r && pc === c) {
+                selected = null;
+                return;
+            }
+
+            if (isAdjacent(pr, pc, r, c)) {
+                // Swap
+                [board[pr][pc], board[r][c]] = [board[r][c], board[pr][pc]];
+                const matches = findMatches();
+                if (matches.length > 0) {
+                    boardLocked = true;
+                    processMatches(matches).then(() => { boardLocked = false; });
+                } else {
+                    // Revert
+                    [board[pr][pc], board[r][c]] = [board[r][c], board[pr][pc]];
+                    const cell = getCell(r, c);
+                    if (cell) {
+                        cell.classList.add('shake');
+                        setTimeout(() => cell.classList.remove('shake'), 350);
+                    }
+                }
+            } else {
+                // Re-select new cell
+                selected = { r, c };
+                const newCell = getCell(r, c);
+                if (newCell) newCell.classList.add('sq-selected');
+            }
+            if (isAdjacent(pr, pc, r, c)) selected = null;
+        }
+    }
+
+    async function processMatches(matches) {
+        const matched = matches.length;
+        // Animate explosions
+        for (const [r, c] of matches) {
+            const cell = getCell(r, c);
+            if (cell) cell.classList.add('match-explode');
+            board[r][c] = null;
+        }
+
+        // Score
+        puzzleScore += matched * 250;
+        updateScoreDisplay();
+
+        await sleep(520);
+
+        // Gravity — drop tiles down in each column
+        for (let c = 0; c < COLS; c++) {
+            let writeRow = ROWS - 1;
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (board[r][c] !== null) {
+                    board[writeRow][c] = board[r][c];
+                    if (writeRow !== r) board[r][c] = null;
+                    writeRow--;
+                }
+            }
+            while (writeRow >= 0) {
+                board[writeRow][c] = randType();
+                writeRow--;
+            }
+        }
+
+        renderBoard();
+
+        // Cascade check
+        await sleep(120);
+        const cascadeMatches = findMatches();
+        if (cascadeMatches.length > 0) {
+            await processMatches(cascadeMatches);
+        }
+
+        checkPuzzleWin();
+    }
+
+    function updateScoreDisplay() {
+        document.getElementById('score').textContent = puzzleScore;
+        const pct = Math.min(100, (puzzleScore / SCORE_THRESHOLD) * 100);
+        document.getElementById('score-fill').style.width = pct + '%';
+    }
+
+    function checkPuzzleWin() {
+        if (!puzzleSolved && puzzleScore >= SCORE_THRESHOLD) {
+            puzzleSolved = true;
+            document.getElementById('solve-btn').style.display = 'inline-flex';
+            const msg = document.getElementById('puzzle-msg');
+            msg.textContent = '✨ THE STARS ARE ALIGNED — The path forward is revealed!';
+            msg.className = 'solved';
+        }
+    }
+
+    function onPuzzleSolved() {
+        navigateTo('seven_letters');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  NARRATIVE ENGINE
+    // ═══════════════════════════════════════════════════════════════
+    let visitedActs = new Set();
+    let currentPathLabel = '';
+
+    function buildProgressDots() {
+        const container = document.getElementById('progress-dots');
+        container.innerHTML = '';
+        for (let i = 1; i <= TOTAL_ACTS; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.id = `dot-${i}`;
+            dot.title = `Act ${i}`;
+            container.appendChild(dot);
+        }
+    }
+
+    function updateProgressDots(currentAct) {
+        for (let i = 1; i <= TOTAL_ACTS; i++) {
+            const dot = document.getElementById(`dot-${i}`);
+            if (!dot) continue;
+            if (i < currentAct) { dot.className = 'dot done'; }
+            else if (i === currentAct) { dot.className = 'dot active'; }
+            else { dot.className = 'dot'; }
+        }
+    }
+
+    function navigateTo(nodeId) {
+        const node = STORY_NODES[nodeId];
+        if (!node) return;
+
+        // Track path choices for certificate badge
+        if (nodeId === 'letter_ephesus') currentPathLabel = 'Path of First Love';
+        if (nodeId === 'letter_philadelphia') currentPathLabel = 'Path of the Open Door';
+        if (nodeId === 'victory_grace') currentPathLabel = (currentPathLabel || 'Path') + ' · Grace';
+        if (nodeId === 'victory_perseverance') currentPathLabel = (currentPathLabel || 'Path') + ' · Endurance';
+
+        visitedActs.add(node.act);
+        updateProgressDots(node.act);
+
+        // Update badge & title
+        document.getElementById('chapter-badge').textContent = node.chapter;
+        document.getElementById('story-title').textContent = node.title;
+        document.getElementById('story-text').textContent = node.text;
+
+        // Scripture
+        const scriptureEl = document.getElementById('story-scripture');
+        if (node.scripture) {
+            scriptureEl.innerHTML = `${node.scripture.text} <strong>— ${node.scripture.ref}</strong>`;
+            scriptureEl.style.display = 'block';
+        } else {
+            scriptureEl.style.display = 'none';
+        }
+
+        // Hide all variable sections
+        document.getElementById('choices-container').innerHTML = '';
+        document.getElementById('puzzle-container').classList.remove('visible');
+        document.getElementById('ending-container').classList.remove('visible');
+
+        if (node.type === 'choice') {
+            const container = document.getElementById('choices-container');
+            node.choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice.label;
+                btn.addEventListener('click', () => {
+                    btn.disabled = true;
+                    document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+                    setTimeout(() => navigateTo(choice.next), 350);
+                });
+                container.appendChild(btn);
+            });
+
+        } else if (node.type === 'puzzle') {
+            document.getElementById('puzzle-container').classList.add('visible');
+            if (board.length === 0) {
+                createBoard();
+            }
+            // Reset puzzle state for fresh start
+            puzzleScore = 0;
+            puzzleSolved = false;
+            boardLocked = false;
+            selected = null;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('score-fill').style.width = '0%';
+            document.getElementById('puzzle-msg').textContent = '';
+            document.getElementById('puzzle-msg').className = '';
+            document.getElementById('solve-btn').style.display = 'none';
+            createBoard();
+            renderBoard();
+
+        } else if (node.type === 'ending') {
+            const endContainer = document.getElementById('ending-container');
+            endContainer.classList.add('visible');
+            const badge = document.getElementById('cert-path-badge');
+            badge.textContent = currentPathLabel || 'Seeker of the Seven Stars';
+            updateProgressDots(TOTAL_ACTS);
+        }
+
+        // Scroll story card into view smoothly
+        document.getElementById('story-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  MOBILE MENU
+    // ═══════════════════════════════════════════════════════════════
+    document.querySelector('.menu-toggle').addEventListener('click', function() {
+        const nav = document.getElementById('main-nav');
+        const expanded = nav.classList.toggle('show');
+        this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+
+    // ═══════════════════════════════════════════════════════════════
+    //  INIT
+    // ═══════════════════════════════════════════════════════════════
+    buildProgressDots();
+    navigateTo('intro');
+    </script>
+</body>
+</html>
