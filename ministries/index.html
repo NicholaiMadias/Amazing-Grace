@@ -740,13 +740,25 @@ You have completed the journey.`,
     function randType() { return TYPES[Math.floor(Math.random() * TYPES.length)]; }
 
     function createBoard() {
-        board = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, randType));
-        // Avoid starting with matches
-        let guard = 0;
-        while (findMatches().length > 0 && guard++ < 200) {
-            for (let r = 0; r < ROWS; r++)
-                for (let c = 0; c < COLS; c++)
-                    board[r][c] = randType();
+        board = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                const validTypes = TYPES.filter(type => {
+                    const createsHorizontalMatch =
+                        c >= 2 &&
+                        board[r][c - 1] === type &&
+                        board[r][c - 2] === type;
+                    const createsVerticalMatch =
+                        r >= 2 &&
+                        board[r - 1][c] === type &&
+                        board[r - 2][c] === type;
+
+                    return !createsHorizontalMatch && !createsVerticalMatch;
+                });
+
+                board[r][c] = validTypes[Math.floor(Math.random() * validTypes.length)];
+            }
         }
     }
 
