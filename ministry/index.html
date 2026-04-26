@@ -41,6 +41,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
         .logo {
@@ -71,8 +72,33 @@
 
         .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.25); }
 
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
         @media (max-width: 640px) {
-            .nav-links { display: none; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--navy);
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                gap: 0.5rem;
+            }
+            .nav-links.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; padding: 0.75rem 1rem; }
         }
 
         .hero {
@@ -167,12 +193,13 @@
             <img src="../assets/logo.svg" alt="Amazing Grace Home Living Logo">
             <span>Amazing Grace</span>
         </a>
-        <nav class="nav-links" aria-label="Main navigation">
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
             <a href="/" class="nav-btn">🏠 Home</a>
             <a href="/arcade" class="nav-btn">🎮 Arcade</a>
             <a href="/ministry" class="nav-btn active" aria-current="page">🕊️ Ministry</a>
             <a href="/ministries/" class="nav-btn" style="background:rgba(124,58,237,0.35);">✨ Seven Stars</a>
         </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
     </header>
 
     <main>
@@ -220,6 +247,17 @@
     <footer class="site-footer">
         <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
     </footer>
-
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

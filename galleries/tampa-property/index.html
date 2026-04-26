@@ -13,13 +13,19 @@
         :root { --navy: #1e3a8a; }
         body { font-family:'Inter',sans-serif; background:#f3f4f6; color:#333; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; }
         *:focus-visible { outline:3px solid #3b82f6; outline-offset:2px; }
-        .site-header { background:var(--navy); color:white; padding:1rem 2rem; box-shadow:0 4px 6px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+        .site-header { background:var(--navy); color:white; padding:1rem 2rem; box-shadow:0 4px 6px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; position:relative; }
         .logo { display:flex; align-items:center; gap:0.75rem; font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; text-decoration:none; color:white; }
         .logo img { height:40px; width:auto; border-radius:4px; }
         .nav-links { display:flex; gap:0.75rem; }
         .nav-btn { background:rgba(255,255,255,0.1); color:white; text-decoration:none; padding:0.5rem 1rem; border-radius:6px; font-size:0.9rem; font-weight:600; transition:background 0.2s; }
         .nav-btn:hover { background:rgba(255,255,255,0.25); }
-        @media(max-width:640px){ .nav-links{ display:none; } }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.75rem; color:white; cursor:pointer; padding:0.25rem; }
+        @media(max-width:640px){
+            .nav-links{ display:none; flex-direction:column; position:absolute; top:100%; left:0; right:0; background-color:var(--navy); padding:1rem; z-index:100; box-shadow:0 4px 6px rgba(0,0,0,0.2); gap:0.5rem; }
+            .nav-links.show{ display:flex; }
+            .menu-toggle{ display:block; }
+            .nav-btn{ width:100%; padding:0.75rem 1rem; }
+        }
         .hero { background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%); color:white; text-align:center; padding:3rem 1.5rem 2rem; }
         .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2.25rem); margin-bottom:0.5rem; }
         .hero p { opacity:0.85; font-size:0.95rem; }
@@ -47,11 +53,12 @@
             <img src="../../assets/logo.svg" alt="Amazing Grace Home Living Logo">
             <span>Amazing Grace</span>
         </a>
-        <nav class="nav-links" aria-label="Main navigation">
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
             <a href="/" class="nav-btn">🏠 Home</a>
             <a href="/arcade" class="nav-btn">🎮 Arcade</a>
             <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
         </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
     </header>
     <main>
         <div class="hero">
@@ -100,6 +107,18 @@
             function showEmpty() {
                 empty.style.display = 'block';
                 status.textContent = 'No images uploaded yet.';
+            }
+        })();
+    </script>
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
             }
         })();
     </script>
