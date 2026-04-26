@@ -575,6 +575,22 @@
         }
         .site-footer a { color: var(--accent); text-decoration: none; }
         .site-footer a:hover { text-decoration: underline; }
+
+        /* ---- Certificate / Completion ---- */
+        .cert-input {
+            width: 100%; padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .cert-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+        .cert-btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+        .cert-canvas-wrap { max-width: 100%; overflow-x: auto; }
+        #cert-canvas { display: none; max-width: 100%; border: 2px solid var(--accent2); border-radius: 0.5rem; margin: 1rem auto; }
+        #cert-download-btns { display: none; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
     </style>
 </head>
 <body>
@@ -600,7 +616,7 @@
     <div class="portal-bar" role="navigation" aria-label="Portal navigation">
         <a href="/" class="portal-link">🏠 Listings</a>
         <a href="/arcade" class="portal-link active" aria-current="page">🎮 Arcade</a>
-        <a href="/#ministry" class="portal-link">🕊️ Ministry</a>
+        <a href="/ministry" class="portal-link">🕊️ Ministry</a>
     </div>
 
     <!-- Main -->
@@ -739,7 +755,7 @@
                         .catch(err => {
                             console.error('Match Maker failed to load:', err);
                             document.getElementById('match-grid').innerHTML =
-                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">🔮 Match Maker is coming soon!</p>';
+                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">Unable to load Match Maker. Please refresh and try again.</p>';
                         });
                 }
             }
@@ -750,6 +766,131 @@
             stageMatch.classList.remove('active');
             lobby.style.display = '';
         }
+
+        // ── Match Maker completion certificate ─────────────────────────
+        document.addEventListener('matchmakerComplete', (e) => {
+            const scoreVal = e.detail?.score ?? 0;
+            const stage    = document.getElementById('stage-matchmaker');
+            if (!stage) return;
+
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow-y:auto;padding:2rem 1rem;text-align:center;';
+
+            overlay.innerHTML = `
+                <div style="max-width:600px;width:100%;margin:0 auto">
+                    <div style="font-size:3rem;margin-bottom:.75rem">🎉</div>
+                    <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.25rem);color:#FFD700;margin-bottom:.5rem">Congratulations!</h2>
+                    <p style="color:#94a3b8;margin-bottom:1.25rem;line-height:1.6">You've completed all five levels of Match Maker!<br>Final Score: <strong style="color:#7effd8">${scoreVal}</strong></p>
+                    <div style="background:rgba(126,255,216,.08);border:1px solid var(--accent);border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem">
+                        <p style="color:var(--accent);font-weight:700;margin-bottom:.35rem">🔮 Match Maker — All Levels Complete</p>
+                        <p style="color:#cbd5e1;font-size:.825rem">Empathy &bull; Justice &bull; Wisdom &bull; Growth</p>
+                    </div>
+                    <div style="margin-bottom:1rem">
+                        <label for="mm-cert-name" style="color:#94a3b8;font-size:.875rem;display:block;margin-bottom:.4rem;text-align:left">Your name for the certificate (optional):</label>
+                        <input id="mm-cert-name" type="text" placeholder="Player" maxlength="40" class="cert-input">
+                    </div>
+                    <div class="cert-btn-row" style="margin-bottom:.75rem">
+                        <button id="mm-gen-cert" class="game-btn" style="background:#7effd8;color:#0f172a;font-weight:700">🏆 Generate Certificate</button>
+                    </div>
+                    <div class="cert-canvas-wrap" style="width:100%">
+                        <canvas id="mm-cert-canvas" style="display:none;max-width:100%;border:2px solid var(--accent);border-radius:.5rem;margin:1rem auto"></canvas>
+                    </div>
+                    <div id="mm-cert-btns" class="cert-btn-row" style="display:none;margin-bottom:1rem">
+                        <button id="mm-dl-png" class="game-btn">⬇ Download PNG</button>
+                        <button id="mm-print" class="game-btn" style="background:rgba(255,255,255,.08)">🖨 Print / Save PDF</button>
+                    </div>
+                    <button id="mm-back-lobby" class="game-btn" style="background:none;border:1px solid var(--border);color:#94a3b8;margin-top:.5rem">↩ Back to Arcade</button>
+                </div>`;
+
+            document.body.appendChild(overlay);
+
+            function drawMMCert(canvas, name) {
+                canvas.width  = 800;
+                canvas.height = 560;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, 800, 560);
+                ctx.strokeStyle = '#7effd8';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(16, 16, 768, 528);
+                ctx.strokeStyle = 'rgba(126,255,216,0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(26, 26, 748, 508);
+                ctx.font = '28px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('🔮', 50, 80);
+                ctx.fillText('🔮', 750, 80);
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 36px Georgia, serif';
+                ctx.fillText('Certificate of Completion', 400, 100);
+                ctx.fillStyle = 'rgba(126,255,216,0.4)';
+                ctx.fillRect(100, 115, 600, 2);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'italic 18px Georgia, serif';
+                ctx.fillText('This certifies that', 400, 160);
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 32px Georgia, serif';
+                ctx.fillText(name, 400, 215);
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '18px Georgia, serif';
+                ctx.fillText('has successfully completed all five levels of', 400, 265);
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 26px Georgia, serif';
+                ctx.fillText('Match Maker', 400, 310);
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px Georgia, serif';
+                ctx.fillText('Aligning virtues of Empathy, Justice, Wisdom, and Growth', 400, 350);
+                ctx.fillText('through the power of faith-based gem matching', 400, 373);
+                ctx.fillStyle = 'rgba(126,255,216,0.4)';
+                ctx.fillRect(100, 408, 600, 1);
+                const date = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '16px Georgia, serif';
+                ctx.fillText('Completed on ' + date + '  |  Final Score: ' + scoreVal, 400, 445);
+                const uid = 'AGC-MM-' + Date.now().toString(36).toUpperCase();
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px monospace';
+                ctx.fillText('Certificate ID: ' + uid, 400, 490);
+                ctx.fillStyle = '#334155';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', 400, 535);
+            }
+
+            overlay.querySelector('#mm-gen-cert').addEventListener('click', () => {
+                const name   = (overlay.querySelector('#mm-cert-name').value.trim() || 'Player');
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                drawMMCert(canvas, name);
+                canvas.style.display = 'block';
+                overlay.querySelector('#mm-cert-btns').style.display = 'flex';
+            });
+
+            overlay.querySelector('#mm-dl-png').addEventListener('click', () => {
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                if (!canvas || canvas.style.display === 'none') return;
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a   = document.createElement('a');
+                    a.href = url; a.download = 'match-maker-certificate-' + Date.now() + '.png';
+                    document.body.appendChild(a); a.click();
+                    document.body.removeChild(a); URL.revokeObjectURL(url);
+                });
+            });
+
+            overlay.querySelector('#mm-print').addEventListener('click', () => {
+                const canvas = overlay.querySelector('#mm-cert-canvas');
+                if (!canvas || canvas.style.display === 'none') return;
+                const dataUrl = canvas.toDataURL('image/png');
+                const win = window.open('', '_blank');
+                if (!win) return;
+                win.document.write('<!DOCTYPE html><html><head><title>Certificate</title><style>body{margin:0;background:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}img{max-width:100%}</style></head><body><img src="' + dataUrl + '" onload="window.print()"></body></html>');
+                win.document.close();
+            });
+
+            overlay.querySelector('#mm-back-lobby').addEventListener('click', () => {
+                overlay.remove();
+                backToLobby();
+            });
+        });
 
         // ── Seven Stars game ────────────────────────────────────────────
         const churches = [
@@ -840,11 +981,150 @@
                         if (correct) {
                             completedStars = [...new Set([...completedStars, c.name])];
                             localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
-                            showAlert(`⭐ ${c.name} Star Collected! "${c.name}" virtue unlocked.`, renderMap);
+                            if (completedStars.length === churches.length) {
+                                showAlert(`⭐ ${c.name} Star Collected! All Seven Stars found!`, renderCompletion);
+                            } else {
+                                showAlert(`⭐ ${c.name} Star Collected! "${c.name}" virtue unlocked.`, renderMap);
+                            }
                         } else {
                             showAlert(`Not quite. The correct answer is: "${c.answer}"`, () => renderMap());
                         }
                     });
+                });
+            }
+
+            function drawCertificate(canvas, playerName) {
+                canvas.width  = 800;
+                canvas.height = 560;
+                const ctx = canvas.getContext('2d');
+
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, 800, 560);
+
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(16, 16, 768, 528);
+                ctx.strokeStyle = 'rgba(255,215,0,0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(26, 26, 748, 508);
+
+                ctx.font = '28px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('⭐', 50, 80);
+                ctx.fillText('⭐', 750, 80);
+                ctx.fillText('⭐', 50, 510);
+                ctx.fillText('⭐', 750, 510);
+
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 36px Georgia, serif';
+                ctx.fillText('Certificate of Completion', 400, 100);
+
+                ctx.fillStyle = 'rgba(255,215,0,0.4)';
+                ctx.fillRect(100, 115, 600, 2);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'italic 18px Georgia, serif';
+                ctx.fillText('This certifies that', 400, 160);
+
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 32px Georgia, serif';
+                ctx.fillText(playerName, 400, 215);
+
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '18px Georgia, serif';
+                ctx.fillText('has successfully completed', 400, 265);
+
+                ctx.fillStyle = '#FFD700';
+                ctx.font = 'bold 26px Georgia, serif';
+                ctx.fillText('Mystery of the Seven Stars', 400, 310);
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '14px Georgia, serif';
+                ctx.fillText('Journeying through all seven churches of Asia Minor', 400, 350);
+                ctx.fillText('and collecting all seven stars of faith and knowledge', 400, 373);
+
+                ctx.fillStyle = 'rgba(255,215,0,0.4)';
+                ctx.fillRect(100, 408, 600, 1);
+
+                const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                ctx.fillStyle = '#e2e8f0';
+                ctx.font = '16px Georgia, serif';
+                ctx.fillText('Completed on ' + date, 400, 445);
+
+                const uid = 'AGC-SS-' + Date.now().toString(36).toUpperCase();
+                ctx.fillStyle = '#64748b';
+                ctx.font = '12px monospace';
+                ctx.fillText('Certificate ID: ' + uid, 400, 490);
+
+                ctx.fillStyle = '#334155';
+                ctx.font = 'bold 11px sans-serif';
+                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', 400, 535);
+            }
+
+            function renderCompletion() {
+                gameScreen.innerHTML = `
+                    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:2rem 1rem;max-width:600px;margin:0 auto">
+                        <div style="font-size:3rem;margin-bottom:.75rem">🎉</div>
+                        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.25rem);color:#FFD700;margin-bottom:.5rem">Congratulations!</h1>
+                        <p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6;max-width:480px">You have journeyed through all seven churches of Asia Minor and collected all Seven Stars. Your faith and knowledge have been tested and proven!</p>
+                        <div style="background:rgba(255,215,0,.1);border:1px solid #FFD700;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;width:100%;max-width:480px">
+                            <p style="color:#FFD700;font-weight:700;font-size:1.05rem;margin-bottom:.4rem">⭐ All Seven Stars Collected ⭐</p>
+                            <p style="color:#cbd5e1;font-size:.825rem">Ephesus &bull; Smyrna &bull; Pergamum &bull; Thyatira &bull; Sardis &bull; Philadelphia &bull; Laodicea</p>
+                        </div>
+                        <div style="margin-bottom:1rem;width:100%;max-width:480px">
+                            <label for="cert-name-input" style="color:#94a3b8;font-size:.875rem;display:block;margin-bottom:.4rem;text-align:left">Your name for the certificate (optional):</label>
+                            <input id="cert-name-input" type="text" placeholder="Player" maxlength="40" class="cert-input">
+                        </div>
+                        <div class="cert-btn-row" style="margin-bottom:1rem">
+                            <button id="gen-cert-btn" class="game-btn" style="background:#FFD700;color:#0f172a;font-weight:700">🏆 Generate Certificate</button>
+                        </div>
+                        <div class="cert-canvas-wrap" style="width:100%">
+                            <canvas id="cert-canvas"></canvas>
+                        </div>
+                        <div id="cert-download-btns" class="cert-btn-row" style="margin-top:.25rem;margin-bottom:1rem">
+                            <button id="download-png-btn" class="game-btn">⬇ Download PNG</button>
+                            <button id="print-cert-btn" class="game-btn" style="background:rgba(255,255,255,.08)">🖨 Print / Save PDF</button>
+                        </div>
+                        <button id="play-again-btn" class="game-btn" style="background:none;border:1px solid #334155;color:#94a3b8;margin-top:.5rem">↩ Play Again</button>
+                    </div>`;
+
+                document.getElementById('play-again-btn').addEventListener('click', () => {
+                    completedStars = [];
+                    localStorage.removeItem('aghl_sevenStarsCompleted');
+                    renderTitle();
+                });
+
+                document.getElementById('gen-cert-btn').addEventListener('click', () => {
+                    const name   = (document.getElementById('cert-name-input').value.trim() || 'Player');
+                    const canvas = document.getElementById('cert-canvas');
+                    drawCertificate(canvas, name);
+                    canvas.style.display = 'block';
+                    document.getElementById('cert-download-btns').style.display = 'flex';
+                });
+
+                document.getElementById('download-png-btn').addEventListener('click', () => {
+                    const canvas = document.getElementById('cert-canvas');
+                    if (!canvas || canvas.style.display === 'none') return;
+                    canvas.toBlob(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a   = document.createElement('a');
+                        a.href     = url;
+                        a.download = 'seven-stars-certificate-' + Date.now() + '.png';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    });
+                });
+
+                document.getElementById('print-cert-btn').addEventListener('click', () => {
+                    const canvas = document.getElementById('cert-canvas');
+                    if (!canvas || canvas.style.display === 'none') return;
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const win = window.open('', '_blank');
+                    if (!win) return;
+                    win.document.write('<!DOCTYPE html><html><head><title>Certificate of Completion</title><style>body{margin:0;background:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}img{max-width:100%;height:auto}@media print{body{background:#fff}}</style></head><body><img src="' + dataUrl + '" onload="window.print()"></body></html>');
+                    win.document.close();
                 });
             }
 

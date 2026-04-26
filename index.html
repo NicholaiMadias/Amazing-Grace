@@ -709,6 +709,30 @@
         .mm-bar-track { flex: 1; background: #e5e7eb; border-radius: 999px; height: 8px; overflow: hidden; }
         .mm-bar-fill  { height: 100%; border-radius: 999px; transition: width 0.4s ease; width: 0%; }
         .mm-bar-pct   { font-size: 0.7rem; color: #6b7280; width: 26px; text-align: right; flex-shrink: 0; }
+
+        /* ---- Ministry navigation buttons ---- */
+        .ministry-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            color: #1e3a8a;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            min-height: 140px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .ministry-nav-btn:hover, .ministry-nav-btn:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(30,58,138,0.15);
+            border-color: #2563eb;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -800,7 +824,7 @@
                             <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
                             <li class="flex items-center gap-1">✔️ Parking Available</li>
                         </ul>
-                        <a href="https://lnkd.in/e3j9N-hb" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                        <a href="/galleries/926-poinsettia" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
                             📸 View Photos (Tampa)
                         </a>
                     </div>
@@ -829,7 +853,7 @@
                                 <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
                                 <li class="flex items-center gap-1">✔️ Parking Available</li>
                             </ul>
-                            <a href="#" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                            <a href="/galleries/1142-7th-street" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
                                 📸 View Photos (Largo 1142)
                             </a>
                         </div>
@@ -858,7 +882,7 @@
                                 <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
                                 <li class="flex items-center gap-1">✔️ Parking Available</li>
                             </ul>
-                            <a href="#" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                            <a href="/galleries/1144-7th-street" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
                                 📸 View Photos (Largo 1144)
                             </a>
                         </div>
@@ -971,23 +995,27 @@
             <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
                 Explore our faith-based resources, the Voice of Jesus teachings, and community outreach programs.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Voice of Jesus Ministry</h3>
-                    <p class="text-gray-600 leading-relaxed">Bringing the teachings and love of Jesus Christ to communities worldwide through outreach, spiritual guidance, and support.</p>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-3">The Seven Stars Educational Arcade</h3>
-                    <p class="text-gray-600 leading-relaxed">Interactive spiritual learning through engaging games that teach biblical wisdom and principles from the seven churches of Revelation.</p>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Community Outreach</h3>
-                    <p class="text-gray-600 leading-relaxed">Supporting those in need through housing assistance, spiritual counseling, and building stronger faith communities.</p>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-3">Global Mission</h3>
-                    <p class="text-gray-600 leading-relaxed">Expanding our reach to serve communities internationally with the message of grace, hope, and transformation.</p>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <a href="/stories" class="ministry-nav-btn" aria-label="Read Ministry Stories">
+                    <span style="font-size:2rem">📖</span>
+                    <span class="font-bold text-xl">Stories</span>
+                    <span class="text-sm text-gray-500">Testimonies of faith and transformation</span>
+                </a>
+                <a href="/support" class="ministry-nav-btn" aria-label="Mission Support">
+                    <span style="font-size:2rem">🤝</span>
+                    <span class="font-bold text-xl">Mission Support</span>
+                    <span class="text-sm text-gray-500">Partner with our ministry</span>
+                </a>
+                <a href="/arcade" class="ministry-nav-btn" aria-label="Play Faith-Based Games">
+                    <span style="font-size:2rem">🎮</span>
+                    <span class="font-bold text-xl">Games</span>
+                    <span class="text-sm text-gray-500">Interactive faith-based learning</span>
+                </a>
+                <a href="/galleries/ministry" class="ministry-nav-btn" aria-label="Ministry Gallery">
+                    <span style="font-size:2rem">🖼️</span>
+                    <span class="font-bold text-xl">Gallery</span>
+                    <span class="text-sm text-gray-500">Photos from our outreach</span>
+                </a>
             </div>
         </div>
 
