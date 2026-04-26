@@ -114,10 +114,15 @@ export function findMatches(grid) {
 
 /**
  * Returns a new grid with matched cells set to null and optional replacements placed.
+ * Accepts either a flat array of {r, c} cells or grouped match arrays as returned by findMatches().
  */
 export function clearMatches(grid, matchCells, replacements = []) {
   const next = cloneGrid(grid);
-  matchCells.forEach(({ r, c }) => {
+  const cellsToClear = matchCells.flatMap(cellOrGroup =>
+    Array.isArray(cellOrGroup) ? cellOrGroup : [cellOrGroup]
+  );
+
+  cellsToClear.forEach(({ r, c }) => {
     next[r][c] = null;
   });
   replacements.forEach(repl => {

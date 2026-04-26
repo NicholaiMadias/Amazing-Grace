@@ -750,12 +750,12 @@
                 stageMatch.classList.add('active');
                 if (!matchInitialized) {
                     matchInitialized = true;
-                    import('../match-maker-ui.js')
+                    import('/match-maker-ui.js')
                         .then(m => m.initMatchMaker(null, null))
                         .catch(err => {
                             console.error('Match Maker failed to load:', err);
                             document.getElementById('match-grid').innerHTML =
-                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">Unable to load Match Maker. Please refresh and try again.</p>';
+                                '<p style="color:var(--text-muted);padding:2rem;text-align:center">⚠️ Match Maker could not be loaded. Please refresh the page.</p>';
                         });
                 }
             }
@@ -917,6 +917,144 @@
                 alertClose.onclick = () => { overlay.style.display = 'none'; if (cb) cb(); };
             }
 
+            /** Show a transient notification toast above the game screen. */
+            function ssShowNotification(msg, type = 'error') {
+                const el = document.createElement('div');
+                const bg = type === 'success' ? '#22c55e' : '#ef4444';
+                el.style.cssText = [
+                    'position:fixed', 'top:20px', 'left:50%', 'transform:translateX(-50%)',
+                    `background:${bg}`, 'color:#fff', 'padding:12px 24px',
+                    'border-radius:8px', 'font-weight:700', 'z-index:10000',
+                    'pointer-events:none', 'box-shadow:0 4px 12px rgba(0,0,0,.4)',
+                    'font-size:.95rem', 'max-width:90vw', 'text-align:center'
+                ].join(';');
+                el.textContent = msg;
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 4000);
+            }
+
+            /** Draw the completion certificate onto `canvas`. */
+            function ssCertDraw(canvas, name, date, certId) {
+                const ctx = canvas.getContext('2d');
+
+                // Background gradient
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                grad.addColorStop(0, '#0f172a');
+                grad.addColorStop(1, '#1e293b');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Gold border
+                ctx.strokeStyle = '#FFD700';
+                ctx.lineWidth = 8;
+                ctx.strokeRect(16, 16, canvas.width - 32, canvas.height - 32);
+                ctx.strokeStyle = 'rgba(255,215,0,.3)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(28, 28, canvas.width - 56, canvas.height - 56);
+
+                // Stars row
+                ctx.font = '28px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('⭐ ⭐ ⭐ ⭐ ⭐ ⭐ ⭐', canvas.width / 2, 76);
+
+                // Title
+                ctx.font = 'bold 36px "Playfair Display", serif';
+                ctx.fillStyle = '#FFD700';
+                ctx.fillText('Certificate of Completion', canvas.width / 2, 140);
+
+                // Subtitle
+                ctx.font = '18px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('The Mystery of the Seven Stars', canvas.width / 2, 176);
+
+                // Divider
+                ctx.strokeStyle = 'rgba(255,215,0,.4)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(80, 196);
+                ctx.lineTo(canvas.width - 80, 196);
+                ctx.stroke();
+
+                // Recipient
+                ctx.font = '16px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('This certifies that', canvas.width / 2, 240);
+
+                ctx.font = 'bold 30px "Playfair Display", serif';
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillText(name, canvas.width / 2, 286);
+
+                ctx.font = '16px "Inter", sans-serif';
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillText('has discovered all Seven Stars and completed the journey', canvas.width / 2, 326);
+                ctx.fillText('through the seven churches of Asia Minor.', canvas.width / 2, 350);
+
+                // Divider
+                ctx.beginPath();
+                ctx.moveTo(80, 372);
+                ctx.lineTo(canvas.width - 80, 372);
+                ctx.stroke();
+
+                // Date & ID
+                ctx.font = '13px "Inter", sans-serif';
+                ctx.fillStyle = '#64748b';
+                ctx.textAlign = 'left';
+                ctx.fillText(`Completed: ${date}`, 80, 404);
+                ctx.textAlign = 'right';
+                ctx.fillText(`ID: ${certId}`, canvas.width - 80, 404);
+
+                // Footer
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#7effd8';
+                ctx.font = 'bold 13px "Inter", sans-serif';
+                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', canvas.width / 2, 436);
+            }
+
+            /** Render the name-entry phase so the player can get their certificate. */
+            function renderCertName() {
+                gameScreen.innerHTML = `
+                    <div id="cert-phase" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;max-width:480px;margin:0 auto;padding:2rem 1rem">
+                        <div style="font-size:2.5rem;margin-bottom:1rem">🏆</div>
+                        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,4vw,2rem);color:#FFD700;margin-bottom:.5rem">All Seven Stars Found!</h2>
+                        <p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6">You've completed the journey through the seven churches of Asia Minor. Enter your name to download your certificate.</p>
+                        <input id="cert-name-input" type="text" maxlength="60" placeholder="Your Name"
+                            style="width:100%;max-width:320px;padding:.65rem 1rem;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:1rem;margin-bottom:1rem;text-align:center" />
+                        <button id="cert-generate-btn" class="game-btn" style="font-size:1rem;padding:.75rem 2rem">⬇ Download Certificate</button>
+                        <button id="cert-back-btn" style="margin-top:.75rem;background:none;border:none;color:#64748b;cursor:pointer;font-size:.875rem;font-weight:600">← Back to Map</button>
+                    </div>`;
+                document.getElementById('cert-generate-btn').addEventListener('click', ssGenerateCert);
+                document.getElementById('cert-back-btn').addEventListener('click', renderMap);
+            }
+
+            /** Generate, draw, and download the completion certificate.
+             *  Errors from ssCertDraw() or toDataURL() are caught and surfaced
+             *  via ssShowNotification(); the name-entry phase stays visible so
+             *  the player can try again without losing their input. */
+            function ssGenerateCert() {
+                const nameInput = document.getElementById('cert-name-input');
+                const name = nameInput?.value.trim() || 'Player';
+                const date = new Date().toLocaleDateString();
+                const certId = 'AGHL-SS-' + Date.now();
+
+                const canvas = document.createElement('canvas');
+                canvas.width  = 800;
+                canvas.height = 460;
+
+                try {
+                    ssCertDraw(canvas, name, date, certId);
+                    const dataUrl = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.href     = dataUrl;
+                    link.download = 'seven-stars-certificate.png';
+                    link.click();
+                    ssShowNotification('Certificate downloaded! 🎉', 'success');
+                } catch (err) {
+                    console.error('Certificate generation failed:', err);
+                    ssShowNotification('Certificate generation failed — please try again.');
+                    // Keep the name-entry phase visible so the player can retry
+                }
+            }
+
             function renderTitle() {
                 gameScreen.innerHTML = `
                     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;max-width:480px;margin:0 auto;padding:2rem 1rem">
@@ -983,7 +1121,7 @@
                             completedStars = [...new Set([...completedStars, c.name])];
                             localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
                             if (completedStars.length === churches.length) {
-                                showAlert(`⭐ ${c.name} Star Collected! All Seven Stars found!`, renderCompletion);
+                                showAlert(`⭐ ${c.name} Star Collected! All Seven Stars found!`, renderCertName);
                             } else {
                                 showAlert(`⭐ ${c.name} Star Collected! "${c.name}" virtue unlocked.`, renderMap);
                             }
@@ -991,142 +1129,6 @@
                             showAlert(`Not quite. The correct answer is: "${c.answer}"`, () => renderMap());
                         }
                     });
-                });
-            }
-
-            function drawCertificate(canvas, playerName) {
-                canvas.width  = 800;
-                canvas.height = 560;
-                const ctx = canvas.getContext('2d');
-
-                ctx.fillStyle = '#0f172a';
-                ctx.fillRect(0, 0, 800, 560);
-
-                ctx.strokeStyle = '#FFD700';
-                ctx.lineWidth = 6;
-                ctx.strokeRect(16, 16, 768, 528);
-                ctx.strokeStyle = 'rgba(255,215,0,0.3)';
-                ctx.lineWidth = 1;
-                ctx.strokeRect(26, 26, 748, 508);
-
-                ctx.font = '28px serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('⭐', 50, 80);
-                ctx.fillText('⭐', 750, 80);
-                ctx.fillText('⭐', 50, 510);
-                ctx.fillText('⭐', 750, 510);
-
-                ctx.fillStyle = '#FFD700';
-                ctx.font = 'bold 36px Georgia, serif';
-                ctx.fillText('Certificate of Completion', 400, 100);
-
-                ctx.fillStyle = 'rgba(255,215,0,0.4)';
-                ctx.fillRect(100, 115, 600, 2);
-
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = 'italic 18px Georgia, serif';
-                ctx.fillText('This certifies that', 400, 160);
-
-                ctx.fillStyle = '#7effd8';
-                ctx.font = 'bold 32px Georgia, serif';
-                ctx.fillText(playerName, 400, 215);
-
-                ctx.fillStyle = '#e2e8f0';
-                ctx.font = '18px Georgia, serif';
-                ctx.fillText('has successfully completed', 400, 265);
-
-                ctx.fillStyle = '#FFD700';
-                ctx.font = 'bold 26px Georgia, serif';
-                ctx.fillText('Mystery of the Seven Stars', 400, 310);
-
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '14px Georgia, serif';
-                ctx.fillText('Journeying through all seven churches of Asia Minor', 400, 350);
-                ctx.fillText('and collecting all seven stars of faith and knowledge', 400, 373);
-
-                ctx.fillStyle = 'rgba(255,215,0,0.4)';
-                ctx.fillRect(100, 408, 600, 1);
-
-                const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                ctx.fillStyle = '#e2e8f0';
-                ctx.font = '16px Georgia, serif';
-                ctx.fillText('Completed on ' + date, 400, 445);
-
-                const uid = 'AGC-SS-' + Date.now().toString(36).toUpperCase();
-                ctx.fillStyle = '#64748b';
-                ctx.font = '12px monospace';
-                ctx.fillText('Certificate ID: ' + uid, 400, 490);
-
-                ctx.fillStyle = '#334155';
-                ctx.font = 'bold 11px sans-serif';
-                ctx.fillText('Amazing Grace Home Living — amazinggracehl.org', 400, 535);
-            }
-
-            function renderCompletion() {
-                gameScreen.innerHTML = `
-                    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:2rem 1rem;max-width:600px;margin:0 auto">
-                        <div style="font-size:3rem;margin-bottom:.75rem">🎉</div>
-                        <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.25rem);color:#FFD700;margin-bottom:.5rem">Congratulations!</h1>
-                        <p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6;max-width:480px">You have journeyed through all seven churches of Asia Minor and collected all Seven Stars. Your faith and knowledge have been tested and proven!</p>
-                        <div style="background:rgba(255,215,0,.1);border:1px solid #FFD700;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;width:100%;max-width:480px">
-                            <p style="color:#FFD700;font-weight:700;font-size:1.05rem;margin-bottom:.4rem">⭐ All Seven Stars Collected ⭐</p>
-                            <p style="color:#cbd5e1;font-size:.825rem">Ephesus &bull; Smyrna &bull; Pergamum &bull; Thyatira &bull; Sardis &bull; Philadelphia &bull; Laodicea</p>
-                        </div>
-                        <div style="margin-bottom:1rem;width:100%;max-width:480px">
-                            <label for="cert-name-input" style="color:#94a3b8;font-size:.875rem;display:block;margin-bottom:.4rem;text-align:left">Your name for the certificate (optional):</label>
-                            <input id="cert-name-input" type="text" placeholder="Player" maxlength="40" class="cert-input">
-                        </div>
-                        <div class="cert-btn-row" style="margin-bottom:1rem">
-                            <button id="gen-cert-btn" class="game-btn" style="background:#FFD700;color:#0f172a;font-weight:700">🏆 Generate Certificate</button>
-                        </div>
-                        <div class="cert-canvas-wrap" style="width:100%">
-                            <canvas id="cert-canvas"></canvas>
-                        </div>
-                        <div id="cert-download-btns" class="cert-btn-row" style="margin-top:.25rem;margin-bottom:1rem">
-                            <button id="download-png-btn" class="game-btn">⬇ Download PNG</button>
-                            <button id="print-cert-btn" class="game-btn" style="background:rgba(255,255,255,.08)">🖨 Print / Save PDF</button>
-                        </div>
-                        <button id="play-again-btn" class="game-btn" style="background:none;border:1px solid #334155;color:#94a3b8;margin-top:.5rem">↩ Play Again</button>
-                    </div>`;
-
-                document.getElementById('play-again-btn').addEventListener('click', () => {
-                    completedStars = [];
-                    localStorage.removeItem('aghl_sevenStarsCompleted');
-                    renderTitle();
-                });
-
-                document.getElementById('gen-cert-btn').addEventListener('click', () => {
-                    const name   = (document.getElementById('cert-name-input').value.trim() || 'Player');
-                    const canvas = document.getElementById('cert-canvas');
-                    drawCertificate(canvas, name);
-                    canvas.style.display = 'block';
-                    document.getElementById('cert-download-btns').style.display = 'flex';
-                });
-
-                document.getElementById('download-png-btn').addEventListener('click', () => {
-                    const canvas = document.getElementById('cert-canvas');
-                    if (!canvas || canvas.style.display === 'none') return;
-                    canvas.toBlob(blob => {
-                        if (!blob) { console.error('Certificate export failed: canvas produced no blob.'); return; }
-                        const url = URL.createObjectURL(blob);
-                        const a   = document.createElement('a');
-                        a.href     = url;
-                        a.download = 'seven-stars-certificate-' + Date.now() + '.png';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                    });
-                });
-
-                document.getElementById('print-cert-btn').addEventListener('click', () => {
-                    const canvas = document.getElementById('cert-canvas');
-                    if (!canvas || canvas.style.display === 'none') return;
-                    const dataUrl = canvas.toDataURL('image/png');
-                    const win = window.open('', '_blank');
-                    if (!win) return;
-                    win.document.write('<!DOCTYPE html><html><head><title>Certificate of Completion</title><style>body{margin:0;background:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}img{max-width:100%;height:auto}@media print{body{background:#fff}}</style></head><body><img src="' + dataUrl + '" onload="window.print()"></body></html>');
-                    win.document.close();
                 });
             }
 

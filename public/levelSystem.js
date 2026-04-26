@@ -1,0 +1,23 @@
+/**
+ * levelSystem.js — level configuration and level-up logic.
+ * Level data is inlined to avoid JSON import-assertion browser compatibility issues.
+ */
+
+const levels = [
+  { "level": 1, "target": 200,  "moves": 20 },
+  { "level": 2, "target": 400,  "moves": 22 },
+  { "level": 3, "target": 700,  "moves": 24 },
+  { "level": 4, "target": 1100, "moves": 26 },
+  { "level": 5, "target": 1600, "moves": 28 }
+];
+
+export const MAX_LEVEL = levels.length;
+
+export function getLevelConfig(level) {
+  return levels.find(l => l.level === level) || levels[levels.length - 1];
+}
+
+export function checkLevelUp(score, level) {
+  const cfg = getLevelConfig(level);
+  return score >= cfg.target;
+}
