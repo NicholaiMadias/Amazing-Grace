@@ -306,9 +306,10 @@ function initLevel() {
 }
 
 function afterScoring() {
+  if (level >= MAX_LEVEL) return;
   if (checkLevelUp(score, level)) {
     const completedLevel = level;
-    level++;
+    level = Math.min(level + 1, MAX_LEVEL);
     initLevel();
     maybePlay('levelup');
     maybeUnlock('level_' + level);

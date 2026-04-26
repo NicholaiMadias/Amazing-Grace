@@ -868,6 +868,7 @@
                 const canvas = overlay.querySelector('#mm-cert-canvas');
                 if (!canvas || canvas.style.display === 'none') return;
                 canvas.toBlob(blob => {
+                    if (!blob) { console.error('Certificate export failed: canvas produced no blob.'); return; }
                     const url = URL.createObjectURL(blob);
                     const a   = document.createElement('a');
                     a.href = url; a.download = 'match-maker-certificate-' + Date.now() + '.png';
@@ -1106,6 +1107,7 @@
                     const canvas = document.getElementById('cert-canvas');
                     if (!canvas || canvas.style.display === 'none') return;
                     canvas.toBlob(blob => {
+                        if (!blob) { console.error('Certificate export failed: canvas produced no blob.'); return; }
                         const url = URL.createObjectURL(blob);
                         const a   = document.createElement('a');
                         a.href     = url;
