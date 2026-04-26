@@ -984,10 +984,7 @@ You have completed the journey.`,
 
         } else if (node.type === 'puzzle') {
             document.getElementById('puzzle-container').classList.add('visible');
-            if (board.length === 0) {
-                createBoard();
-            }
-            // Reset puzzle state for fresh start
+            // Reset puzzle state for a fresh start every time
             puzzleScore = 0;
             puzzleSolved = false;
             boardLocked = false;
