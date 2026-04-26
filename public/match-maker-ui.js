@@ -8,7 +8,7 @@
 import { GRID_SIZE, createInitialGrid, canSwap, applySwap, findMatches, clearMatches, applyGravity } from './matchMakerState.js';
 import { onLevelComplete } from './badges.js';
 import { saveGame, loadGame } from './saveSystem.js';
-import { getLevelConfig, checkLevelUp } from './levelSystem.js';
+import { getLevelConfig, checkLevelUp, MAX_LEVEL } from './levelSystem.js';
 import { updateDailyProgress, checkDailyCompletion } from './daily.js';
 import { unlockStar } from './sevenStars.js';
 
@@ -306,13 +306,20 @@ function initLevel() {
 }
 
 function afterScoring() {
+  if (level >= MAX_LEVEL) return;
   if (checkLevelUp(score, level)) {
     const completedLevel = level;
-    level++;
+    level = Math.min(level + 1, MAX_LEVEL);
     initLevel();
     maybePlay('levelup');
     maybeUnlock('level_' + level);
     onLevelComplete(completedLevel, score, null, null);
+
+    if (completedLevel === MAX_LEVEL) {
+      document.dispatchEvent(new CustomEvent('matchmakerComplete', {
+        detail: { score, level: completedLevel }
+      }));
+    }
   }
 }
 
