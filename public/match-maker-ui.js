@@ -307,20 +307,23 @@ function initLevel() {
 }
 
 function afterScoring() {
-  if (level >= MAX_LEVEL) return;
-  if (checkLevelUp(score, level)) {
-    const completedLevel = level;
-    level = Math.min(level + 1, MAX_LEVEL);
+  if (!checkLevelUp(score, level)) return;
+
+  const completedLevel = level;
+
+  if (completedLevel < MAX_LEVEL) {
+    level = completedLevel + 1;
     initLevel();
     maybePlay('levelup');
     maybeUnlock('level_' + level);
-    onLevelComplete(completedLevel, score, null, null);
+  }
 
-    if (completedLevel === MAX_LEVEL) {
-      document.dispatchEvent(new CustomEvent('matchmakerComplete', {
-        detail: { score, level: completedLevel }
-      }));
-    }
+  onLevelComplete(completedLevel, score, null, null);
+
+  if (completedLevel === MAX_LEVEL) {
+    document.dispatchEvent(new CustomEvent('matchmakerComplete', {
+      detail: { score, level: completedLevel }
+    }));
   }
 }
 
