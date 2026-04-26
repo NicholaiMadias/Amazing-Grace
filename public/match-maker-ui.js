@@ -8,7 +8,7 @@
 import { GRID_SIZE, createInitialGrid, canSwap, applySwap, findMatches, clearMatches, applyGravity } from './matchMakerState.js';
 import { onLevelComplete } from './badges.js';
 import { saveGame, loadGame } from './saveSystem.js';
-import { getLevelConfig, checkLevelUp } from './levelSystem.js';
+import { getLevelConfig, checkLevelUp, MAX_LEVEL } from './levelSystem.js';
 import { updateDailyProgress, checkDailyCompletion } from './daily.js';
 import { unlockStar } from './sevenStars.js';
 
@@ -282,7 +282,8 @@ function processCascade(chain) {
   updateHUD();
 
   setTimeout(() => {
-    grid = clearMatches(grid, matches);
+    const matchedCells = matches.flat();
+    grid = clearMatches(grid, matchedCells);
     grid = applyGravity(grid);
     renderBoard();
     setTimeout(() => processCascade(chain + 1), CASCADE_DELAY);
@@ -306,13 +307,23 @@ function initLevel() {
 }
 
 function afterScoring() {
-  if (checkLevelUp(score, level)) {
-    const completedLevel = level;
-    level++;
+  if (!checkLevelUp(score, level)) return;
+
+  const completedLevel = level;
+
+  if (completedLevel < MAX_LEVEL) {
+    level = completedLevel + 1;
     initLevel();
     maybePlay('levelup');
     maybeUnlock('level_' + level);
-    onLevelComplete(completedLevel, score, null, null);
+  }
+
+  onLevelComplete(completedLevel, score, null, null);
+
+  if (completedLevel === MAX_LEVEL) {
+    document.dispatchEvent(new CustomEvent('matchmakerComplete', {
+      detail: { score, level: completedLevel }
+    }));
   }
 }
 

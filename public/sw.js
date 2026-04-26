@@ -1,19 +1,22 @@
 const CACHE_NAME = 'amazing-grace-v4';
 
-// Core pages and game modules deployed at stable paths
+// Core pages and game modules deployed at stable paths.
+// Use scope-relative URLs (./…) so the service worker works correctly
+// whether the site is deployed at the root or a subpath (e.g. GitHub Pages).
+// Avoid caching /arcade directly because it issues a 301 redirect on
+// static hosts — cache the concrete file instead.
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/arcade',
-    '/arcade/index.html',
-    '/manifest.json',
-    '/match-maker-ui.js',
-    '/matchMakerState.js',
-    '/badges.js',
-    '/saveSystem.js',
-    '/levelSystem.js',
-    '/daily.js',
-    '/sevenStars.js'
+    './',
+    './index.html',
+    './arcade/index.html',
+    './manifest.json',
+    './match-maker-ui.js',
+    './matchMakerState.js',
+    './badges.js',
+    './saveSystem.js',
+    './levelSystem.js',
+    './daily.js',
+    './sevenStars.js'
 ];
 
 self.addEventListener('install', event => {

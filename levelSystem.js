@@ -11,6 +11,8 @@ const levels = [
   { "level": 5, "target": 1600, "moves": 28 }
 ];
 
+export const MAX_LEVEL = levels.length;
+
 export function getLevelConfig(level) {
   return levels.find(l => l.level === level) || levels[levels.length - 1];
 }

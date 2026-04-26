@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stories of faith, hope, and transformation from the Voice of Jesus Ministry and Amazing Grace Home Living community.">
+    <meta name="theme-color" content="#1e3a8a">
+
+    <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+    <title>Stories | Amazing Grace Home Living</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root { --navy: #1e3a8a; --blue: #2563eb; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        *:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+
+        .site-header {
+            background-color: var(--navy);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700;
+            text-decoration: none; color: white;
+        }
+        .logo img { height: 40px; width: auto; border-radius: 4px; }
+
+        .nav-links { display: flex; gap: 0.75rem; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1); color: white; text-decoration: none;
+            padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; font-weight: 600;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.25); }
+
+        @media (max-width: 640px) { .nav-links { display: none; } }
+
+        .hero {
+            background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);
+            color: white; text-align: center; padding: 3.5rem 1.5rem 2.5rem;
+        }
+        .hero-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem); margin-bottom: 0.75rem;
+        }
+        .hero p { font-size: 1rem; opacity: 0.85; max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+        .stories-nav {
+            background: white; border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 2rem; display: flex; gap: 1rem; flex-wrap: wrap;
+            max-width: 860px; margin: 0 auto; width: 100%;
+        }
+        .stories-nav a {
+            color: #7c3aed; font-size: 0.875rem; font-weight: 600; text-decoration: none;
+        }
+        .stories-nav a:hover { text-decoration: underline; }
+
+        .stories-container {
+            max-width: 860px; margin: 2.5rem auto; padding: 0 1.5rem;
+            display: flex; flex-direction: column; gap: 2.5rem;
+        }
+
+        .story-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 5px solid #7c3aed;
+        }
+
+        .story-body { padding: 2rem; }
+
+        .story-category {
+            display: inline-block; background: #ede9fe; color: #6d28d9;
+            font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem;
+            border-radius: 999px; margin-bottom: 0.75rem; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem;
+            color: #1e3a8a; margin-bottom: 0.75rem; line-height: 1.3;
+        }
+
+        .story-meta { color: #6b7280; font-size: 0.8rem; margin-bottom: 1rem; }
+
+        .story-excerpt { color: #374151; line-height: 1.75; font-size: 0.95rem; }
+
+        .story-quote {
+            background: #faf5ff; border-left: 4px solid #7c3aed;
+            padding: 1rem 1.25rem; margin: 1.25rem 0;
+            font-style: italic; color: #4c1d95; font-size: 1rem; line-height: 1.6;
+        }
+
+        main { flex: 1; }
+
+        .site-footer {
+            background: #1f2937; color: #9ca3af;
+            text-align: center; padding: 1.5rem; font-size: 0.875rem; margin-top: 3rem;
+        }
+        .site-footer a { color: #60a5fa; text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+
+        .breadcrumb {
+            max-width: 860px; margin: 1rem auto 0; padding: 0 1.5rem;
+            font-size: 0.825rem; color: #6b7280;
+        }
+        .breadcrumb a { color: var(--blue); text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <div class="hero-icon">📖</div>
+            <h1>Stories of Faith &amp; Transformation</h1>
+            <p>Real testimonies from our community — lives changed through housing stability, faith, and the grace of God.</p>
+        </div>
+
+        <nav class="stories-nav" aria-label="Jump to story">
+            <a href="#story1">A New Beginning</a>
+            <a href="#story2">Strength in Community</a>
+            <a href="#story3">The Open Door</a>
+        </nav>
+
+        <div class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> › <a href="/ministry">Ministry</a> › Stories
+        </div>
+
+        <div class="stories-container">
+
+            <!-- Story 1 -->
+            <article id="story1" class="story-card" aria-labelledby="story1-title">
+                <div class="story-body">
+                    <span class="story-category">Testimony</span>
+                    <h2 id="story1-title" class="story-title">A New Beginning</h2>
+                    <p class="story-meta">Voice of Jesus Ministry &mdash; Tampa, FL</p>
+                    <div class="story-excerpt">
+                        <p>
+                            Housing instability can strip away more than a roof. It takes your sense of safety, your ability to plan, and your hope for the future. For many in our community, Amazing Grace Home Living has been the bridge between uncertainty and a stable foundation.
+                        </p>
+                        <blockquote class="story-quote">
+                            "When I walked through the door, I didn't just find a room — I found people who believed in me when I had stopped believing in myself."
+                        </blockquote>
+                        <p>
+                            Our all-inclusive housing model removes the anxiety of juggling utility bills, internet costs, and unexpected expenses. Residents can focus on rebuilding their lives — finding work, reconnecting with family, and growing in faith.
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 2 -->
+            <article id="story2" class="story-card" aria-labelledby="story2-title" style="border-left-color:#059669">
+                <div class="story-body">
+                    <span class="story-category" style="background:#d1fae5;color:#065f46">Community</span>
+                    <h2 id="story2-title" class="story-title">Strength in Community</h2>
+                    <p class="story-meta">Voice of Jesus Ministry &mdash; Largo, FL</p>
+                    <div class="story-excerpt">
+                        <p>
+                            The Seven Stars Arcade was born from a simple idea: that learning can feel like play, and play can carry eternal truth. Residents and neighbors gather around shared screens, working through biblical quizzes and gem-matching challenges that quietly teach virtues like empathy, justice, and wisdom.
+                        </p>
+                        <blockquote class="story-quote" style="border-left-color:#059669;color:#065f46;background:#f0fdf4">
+                            "I didn't expect a game to make me think about how I treat people. But here I am, thinking about it every day."
+                        </blockquote>
+                        <p>
+                            Community is built in the small moments — sitting together, laughing together, encouraging one another to try again after a wrong answer. That is the spirit of this ministry.
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 3 -->
+            <article id="story3" class="story-card" aria-labelledby="story3-title" style="border-left-color:#2563eb">
+                <div class="story-body">
+                    <span class="story-category" style="background:#dbeafe;color:#1e40af">Mission</span>
+                    <h2 id="story3-title" class="story-title">The Open Door</h2>
+                    <p class="story-meta">Voice of Jesus Ministry &mdash; Tampa Bay Region</p>
+                    <div class="story-excerpt">
+                        <p>
+                            Jesus spoke to the church in Philadelphia: <em>"I have placed before you an open door that no one can shut."</em> This verse anchors our mission. We believe every person deserves an open door — to safe housing, to community, to the knowledge that they are loved.
+                        </p>
+                        <blockquote class="story-quote" style="border-left-color:#2563eb;color:#1e40af;background:#eff6ff">
+                            "Amazing Grace didn't just give me a place to stay. They gave me back my dignity."
+                        </blockquote>
+                        <p>
+                            From Tampa to Largo, we continue to expand our ministry — guided by the belief that stability is not a luxury, but a foundation for transformation.
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+
+</body>
+</html>
