@@ -952,7 +952,9 @@ You have completed the journey.`,
         // Update badge & title
         document.getElementById('chapter-badge').textContent = node.chapter;
         document.getElementById('story-title').textContent = node.title;
-        document.getElementById('story-text').textContent = node.text;
+        const storyTextEl = document.getElementById('story-text');
+        storyTextEl.style.whiteSpace = 'pre-line';
+        storyTextEl.textContent = node.text;
 
         // Scripture
         const scriptureEl = document.getElementById('story-scripture');
