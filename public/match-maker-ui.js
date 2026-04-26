@@ -282,7 +282,8 @@ function processCascade(chain) {
   updateHUD();
 
   setTimeout(() => {
-    grid = clearMatches(grid, matches);
+    const matchedCells = matches.flat();
+    grid = clearMatches(grid, matchedCells);
     grid = applyGravity(grid);
     renderBoard();
     setTimeout(() => processCascade(chain + 1), CASCADE_DELAY);
