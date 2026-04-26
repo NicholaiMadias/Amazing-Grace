@@ -18,6 +18,8 @@ export default defineConfig({
         gallery926:        resolve(__dirname, "galleries/926-poinsettia/index.html"),
         galleryTampa:      resolve(__dirname, "galleries/tampa-property/index.html"),
         galleryMinistry:   resolve(__dirname, "galleries/ministry/index.html"),
+        listings:          resolve(__dirname, "listings/index.html"),
+        listingsGraceManor: resolve(__dirname, "listings/grace-manor/index.html"),
       }
     }
   }
