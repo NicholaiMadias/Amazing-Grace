@@ -66,19 +66,24 @@ export function applyKarmaAction(
     });
   }
 
-  let nextRep = applyReputationEvent(rep, {
-    type: 'karma',
-    value: rule.karmaDelta,
-    ts,
-    source: 'karma-economy'
-  });
+  let nextRep = rep;
 
-  nextRep = applyReputationEvent(nextRep, {
-    type: 'community',
-    value: rule.communityDelta,
-    ts,
-    source: 'karma-economy'
-  });
+  if (rule.karmaDelta !== 0) {
+    nextRep = applyReputationEvent(nextRep, {
+      type: 'karma',
+      value: rule.karmaDelta,
+      ts,
+      source: 'karma-economy'
+    });
+  }
 
+  if (rule.communityDelta !== 0) {
+    nextRep = applyReputationEvent(nextRep, {
+      type: 'community',
+      value: rule.communityDelta,
+      ts,
+      source: 'karma-economy'
+    });
+  }
   return { matrixState: nextState, rep: nextRep };
 }

@@ -10,8 +10,6 @@ export type ReputationEventType =
 export interface ReputationEvent {
   type: ReputationEventType;
   value: number; // positive or negative
-  ts: number;
-  source: string;
 }
 
 const CLAMP_MIN = -1000;

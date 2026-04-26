@@ -13,12 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. Sync Agent Instructions to the Central Governance Dashboard
-      - name: Sync Agent Rules
-        run: |
-          curl -X POST https://your-railway-app.up.railway.app/update-agent-logic \
-          -H "Authorization: Bearer ${{ secrets.GOVERNANCE_TOKEN }}" \
-          -F "instructions=@Agent.Instructions.pdf"
+      # 1. Store Agent Instructions inside GitHub instead of posting a secret to an external service
+      - name: Upload Agent Rules artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-instructions
+          path: Agent.Instructions.pdf
 
       # 2. Check the Arcade (GitHub Pages)
       - name: Arcade Health Check
