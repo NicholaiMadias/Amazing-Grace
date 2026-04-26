@@ -7,6 +7,35 @@ function randomGem() {
 }
 
 /**
+ * Returns the gem kind string from a gem value (string or object).
+ */
+function gemKind(gem) {
+  if (!gem) return null;
+  return typeof gem === 'string' ? gem : gem.kind;
+}
+
+/**
+ * Returns true if two gem cells are the same type.
+ */
+function sameKind(a, b) {
+  return gemKind(a) === gemKind(b);
+}
+
+/**
+ * Returns a deep clone of the 2-D grid.
+ */
+function cloneGrid(grid) {
+  return grid.map(row => row.slice());
+}
+
+/**
+ * Creates a gem value. Special gems are objects; plain gems are strings.
+ */
+function makeGem(kind, special) {
+  return special ? { kind, special } : kind;
+}
+
+/**
  * Creates an initial 7×7 grid with no pre-existing matches.
  */
 export function createInitialGrid() {
@@ -18,8 +47,8 @@ export function createInitialGrid() {
       do {
         gem = randomGem();
       } while (
-        (c >= 2 && sameKind(grid[r][c - 1], { kind: gem.kind }) && sameKind(grid[r][c - 2], { kind: gem.kind })) ||
-        (r >= 2 && sameKind(grid[r - 1][c], { kind: gem.kind }) && sameKind(grid[r - 2][c], { kind: gem.kind }))
+        (c >= 2 && sameKind(grid[r][c - 1], gem) && sameKind(grid[r][c - 2], gem)) ||
+        (r >= 2 && sameKind(grid[r - 1][c], gem) && sameKind(grid[r - 2][c], gem))
       );
       grid[r][c] = gem;
     }
@@ -92,7 +121,7 @@ export function clearMatches(grid, matchCells, replacements = []) {
     next[r][c] = null;
   });
   replacements.forEach(repl => {
-    next[repl.r][repl.c] = makeGem(repl.kind || randomGem().kind, repl.special || null);
+    next[repl.r][repl.c] = makeGem(repl.kind || randomGem(), repl.special || null);
   });
   return next;
 }
