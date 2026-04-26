@@ -745,19 +745,24 @@
             <span>Amazing Grace Home Living</span>
         </a>
 
-        <nav id="main-nav" role="tablist" class="main-nav" aria-label="Main navigation">
-            <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
-                🏠 Home
-            </button>
-            <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
-                🎮 Arcade
-            </button>
-            <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
-                🕊️ Ministry
-            </button>
-            <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
-                ✉️ Contact
-            </button>
+        <nav id="main-nav" role="navigation" class="main-nav" aria-label="Main navigation">
+            <div role="tablist" id="tab-list" aria-label="Page sections" style="display:flex">
+                <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
+                    🏠 Home
+                </button>
+                <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
+                    🎮 Arcade
+                </button>
+                <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
+                    🕊️ Ministry
+                </button>
+                <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
+                    ✉️ Contact
+                </button>
+            </div>
+            <a href="/ministries/" class="btn" style="text-decoration:none;background-color:#7c3aed;" aria-label="Seven Stars — Narrative Journey">
+                ✨ Seven Stars
+            </a>
         </nav>
 
         <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
@@ -777,68 +782,37 @@
                 <p class="text-xl text-gray-600 italic">where stability begins, and new chapters start</p>
             </div>
 
-        <nav>
-          <a class="tab-btn" href="/arcade">🎮 The Arcade</a>
-          <a class="tab-btn" href="#properties">Available Properties</a>
-        </nav>
+            <section id="housing" aria-labelledby="properties-heading">
+                <div id="properties"></div>
+                <h2 id="properties-heading" class="text-2xl font-bold text-blue-900 text-center mb-2">Available Properties</h2>
+                <p class="text-center text-gray-500 mb-6">Providing secure housing and bridging the digital divide.</p>
 
-      <!-- Prefer ONE main, multiple section tabpanels -->
-      <main>
-        <section
-          id="housing"
-          class="tabpanel"
-          role="tabpanel"
-          aria-labelledby="tab-housing"
-        >
-          <div class="glass-card">
-            <header class="section-header">
-              <h2 id="properties" class="terminal">Available Properties</h2>
-              <p>Providing secure housing and bridging the digital divide.</p>
-            </header>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
 
-            <div class="grid grid-2">
-              <article class="card">
-                <div class="card-top">
-                  <div>
-                    <h3 class="terminal">Tampa - $850/mo</h3>
-                  </div>
-                  <span class="badge">All Inclusive</span>
-                </div>
-
-                <!-- Tampa Listing -->
-                <div class="property-card flex flex-col">
-                    <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Tampa Rooms for Rent</h2>
-                    
-                    <div class="mb-4">
-                        <p class="font-bold text-lg text-blue-800">926 E Poinsettia Ave, Tampa, FL</p>
-                        <p class="text-green-700 font-bold text-xl mt-2 mb-2">$850/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
-                        <p class="text-gray-600 text-sm mt-2">Includes utilities, trash pickup, laundry, and a large fenced yard.</p>
-                        <p class="text-gray-600 text-sm mt-2 italic">Located near Busch Gardens, the zoo, USF, and 15 minutes from Tampa Hospital.</p>
-                    </div>
-
-                    <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
-                        <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                            <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                            <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                            <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                            <li class="flex items-center gap-1">✔️ Parking Available</li>
-                        </ul>
-                        <a href="/galleries/926-poinsettia" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                            📸 View Photos (Tampa)
-                        </a>
-                    </div>
-                </div>
-                </article>
-
-                <!-- Largo 1142 Listing -->
-                <article class="card">
-                    <div class="card-top">
-                        <div>
-                            <h3 class="terminal">Largo 1142 - $900/$1,000/mo</h3>
+                    <!-- Tampa Listing -->
+                    <div class="property-card flex flex-col">
+                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Tampa Rooms for Rent</h2>
+                        <div class="mb-4">
+                            <p class="font-bold text-lg text-blue-800">926 E Poinsettia Ave, Tampa, FL</p>
+                            <p class="text-green-700 font-bold text-xl mt-2 mb-2">$850/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
+                            <p class="text-gray-600 text-sm mt-2">Includes utilities, trash pickup, laundry, and a large fenced yard.</p>
+                            <p class="text-gray-600 text-sm mt-2 italic">Located near Busch Gardens, the zoo, USF, and 15 minutes from Tampa Hospital.</p>
                         </div>
-                        <span class="badge">All Inclusive</span>
+                        <div class="mt-auto bg-blue-50 p-4 rounded-lg">
+                            <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
+                            <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
+                                <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
+                                <li class="flex items-center gap-1">✔️ Full Kitchen</li>
+                                <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
+                                <li class="flex items-center gap-1">✔️ Parking Available</li>
+                            </ul>
+                            <a href="/galleries/926-poinsettia" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
+                                📸 View Photos (Tampa)
+                            </a>
+                        </div>
                     </div>
+
+                    <!-- Largo 1142 Listing -->
                     <div class="property-card flex flex-col">
                         <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
                         <div class="mb-4">
@@ -858,16 +832,8 @@
                             </a>
                         </div>
                     </div>
-                </article>
 
-                <!-- Largo 1144 Listing -->
-                <article class="card">
-                    <div class="card-top">
-                        <div>
-                            <h3 class="terminal">Largo 1144 - $900/mo</h3>
-                        </div>
-                        <span class="badge">All Inclusive</span>
-                    </div>
+                    <!-- Largo 1144 Listing -->
                     <div class="property-card flex flex-col">
                         <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
                         <div class="mb-4">
@@ -887,10 +853,10 @@
                             </a>
                         </div>
                     </div>
-                </article>
 
-            </div>
-        </div>
+                </div>
+            </section>
+        </div><!-- /#tab-home -->
 
         <!-- ================= NEXUS ARCADE TAB ================= -->
         <div id="tab-arcade" role="tabpanel" aria-labelledby="tab-btn-arcade" tabindex="0" hidden class="tab-panel w-full pt-6">
@@ -1107,7 +1073,7 @@
         // ==========================================
         const menuToggle = document.querySelector('.menu-toggle');
         const nav = document.querySelector('.main-nav');
-        const tablist = document.querySelector('.main-nav'); // Corrected from role="tablist"
+        const tablist = document.getElementById('tab-list');
         const tabs = document.querySelectorAll('[role="tab"]');
         const panels = document.querySelectorAll('[role="tabpanel"]');
 
