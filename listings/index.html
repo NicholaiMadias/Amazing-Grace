@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse available rooms and properties from Amazing Grace Home Living — affordable, all-inclusive housing in Tampa and Largo, FL.">
+    <meta name="keywords" content="Tampa housing, Largo housing, affordable rooms, all-inclusive housing, Amazing Grace Home Living listings">
+    <meta name="theme-color" content="#1e3a8a">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Listings | Amazing Grace Home Living">
+    <meta property="og:description" content="Browse available rooms and properties from Amazing Grace Home Living.">
+    <meta property="og:url" content="https://amazinggracehl.org/listings/">
+
+    <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+    <title>Listings | Amazing Grace Home Living</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root { --navy: #1e3a8a; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f3f4f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        *:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+
+        .site-header {
+            background: var(--navy);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+        .logo img { height: 40px; width: auto; border-radius: 4px; }
+
+        .nav-links { display: flex; gap: 0.75rem; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.25); }
+        .nav-btn.active { background: rgba(255,255,255,0.25); }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--navy);
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                gap: 0.5rem;
+            }
+            .nav-links.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; padding: 0.75rem 1rem; }
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            margin: 0 0 0.5rem;
+        }
+        .hero p { opacity: 0.85; font-size: 1rem; margin: 0; }
+
+        .container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .listing-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .listing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .card-img-wrap {
+            width: 100%;
+            height: 200px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #9ca3af;
+        }
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: #1e3a8a; margin: 0 0 0.35rem; }
+        .card-location { font-size: 0.85rem; color: #6b7280; margin: 0 0 0.75rem; }
+        .card-amenities { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+        .amenity-tag {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 999px;
+            padding: 0.2rem 0.65rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .card-desc { font-size: 0.9rem; color: #4b5563; line-height: 1.55; flex: 1; margin-bottom: 1.25rem; }
+
+        .card-actions { display: flex; gap: 0.75rem; margin-top: auto; }
+        .btn-primary {
+            flex: 1;
+            text-align: center;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary {
+            flex: 1;
+            text-align: center;
+            background: white;
+            color: #2563eb;
+            text-decoration: none;
+            padding: 0.65rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 2px solid #2563eb;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-secondary:hover { background: #eff6ff; }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        main { flex: 1; display: flex; flex-direction: column; }
+
+        .site-footer {
+            background: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.875rem;
+            margin-top: auto;
+        }
+        .site-footer a { color: #60a5fa; text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="../assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace Home Living</span>
+        </a>
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/listings/" class="nav-btn active" aria-current="page">🏘️ Listings</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>🏘️ Available Properties</h1>
+            <p>Secure, all-inclusive housing in Tampa &amp; Largo, Florida</p>
+        </div>
+
+        <div class="container">
+            <p class="section-label">All Locations</p>
+
+            <div class="listings-grid">
+
+                <!-- Tampa — 926 E Poinsettia Ave -->
+                <div class="listing-card">
+                    <div class="card-img-wrap">🏠</div>
+                    <div class="card-body">
+                        <h2 class="card-title">Tampa Rooms for Rent</h2>
+                        <p class="card-location">📍 926 E Poinsettia Ave, Tampa, FL</p>
+                        <div class="card-amenities">
+                            <span class="amenity-tag">🔑 All-Inclusive</span>
+                            <span class="amenity-tag">📶 Wi-Fi</span>
+                            <span class="amenity-tag">🚿 Shared Baths</span>
+                        </div>
+                        <p class="card-desc">Located near Busch Gardens, the zoo, USF, and 15 minutes from Tampa Hospital. Utilities and Wi-Fi included.</p>
+                        <div class="card-actions">
+                            <a href="/galleries/926-poinsettia/" class="btn-primary">📸 View Photos</a>
+                            <a href="/#contact" class="btn-secondary">✉️ Inquire</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Largo — 1142 7th St NW -->
+                <div class="listing-card">
+                    <div class="card-img-wrap">🏠</div>
+                    <div class="card-body">
+                        <h2 class="card-title">Largo Rooms — 1142</h2>
+                        <p class="card-location">📍 1142 7th St NW, Largo, FL</p>
+                        <div class="card-amenities">
+                            <span class="amenity-tag">🔑 All-Inclusive</span>
+                            <span class="amenity-tag">📶 Wi-Fi</span>
+                            <span class="amenity-tag">💰 $900–$1,000/mo</span>
+                        </div>
+                        <p class="card-desc">All-inclusive rooms with full amenities, utilities, and Wi-Fi. Peaceful community environment.</p>
+                        <div class="card-actions">
+                            <a href="/galleries/1142-7th-street/" class="btn-primary">📸 View Photos</a>
+                            <a href="/#contact" class="btn-secondary">✉️ Inquire</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Largo — 1144 7th St NW -->
+                <div class="listing-card">
+                    <div class="card-img-wrap">🏠</div>
+                    <div class="card-body">
+                        <h2 class="card-title">Largo Rooms — 1144</h2>
+                        <p class="card-location">📍 1144 7th St NW, Largo, FL</p>
+                        <div class="card-amenities">
+                            <span class="amenity-tag">🔑 All-Inclusive</span>
+                            <span class="amenity-tag">📶 Wi-Fi</span>
+                            <span class="amenity-tag">🌿 Quiet Street</span>
+                        </div>
+                        <p class="card-desc">Comfortable all-inclusive rooms on a quiet residential street in Largo. Perfect for stability and community.</p>
+                        <div class="card-actions">
+                            <a href="/galleries/1144-7th-street/" class="btn-primary">📸 View Photos</a>
+                            <a href="/#contact" class="btn-secondary">✉️ Inquire</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a> &mdash; <a href="/ministry">Voice of Jesus Ministries</a></p>
+    </footer>
+
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
