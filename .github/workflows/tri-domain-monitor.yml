@@ -138,6 +138,11 @@ jobs:
           else
             echo "::error::❌ Ministry content manifest signature INVALID — possible tampering detected!"
             SIGN_RESULT="❌ INVALID — possible tampering"
+            echo "### 🔏 Content Signing"          >> "$GITHUB_STEP_SUMMARY"
+            echo "| Status | Key Fingerprint |"     >> "$GITHUB_STEP_SUMMARY"
+            echo "|--------|----------------|"      >> "$GITHUB_STEP_SUMMARY"
+            echo "| ${SIGN_RESULT} | \`${FINGERPRINT}\` |" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
 
           echo "### 🔏 Content Signing"          >> "$GITHUB_STEP_SUMMARY"
