@@ -20,6 +20,7 @@ export default defineConfig({
         galleryMinistry:   resolve(__dirname, "galleries/ministry/index.html"),
         listings:          resolve(__dirname, "listings/index.html"),
         listingsGraceManor: resolve(__dirname, "listings/grace-manor/index.html"),
+        contact:           resolve(__dirname, "contact/index.html"),
       }
     }
   }
