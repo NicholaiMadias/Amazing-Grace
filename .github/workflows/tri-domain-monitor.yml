@@ -154,7 +154,7 @@ jobs:
     name: AI Incident Summary
     runs-on: ubuntu-latest
     needs: monitor
-    if: failure() && needs.monitor.outputs.ministry_down == 'true'
+    if: always() && needs.monitor.result == 'failure' && needs.monitor.outputs.ministry_down == 'true'
     steps:
       - name: Generate AI incident summary
         shell: bash
