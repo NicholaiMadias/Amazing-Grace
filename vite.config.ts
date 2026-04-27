@@ -19,7 +19,8 @@ export default defineConfig({
         galleryTampa:      resolve(__dirname, "galleries/tampa-property/index.html"),
         galleryMinistry:   resolve(__dirname, "galleries/ministry/index.html"),
         listings:          resolve(__dirname, "listings/index.html"),
-        listingsGraceManor: resolve(__dirname, "listings/grace-manor/index.html"),
+        listingsGraceManor:  resolve(__dirname, "listings/grace-manor/index.html"),
+        sovereignMatrix:     resolve(__dirname, "arcade/sovereign-matrix/index.html"),
       }
     }
   }

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sovereign Matrix — a mystery match-3 puzzle. Recover the Lens of the 7 Stars at the Amazing Grace Arcade.">
+    <meta name="theme-color" content="#020817">
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+    <title>Sovereign Matrix | Amazing Grace Arcade</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Reset */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background: #020817;
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+        }
+
+        /* ── Animations ─────────────────────────────────────────────── */
+        @keyframes sm-fade-in    { from{opacity:0}              to{opacity:1} }
+        @keyframes sm-zoom-in    { from{transform:scale(.94);opacity:0} to{transform:scale(1);opacity:1} }
+        @keyframes sm-slide-down { from{transform:translateY(-1rem);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes sm-slide-up   { from{transform:translateY(1rem);opacity:0}  to{transform:translateY(0);opacity:1} }
+        @keyframes sm-shake      { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
+        @keyframes sm-pop-out    { 0%{transform:scale(1);opacity:1} 60%{transform:scale(1.6);opacity:.4} 100%{transform:scale(0);opacity:0} }
+        @keyframes sm-score-bump { 0%,100%{color:#fff} 40%{color:#fbbf24;transform:scale(1.2)} }
+        @keyframes sm-pulse      { 0%,100%{opacity:1} 50%{opacity:.5} }
+        @keyframes sm-scan       { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
+
+        .sm-fade-in    { animation: sm-fade-in .7s ease both; }
+        .sm-zoom-in    { animation: sm-zoom-in .7s ease both; }
+        .sm-slide-down { animation: sm-slide-down .5s ease both; }
+        .sm-slide-up   { animation: sm-slide-up .5s ease both; }
+        .sm-shake      { animation: sm-shake .35s ease; }
+        .sm-pop-out    { animation: sm-pop-out .3s ease forwards; pointer-events:none; }
+        .sm-score-bump { animation: sm-score-bump .5s ease; }
+        .sm-pulse      { animation: sm-pulse 2s ease-in-out infinite; }
+
+        /* ── Game root ───────────────────────────────────────────────── */
+        #sm-root {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            color: #e2e8f0;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ── Decorative scanline (static, not re-rendered) ───────────── */
+        #sm-scanline {
+            position: fixed; top: 0; right: 0;
+            width: 18%; height: 100%;
+            opacity: .04; pointer-events: none;
+            border-left: 1px solid rgba(168,85,247,.2);
+            overflow: hidden;
+            font-family: monospace; font-size: 8px;
+            display: flex; flex-direction: column;
+            justify-content: space-around; padding: .5rem;
+            z-index: 0;
+        }
+
+        /* ── Game cells ──────────────────────────────────────────────── */
+        .sm-cell {
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: .75rem;
+            font-size: clamp(1.1rem, 2.6vw, 1.7rem);
+            cursor: pointer;
+            background: rgba(30,41,59,.45);
+            border: 1px solid rgba(255,255,255,.05);
+            transition: transform .15s, box-shadow .15s, opacity .25s, background .15s;
+            aspect-ratio: 1;
+            overflow: visible;
+        }
+        .sm-cell:hover:not(:disabled):not(.sm-empty) {
+            background: rgba(30,41,59,.85);
+            box-shadow: 0 0 18px rgba(168,85,247,.18);
+        }
+        .sm-cell:active:not(:disabled):not(.sm-empty) { transform: scale(.92); }
+        .sm-cell.sm-selected {
+            background: rgb(124,58,237);
+            transform: scale(1.12) rotate(3deg);
+            z-index: 20;
+            box-shadow: 0 0 28px rgba(168,85,247,.5), 0 0 0 2px rgba(168,85,247,.4);
+        }
+        .sm-cell.sm-matched   { animation: sm-pop-out .3s ease forwards; }
+        .sm-cell.sm-empty     { opacity: 0; pointer-events: none; cursor: default; }
+        .sm-cell:disabled     { cursor: default; }
+
+        /* ── XP progress bar ─────────────────────────────────────────── */
+        #sm-xp-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7);
+            transition: width .5s ease;
+        }
+
+        /* ── Moves warning ───────────────────────────────────────────── */
+        #sm-moves-display.sm-warning { color: #f87171 !important; }
+
+        /* ── Log / Modal backdrop ────────────────────────────────────── */
+        #sm-log-modal {
+            display: none;
+            position: fixed; inset: 0; z-index: 110;
+            background: rgba(2,8,23,.92);
+            backdrop-filter: blur(12px);
+            align-items: center; justify-content: center; padding: 1.5rem;
+        }
+        #sm-log-modal.sm-open { display: flex; }
+
+        /* ── End-state overlay ───────────────────────────────────────── */
+        #sm-end-overlay {
+            display: none;
+            position: fixed; inset: 0; z-index: 200;
+            background: rgba(2,8,23,.88);
+            backdrop-filter: blur(16px);
+            align-items: center; justify-content: center; padding: 2rem;
+            text-align: center;
+        }
+        #sm-end-overlay.sm-open { display: flex; }
+    </style>
+</head>
+<body>
+<div id="sm-root">
+
+    <!-- ── Decorative scanline (rendered once) ─────────────────────────── -->
+    <div id="sm-scanline" aria-hidden="true"></div>
+
+    <!-- ── Phase: INTRO ────────────────────────────────────────────────── -->
+    <div id="sm-intro" class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950 p-6" style="display:none">
+        <div id="sm-intro-card" class="max-w-xl w-full space-y-8 sm-zoom-in">
+            <div class="flex flex-col items-center gap-5">
+                <div id="sm-intro-icon" class="p-6 bg-purple-600 rounded-[2.5rem] shadow-2xl shadow-purple-500/20 rotate-3 text-5xl flex items-center justify-center w-24 h-24"></div>
+                <div class="text-center">
+                    <span id="sm-intro-character" class="text-[10px] font-black text-purple-400 uppercase tracking-[.4em] mb-2 block"></span>
+                    <h1 id="sm-intro-title" class="text-4xl font-black italic uppercase text-white tracking-tighter"></h1>
+                </div>
+            </div>
+            <p id="sm-intro-text" class="text-slate-300 text-lg leading-relaxed text-center italic px-4"></p>
+            <button id="sm-intro-btn" class="w-full py-5 bg-white text-slate-950 font-black uppercase text-xs tracking-[.3em] rounded-2xl shadow-2xl hover:bg-purple-400 transition-colors flex items-center justify-center gap-3 active:scale-95">
+                <span id="sm-intro-btn-label"></span>
+                <span>›</span>
+            </button>
+            <div id="sm-intro-dots" class="flex justify-center gap-2"></div>
+        </div>
+    </div>
+
+    <!-- ── Phase: PLAYING ──────────────────────────────────────────────── -->
+    <div id="sm-playing" class="w-full h-full flex flex-col items-center" style="display:none">
+
+        <!-- HUD -->
+        <div id="sm-hud" class="w-full max-w-3xl px-4 pt-4 pb-2 flex justify-between items-center z-10 sm-slide-down gap-3">
+            <!-- Left block: back + XP + log -->
+            <div class="flex items-center gap-3 bg-slate-900/80 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-purple-500/20 shadow-xl">
+                <a href="/arcade" title="Back to Arcade" class="p-1.5 hover:bg-purple-600/20 rounded-xl transition-all text-slate-400 hover:text-white text-sm font-bold" aria-label="Back to Arcade">←</a>
+                <div class="w-px h-7 bg-white/10"></div>
+                <div class="flex flex-col min-w-[4.5rem]">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[9px] font-black text-purple-400 uppercase tracking-widest">XP</span>
+                        <span id="sm-xp-display" class="text-sm font-bold text-white font-mono">0</span>
+                    </div>
+                    <!-- XP progress bar -->
+                    <div class="w-20 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                        <div id="sm-xp-bar-fill" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="w-px h-7 bg-white/10"></div>
+                <button id="sm-log-btn" title="Diagnostic Log" class="p-2 hover:bg-purple-600/20 rounded-xl transition-all" aria-label="Open Diagnostic Log">
+                    📖
+                </button>
+            </div>
+
+            <!-- Right block: moves -->
+            <div class="bg-slate-900/80 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-yellow-500/20 shadow-xl text-right">
+                <span class="block text-[9px] font-black text-yellow-500 uppercase tracking-widest">Stability</span>
+                <span id="sm-moves-display" class="text-2xl font-black text-white font-mono leading-none transition-colors"></span>
+            </div>
+        </div>
+
+        <!-- Board -->
+        <div class="flex-1 w-full flex items-center justify-center p-3 relative overflow-hidden">
+            <div class="absolute inset-0 bg-purple-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+            <div class="relative bg-slate-900/40 p-3 rounded-[2rem] border border-white/5 shadow-2xl backdrop-blur-sm">
+                <div id="sm-grid"
+                    role="grid"
+                    aria-label="Sovereign Matrix game board"
+                    style="display:grid; grid-template-columns:repeat(7,1fr); gap:.45rem;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Objective bar -->
+        <div id="sm-objective" class="w-full max-w-sm mx-4 px-5 py-3 bg-slate-900/90 border border-purple-500/20 rounded-2xl flex items-center gap-3 backdrop-blur-lg shadow-xl mb-6 sm-slide-up">
+            <span class="text-cyan-400 sm-pulse text-sm shrink-0">⚡</span>
+            <div class="overflow-hidden">
+                <span class="block text-[8px] font-black text-cyan-400 uppercase tracking-widest mb-0.5">Tactical Objective</span>
+                <span id="sm-objective-text" class="block text-white text-xs font-bold truncate"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Log Modal ────────────────────────────────────────────────────── -->
+    <div id="sm-log-modal" role="dialog" aria-modal="true" aria-label="Diagnostic Log">
+        <div class="max-w-md w-full bg-slate-900 border border-purple-500/30 p-8 rounded-[2rem] relative sm-zoom-in">
+            <button id="sm-log-close" class="absolute top-5 right-5 p-2 bg-slate-800 rounded-full hover:bg-red-500 transition-colors" aria-label="Close log">✕</button>
+            <div class="flex items-center gap-3 mb-7">
+                <span class="text-purple-400 text-xl">🔍</span>
+                <h2 class="text-2xl font-black text-white italic uppercase tracking-tighter">Diagnostic Log</h2>
+            </div>
+            <div class="space-y-5">
+                <div class="pb-5 border-b border-white/5">
+                    <h3 class="text-purple-400 text-[10px] font-black uppercase tracking-widest mb-2">Location</h3>
+                    <p id="sm-log-title" class="text-white text-lg font-bold"></p>
+                </div>
+                <div>
+                    <h3 class="text-purple-400 text-[10px] font-black uppercase tracking-widest mb-2">Analysis</h3>
+                    <p class="text-slate-300 italic leading-relaxed text-sm">The Matrix is currently stabilising. Matches generate L-signals that power Sheila's recovery efforts. The Red Queen's distortion is fading with each cascade.</p>
+                </div>
+                <div class="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 flex gap-3 items-start">
+                    <span class="text-purple-400 shrink-0">🛡️</span>
+                    <p class="text-xs text-slate-400">Handshake Verified. System 100% Ad-Free. All data stays local.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── End-state overlay ─────────────────────────────────────────────── -->
+    <div id="sm-end-overlay" role="alertdialog" aria-modal="true">
+        <div id="sm-end-card" class="max-w-sm w-full space-y-7 sm-zoom-in"></div>
+    </div>
+
+</div><!-- #sm-root -->
+
+<script>
+'use strict';
+
+// ============================================================
+// Constants
+// ============================================================
+const GRID_SIZE    = 7;
+const TARGET_XP    = 4000;
+const INITIAL_MOVES = 35;
+const MOVES_WARNING = 8;   // turns moves display red
+
+const SYMBOLS = [
+    { char: '🔭', name: 'Lens Piece'      },
+    { char: '🌿', name: 'Lavender Trace'  },
+    { char: '📜', name: "Reed's Log"      },
+    { char: '💎', name: 'Conscience Node' },
+    { char: '⚓', name: 'Dock Evidence'  }
+];
+
+const INTRO_PAGES = [
+    {
+        title: 'The Breach',
+        text:  "Deep within the Sovereign Matrix—a digital sanctuary built on Structural Empathy—a critical failure has occurred. The 'Lens of the 7 Stars', our only window into the missions in the Philippines, has been stolen from the High Observatory.",
+        character: 'System Architect',
+        icon: '🛡️'
+    },
+    {
+        title: 'The Guardians',
+        text:  "Sheila, our Guardian of Grace, was first to detect the void. Alongside her is the White Rabbit, a legendary architect who built these nodes. They've found a trail: a lingering scent of lavender and a digital footprint from the Red Queen's entropy agents.",
+        character: 'Guardian Sheila',
+        icon: '👁️'
+    },
+    {
+        title: 'The Prime Suspects',
+        text:  "Dr. Reed, the observatory's lead scientist, has vanished. Lord Blackwood is believed to be the buyer, intending to use the lens to baseline our users. Clear the digital 'Gloom' to recover the lens before the mission is compromised.",
+        character: 'White Rabbit',
+        icon: '🔍'
+    }
+];
+
+const LOG_ENTRIES = [
+    { threshold: 0,    title: 'The Observatory',    clue: "Analyze the debris for Dr. Reed's terminal access."    },
+    { threshold: 1000, title: "Dr. Reed's Terminal", clue: "Encryption cracked. Reed mentioned 'The Docks'."        },
+    { threshold: 2200, title: "Blackwood's Trail",   clue: 'Lavender shipments found. Lord Blackwood confirmed buyer.' },
+    { threshold: 4000, title: 'Mission Critical',    clue: 'The Lens is located. Secure the handshake.'            }
+];
+
+// ============================================================
+// State
+// ============================================================
+const state = {
+    phase:        'intro',  // 'intro' | 'playing' | 'won' | 'lost'
+    introStep:    0,
+    grid:         [],
+    score:        0,
+    moves:        INITIAL_MOVES,
+    selected:     null,     // { r, c } | null
+    isProcessing: false
+};
+
+// ============================================================
+// Helpers
+// ============================================================
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function currentLog() {
+    return [...LOG_ENTRIES].reverse().find(l => state.score >= l.threshold) || LOG_ENTRIES[0];
+}
+
+// ============================================================
+// Grid logic
+// ============================================================
+function initGrid() {
+    state.grid = Array.from({ length: GRID_SIZE }, () =>
+        Array.from({ length: GRID_SIZE }, () => ({
+            type:    Math.floor(Math.random() * SYMBOLS.length),
+            matched: false
+        }))
+    );
+}
+
+function getMatches(grid) {
+    const hits = new Set();
+
+    // Horizontal
+    for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE - 2; c++) {
+            const t = grid[r][c].type;
+            if (t !== -1 && t === grid[r][c+1].type && t === grid[r][c+2].type) {
+                hits.add(`${r},${c}`); hits.add(`${r},${c+1}`); hits.add(`${r},${c+2}`);
+            }
+        }
+    }
+    // Vertical
+    for (let c = 0; c < GRID_SIZE; c++) {
+        for (let r = 0; r < GRID_SIZE - 2; r++) {
+            const t = grid[r][c].type;
+            if (t !== -1 && t === grid[r+1][c].type && t === grid[r+2][c].type) {
+                hits.add(`${r},${c}`); hits.add(`${r+1},${c}`); hits.add(`${r+2},${c}`);
+            }
+        }
+    }
+    return Array.from(hits).map(s => { const [r,c] = s.split(',').map(Number); return {r,c}; });
+}
+
+/** Cascade: mark → remove → drop → refill → repeat. Returns when stable. */
+async function processBoard() {
+    let matches = getMatches(state.grid);
+    if (!matches.length) { state.isProcessing = false; return; }
+
+    state.isProcessing = true;
+
+    while (matches.length) {
+        // Mark matched cells
+        matches.forEach(({r,c}) => { state.grid[r][c].matched = true; });
+        renderGrid();
+        await delay(280);
+
+        // Award points + check win
+        state.score += matches.length * 20;
+        updateHUD();
+        if (state.score >= TARGET_XP && state.phase === 'playing') {
+            state.isProcessing = false;
+            setPhase('won');
+            return;
+        }
+
+        // Remove matched cells
+        matches.forEach(({r,c}) => { state.grid[r][c].type = -1; state.grid[r][c].matched = false; });
+        renderGrid();
+        await delay(180);
+
+        // Gravity: drop cells downward column by column
+        for (let c = 0; c < GRID_SIZE; c++) {
+            let empty = 0;
+            for (let r = GRID_SIZE - 1; r >= 0; r--) {
+                if (state.grid[r][c].type === -1) {
+                    empty++;
+                } else if (empty > 0) {
+                    state.grid[r + empty][c].type = state.grid[r][c].type;
+                    state.grid[r][c].type = -1;
+                }
+            }
+            // Refill top
+            for (let r = 0; r < empty; r++) {
+                state.grid[r][c].type = Math.floor(Math.random() * SYMBOLS.length);
+            }
+        }
+        renderGrid();
+        await delay(320);
+
+        matches = getMatches(state.grid);
+    }
+
+    state.isProcessing = false;
+}
+
+// ============================================================
+// Interaction
+// ============================================================
+function handleCellClick(r, c) {
+    if (state.isProcessing || state.phase !== 'playing') return;
+    const cell = state.grid[r][c];
+    if (cell.type === -1 || cell.matched) return;
+
+    if (!state.selected) {
+        state.selected = { r, c };
+        renderGrid();
+        return;
+    }
+
+    const { r: sr, c: sc } = state.selected;
+
+    // Same cell → deselect
+    if (sr === r && sc === c) {
+        state.selected = null;
+        renderGrid();
+        return;
+    }
+
+    const dist = Math.abs(sr - r) + Math.abs(sc - c);
+
+    if (dist === 1) {
+        // Swap
+        const tempType = state.grid[r][c].type;
+        state.grid[r][c].type = state.grid[sr][sc].type;
+        state.grid[sr][sc].type = tempType;
+
+        if (getMatches(state.grid).length > 0) {
+            // Valid move
+            state.moves = Math.max(0, state.moves - 1);
+            state.selected = null;
+            updateHUD();
+            renderGrid();
+
+            const willLose = state.moves <= 0;
+            processBoard().then(() => {
+                if (state.phase !== 'playing') return;
+                if (willLose && state.score < TARGET_XP) setPhase('lost');
+            });
+        } else {
+            // Revert invalid swap
+            state.grid[sr][sc].type = state.grid[r][c].type;
+            state.grid[r][c].type = tempType;
+            state.selected = null;
+            renderGrid();
+            shakeCells(sr, sc, r, c);
+        }
+    } else {
+        // Non-adjacent → change selection
+        state.selected = { r, c };
+        renderGrid();
+    }
+}
+
+function shakeCells(...coords) {
+    // coords: [r1,c1,r2,c2]
+    for (let i = 0; i < coords.length; i += 2) {
+        const btn = document.querySelector(`[data-r="${coords[i]}"][data-c="${coords[i+1]}"]`);
+        if (!btn) continue;
+        btn.classList.remove('sm-shake');
+        // Force reflow to restart animation
+        void btn.offsetWidth;
+        btn.classList.add('sm-shake');
+        btn.addEventListener('animationend', () => btn.classList.remove('sm-shake'), { once: true });
+    }
+}
+
+function setPhase(phase) {
+    state.phase = phase;
+    if (phase === 'won' || phase === 'lost') showEndOverlay();
+}
+
+function resetGame() {
+    state.phase        = 'intro';
+    state.introStep    = 0;
+    state.score        = 0;
+    state.moves        = INITIAL_MOVES;
+    state.selected     = null;
+    state.isProcessing = false;
+    initGrid();
+    renderAll();
+}
+
+// ============================================================
+// Rendering
+// ============================================================
+
+/** Full re-render: show/hide phase panels */
+function renderAll() {
+    const intro   = document.getElementById('sm-intro');
+    const playing = document.getElementById('sm-playing');
+    const endOvl  = document.getElementById('sm-end-overlay');
+
+    intro.style.display   = state.phase === 'intro'   ? ''      : 'none';
+    playing.style.display = state.phase === 'playing' ? ''      : 'none';
+
+    if (state.phase === 'intro')   renderIntro();
+    if (state.phase === 'playing') { renderGrid(); updateHUD(); }
+
+    // End overlay is driven separately via showEndOverlay()
+    if (state.phase !== 'won' && state.phase !== 'lost') {
+        endOvl.classList.remove('sm-open');
+    }
+}
+
+function renderIntro() {
+    const page = INTRO_PAGES[state.introStep];
+    document.getElementById('sm-intro-icon').textContent      = page.icon;
+    document.getElementById('sm-intro-character').textContent = page.character;
+    document.getElementById('sm-intro-title').textContent     = page.title;
+    document.getElementById('sm-intro-text').textContent      = `"${page.text}"`;
+    document.getElementById('sm-intro-btn-label').textContent =
+        state.introStep === INTRO_PAGES.length - 1 ? 'Initialize Sync' : 'Analyze Data';
+
+    // Progress dots
+    const dots = document.getElementById('sm-intro-dots');
+    dots.innerHTML = INTRO_PAGES.map((_, i) =>
+        `<div class="h-1 rounded-full transition-all duration-500 ${i === state.introStep ? 'w-10 bg-purple-600' : 'w-2 bg-slate-800'}"></div>`
+    ).join('');
+
+    // Re-trigger zoom animation
+    const card = document.getElementById('sm-intro-card');
+    card.classList.remove('sm-zoom-in');
+    void card.offsetWidth;
+    card.classList.add('sm-zoom-in');
+}
+
+function updateHUD() {
+    // XP
+    const xpEl = document.getElementById('sm-xp-display');
+    if (xpEl) {
+        const display = state.score.toLocaleString();
+        if (xpEl.textContent !== display) {
+            xpEl.textContent = display;
+            xpEl.classList.remove('sm-score-bump');
+            void xpEl.offsetWidth;
+            xpEl.classList.add('sm-score-bump');
+        }
+    }
+
+    // XP bar
+    const pct = Math.min(100, Math.round((state.score / TARGET_XP) * 100));
+    const fill = document.getElementById('sm-xp-bar-fill');
+    if (fill) fill.style.width = pct + '%';
+
+    // Moves
+    const movEl = document.getElementById('sm-moves-display');
+    if (movEl) {
+        movEl.textContent = state.moves;
+        movEl.classList.toggle('sm-warning', state.moves <= MOVES_WARNING);
+    }
+
+    // Objective
+    const objEl = document.getElementById('sm-objective-text');
+    if (objEl) objEl.textContent = currentLog().clue;
+}
+
+function renderGrid() {
+    const gridEl = document.getElementById('sm-grid');
+    if (!gridEl) return;
+
+    // Build cells as HTML string (fast)
+    let html = '';
+    for (let r = 0; r < GRID_SIZE; r++) {
+        for (let c = 0; c < GRID_SIZE; c++) {
+            const cell = state.grid[r][c];
+            const sym  = SYMBOLS[cell.type];
+            const isSelected = state.selected?.r === r && state.selected?.c === c;
+
+            const classes = [
+                'sm-cell',
+                isSelected  ? 'sm-selected' : '',
+                cell.matched ? 'sm-matched'  : '',
+                cell.type === -1 ? 'sm-empty' : ''
+            ].filter(Boolean).join(' ');
+
+            const label = sym ? `${sym.name} at row ${r+1} column ${c+1}` : `empty at row ${r+1} column ${c+1}`;
+            const disabled = (cell.type === -1 || cell.matched) ? 'disabled' : '';
+
+            html += `<button
+                class="${classes}"
+                data-r="${r}" data-c="${c}"
+                aria-label="${label}"
+                role="gridcell"
+                ${disabled}
+            >${sym ? sym.char : ''}</button>`;
+        }
+    }
+    gridEl.innerHTML = html;
+    // Event delegation handles clicks — no per-cell listener needed
+}
+
+function showEndOverlay() {
+    const ovl  = document.getElementById('sm-end-overlay');
+    const card = document.getElementById('sm-end-card');
+    const won  = state.phase === 'won';
+
+    card.innerHTML = won
+        ? `<div class="text-7xl">🔭</div>
+           <h2 class="text-5xl font-black text-yellow-400 italic uppercase">Sync Complete</h2>
+           <p class="text-slate-300 text-lg leading-relaxed italic px-2">
+               "The lens is recovered. The Seven Stars are aligned. The mission in the Philippines is protected. Great work, Star Guardian."
+           </p>
+           <div class="text-sm text-slate-400">Final XP: <strong class="text-yellow-400">${state.score.toLocaleString()}</strong></div>
+           <button id="sm-end-btn" class="w-full py-5 bg-yellow-500 text-slate-950 font-black uppercase text-xs tracking-widest rounded-2xl shadow-2xl active:scale-95">
+               Return to Nexus Hub
+           </button>`
+        : `<div class="flex justify-center"><span class="text-7xl">⚠️</span></div>
+           <h2 class="text-4xl font-black text-white italic uppercase tracking-tighter">System Crash</h2>
+           <p class="text-slate-400 leading-relaxed italic px-2">
+               "The atmospheric distortion was too great. The Red Queen successfully scrambled the coordinates. The trail has gone cold."
+           </p>
+           <div class="text-sm text-slate-400">Final XP: <strong class="text-slate-200">${state.score.toLocaleString()}</strong> / ${TARGET_XP.toLocaleString()} needed</div>
+           <div class="flex flex-col gap-3 w-full">
+               <button id="sm-end-btn" class="w-full py-5 bg-red-600 text-white font-black uppercase text-xs tracking-widest rounded-2xl shadow-xl shadow-red-500/20 active:scale-95">
+                   Restart Protocol
+               </button>
+               <a href="/arcade" class="w-full py-4 border border-slate-600 text-slate-400 font-bold text-xs tracking-widest rounded-2xl text-center hover:border-slate-400 hover:text-slate-200 transition-colors">
+                   ← Back to Arcade
+               </a>
+           </div>`;
+
+    ovl.classList.add('sm-open');
+
+    document.getElementById('sm-end-btn').addEventListener('click', () => {
+        ovl.classList.remove('sm-open');
+        resetGame();
+    });
+}
+
+// ============================================================
+// Log modal
+// ============================================================
+function openLog() {
+    document.getElementById('sm-log-title').textContent = currentLog().title;
+    document.getElementById('sm-log-modal').classList.add('sm-open');
+}
+function closeLog() {
+    document.getElementById('sm-log-modal').classList.remove('sm-open');
+}
+
+// ============================================================
+// Scanline decoration (rendered once)
+// ============================================================
+function buildScanline() {
+    const el = document.getElementById('sm-scanline');
+    el.innerHTML = Array.from({ length: 28 }, () =>
+        `<div>${Math.random().toString(36).slice(2).repeat(3)}</div>`
+    ).join('');
+}
+
+// ============================================================
+// Event wiring
+// ============================================================
+function wireEvents() {
+    // Intro advance
+    document.getElementById('sm-intro-btn').addEventListener('click', () => {
+        if (state.introStep < INTRO_PAGES.length - 1) {
+            state.introStep++;
+            renderIntro();
+        } else {
+            state.phase = 'playing';
+            initGrid();
+            renderAll();
+        }
+    });
+
+    // Grid — event delegation
+    document.getElementById('sm-grid').addEventListener('click', e => {
+        const btn = e.target.closest('button[data-r]');
+        if (!btn) return;
+        handleCellClick(Number(btn.dataset.r), Number(btn.dataset.c));
+    });
+
+    // Log open/close
+    document.getElementById('sm-log-btn').addEventListener('click', openLog);
+    document.getElementById('sm-log-close').addEventListener('click', closeLog);
+    document.getElementById('sm-log-modal').addEventListener('click', e => {
+        if (e.target === document.getElementById('sm-log-modal')) closeLog();
+    });
+
+    // Keyboard: Escape closes log
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLog();
+    });
+}
+
+// ============================================================
+// Boot
+// ============================================================
+buildScanline();
+initGrid();
+renderAll();
+wireEvents();
+</script>
+</body>
+</html>

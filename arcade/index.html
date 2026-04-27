@@ -230,6 +230,12 @@
         }
         .badge-gold   { background: rgba(255,215,0,0.15); color: var(--accent2); border: 1px solid rgba(255,215,0,0.3); }
         .badge-teal   { background: rgba(126,255,216,0.1); color: var(--accent);  border: 1px solid rgba(126,255,216,0.3); }
+        .badge-purple { background: rgba(168,85,247,0.12); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+
+        .game-card.card-sovereign::before { background: radial-gradient(circle at 30% 20%, rgba(168,85,247,0.14), transparent 60%); }
+        .game-card.card-sovereign:hover { border-color: #a855f7; }
+        .play-btn-purple { background: #7c3aed; color: #fff; }
+        .play-btn-purple:hover { background: #9333ea; }
 
         .play-btn {
             margin-top: 0.5rem;
@@ -650,6 +656,15 @@
                     <span class="game-card-badge badge-teal">Gem Puzzle</span>
                     <button class="play-btn play-btn-teal" tabindex="-1">▶ Play Now</button>
                 </div>
+
+                <!-- Sovereign Matrix Card -->
+                <a href="/arcade/sovereign-matrix/" class="game-card card-sovereign" aria-label="Play Sovereign Matrix">
+                    <div class="game-card-icon">🔭</div>
+                    <div class="game-card-title">Sovereign Matrix</div>
+                    <div class="game-card-desc">A mystery match-3 puzzle. Clear the digital Gloom on a 7×7 grid to recover the stolen Lens of the 7 Stars and protect the Philippines mission.</div>
+                    <span class="game-card-badge badge-purple">Mystery Puzzle</span>
+                    <button class="play-btn play-btn-purple" tabindex="-1">▶ Play Now</button>
+                </a>
 
             </div>
         </div>
