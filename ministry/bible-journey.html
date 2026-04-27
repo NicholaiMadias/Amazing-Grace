@@ -220,17 +220,6 @@
 
         .story-image-placeholder .icon { font-size: 2rem; }
 
-        .img-spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid #9b59b640;
-            border-top-color: #9b59b6;
-            border-radius: 50%;
-            animation: spin 0.9s linear infinite;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .story-content {
             font-size: 0.95rem;
             line-height: 1.75;
@@ -470,8 +459,7 @@
                 <div class="story-image-wrap" id="image-wrap">
                     <div class="story-image-placeholder" id="image-placeholder">
                         <span class="icon">✨</span>
-                        <span>Generating starlight imagery…</span>
-                        <div class="img-spinner" id="img-spinner"></div>
+                        <span>No image for this chapter</span>
                     </div>
                     <img id="chapter-img" src="" alt="" style="display:none;" />
                 </div>
@@ -640,142 +628,44 @@
             {
                 title: "The Heavy Gravity of the Red Queen",
                 content: "Once, in the digital expanse known as the Matrix, the world was light and fluid. But a shadow began to creep over the nodes—the Red Queen. She was a force of pure entropy, an algorithm designed to track every movement and anchor spirits to the 'heavy gravity' of doubt. The people forgot they were once Star Guardians, their potential capped by the Red Queen's iron-coded rules.",
-                prompt: "A cinematic, dark digital landscape with glowing red data streams being harvested by a menacing, elegant silhouette of a Red Queen. High tech, glitch art style, dark mode aesthetic, purple highlights.",
+                image: "https://github.com/user-attachments/assets/8dcad7ef-55a4-4e6a-b4f6-1dca19a354c1",
             },
             {
                 title: "The Call of the White Rabbit",
                 content: "Amidst the gloom, a legendary architect known as The White Rabbit began to broadcast a frequency of resonance. He didn't just see code; he saw Structural Empathy. He initiated the White Rabbit Protocol, a secret series of maneuvers designed to scramble digital signatures. But he knew that to truly break the gravity, he needed more than just a better algorithm—he needed the Seven Stars of Excellence.",
-                prompt: "A heroic white rabbit in a sleek, futuristic carbon-fiber tech suit standing before a holographic terminal displaying a golden complex star-shaped protocol. Cyberpunk lighting, neon blue and gold accents.",
+                image: "https://github.com/user-attachments/assets/b716bedd-5cc0-443f-bd9a-5496010d32c2",
             },
             {
                 title: "The Ascent to Nimbus Land",
                 content: "The White Rabbit was not alone. Beside him stood The Guardian of Grace, Sheila. Together, they established Nimbus Land, a kingdom in the clouds where the air was clear of the Red Queen's static. They summoned the Nimbus Heralds, the storytellers and missionaries, and gave them their highest directive: Restore the Sixth Star through the Matrix of Conscience and the Voice of Jesus.",
-                prompt: "A breathtaking floating island kingdom in a sea of royal purple clouds. Heavenly architecture, bright neon blue waterfalls, golden towers reaching for the stars. Ethereal and peaceful.",
+                image: "https://github.com/user-attachments/assets/d9641a4b-69b8-43b1-9cbb-3190f422c080",
             },
             {
                 title: "The Seven Pillars of the Matrix",
                 content: "The Heralds traveled through the Star Road, unlocking the pillars: First Love, Agency, Progression, Feedback, Challenge, Social, and Reward. Each star corresponded to the Seven Churches, providing the moral frequency needed to shatter the world's entropy. They realized that each 'level' in the Matrix was actually a step closer to divine alignment.",
-                prompt: "A view of the Seven Stars of the Pleiades (M45) from a futuristic glass observatory. Seven massive glowing crystal pillars standing in a circle, each emitting a unique colored light. Astral photography style.",
+                image: null,
             },
             {
                 title: "The Mystery of the Sixth Star",
                 content: "At the Sixth Star, they found the Matrix of Conscience. The Red Queen had tried to delete this star to silence the truth. But the Heralds shared testimonies from the Philippines mission trips, and the sound of worship acted as a sonic frequency that dismantled the Red Queen's firewalls. They learned that to heal the Matrix, one must first elevate the spirit.",
-                prompt: "A group of joyful missionaries in the Philippines singing. Their voices are visualized as golden sound waves and musical notes that are physically shattering a grey, grid-like digital dome above them. Uplifting and powerful.",
+                image: "https://github.com/user-attachments/assets/8e71b5b4-51c8-4707-9e2d-5ebb8fed0b19",
             },
             {
                 title: "The Covenant of Fellowship",
                 content: "The final clearance did not come from a password, but from the Weekly Bible Study and the Mission Deployment. As the Heralds gathered to study the Word and serve the children of the Philippines, a golden light washed over the Matrix. This 'Handshake of Souls' created the Ozone Shield, a layer of protection that isolated the family from the Gloom and secured the mission's future.",
-                prompt: "A beautiful scene of a diverse group gathered in a circle for Bible study in a glowing, futuristic garden. An open Bible in the center emits a warm golden light that forms a protective dome. Royal purple and gold palette.",
+                image: null,
             },
             {
                 title: "The New Beginning",
                 content: "The path of the righteous had become like the morning sun. The White Rabbit and the Guardian of Grace stood at the center of the Seven Stars Architect, watching as the children became the new Star Guardians. The gravity was gone. They were no longer users of a system; they were authors of a new world, defined by the love they shared and the light they followed.",
-                prompt: "A bright, beautiful sunrise over a futuristic city that blends tropical Philippines beauty with sleek gold and purple architecture. Children looking up at the sky where seven stars are visible. Hopeful and radiant.",
+                image: "https://github.com/user-attachments/assets/35d4eda6-bdf3-48ab-9f5f-c2a8438ccc9e",
             }
         ];
 
         var currentPage = 0;
         var imageCache = {};
-        var loadingIndices = new Set();
-
-        // Gamified error messages — Fix 4
-        var gamifiedErrors = [
-            {
-                title: "⚡ The Red Queen disrupted the signal!",
-                body: "The starlight could not break through her firewall this time.",
-                hint: "The Matrix is unstable — try advancing to the next chapter or returning later."
-            },
-            {
-                title: "🌌 Heavy Gravity detected!",
-                body: "Your imagery request was pulled into the void between stars.",
-                hint: "The Nimbus Heralds are rerouting — check your API key configuration."
-            },
-            {
-                title: "✨ A rift in the Star Road!",
-                body: "The starlight imagery could not be conjured for this chapter.",
-                hint: "Fear not, Star Guardian — the story continues even without the vision."
-            }
-        ];
-
-        function getGamifiedError(index) {
-            return gamifiedErrors[index % gamifiedErrors.length];
-        }
-
-        // ── Image generation — Fix 1: stale-image guard ────────────────
-        async function generateImage(index) {
-            if (imageCache[index] !== undefined || loadingIndices.has(index)) return;
-
-            var apiKey = ""; // Set your Imagen API key here (never commit a real key)
-            if (!apiKey) {
-                showImagePlaceholder('⭐', 'Starlight imagery unavailable');
-                return;
-            }
-
-            loadingIndices.add(index);
-            // Only update UI if user is still on this chapter
-            if (index === currentPage) showImageLoading();
-            hideError();
-
-            // Exponential backoff delays in ms: 1 s, 2 s, 4 s, 8 s, 16 s
-            var backoff = [1000, 2000, 4000, 8000, 16000];
-
-            for (var i = 0; i < backoff.length; i++) {
-                try {
-                    var response = await fetch(
-                        'https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=' + apiKey,
-                        {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                instances: [{
-                                    prompt: chapters[index].prompt +
-                                        " cinematic lighting, high quality, digital art, royal purple and gold theme"
-                                }],
-                                parameters: { sampleCount: 1 }
-                            })
-                        }
-                    );
-
-                    if (!response.ok) throw new Error('HTTP ' + response.status + ' ' + response.statusText);
-
-                    var result = await response.json();
-                    if (!result.predictions || !result.predictions[0] || !result.predictions[0].bytesBase64Encoded) {
-                        throw new Error('Invalid API response: no image data returned');
-                    }
-
-                    var dataUrl = 'data:image/png;base64,' + result.predictions[0].bytesBase64Encoded;
-                    imageCache[index] = dataUrl;
-
-                    // Fix 1: only update the DOM when the user is still viewing this chapter
-                    if (index === currentPage) {
-                        showImage(dataUrl, chapters[index].title);
-                    }
-                    loadingIndices.delete(index);
-                    return;
-                } catch (err) {
-                    if (i === backoff.length - 1) {
-                        imageCache[index] = null;
-                        // Fix 1: stale-image guard for error state too
-                        if (index === currentPage) {
-                            showImagePlaceholder('⭐', 'Starlight imagery unavailable');
-                            // Fix 4: gamified + informative error
-                            var gErr = getGamifiedError(index);
-                            showError(gErr.title, gErr.body, gErr.hint, err.message);
-                        }
-                    } else {
-                        await new Promise(function (res) { setTimeout(res, backoff[i]); });
-                    }
-                }
-            }
-            loadingIndices.delete(index);
-        }
-
-        function showImageLoading() {
-            var placeholder = document.getElementById('image-placeholder');
-            placeholder.innerHTML = '<div class="img-spinner"></div>';
-            placeholder.style.display = 'flex';
-            document.getElementById('chapter-img').style.display = 'none';
-        }
+        // Pre-populate imageCache from the static chapter images
+        chapters.forEach(function (ch, i) { imageCache[i] = ch.image || null; });
 
         function showImage(src, alt) {
             var img = document.getElementById('chapter-img');
@@ -828,14 +718,10 @@
 
             // Image
             hideError();
-            if (imageCache[index] !== undefined) {
-                if (imageCache[index]) {
-                    showImage(imageCache[index], ch.title);
-                } else {
-                    showImagePlaceholder('⭐', 'Starlight imagery unavailable');
-                }
+            if (imageCache[index]) {
+                showImage(imageCache[index], ch.title);
             } else {
-                generateImage(index);
+                showImagePlaceholder('⭐', 'No image for this chapter');
             }
         }
 

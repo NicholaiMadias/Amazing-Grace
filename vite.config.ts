@@ -10,7 +10,7 @@ export default defineConfig({
         main:              resolve(__dirname, "index.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
-        ministryBibleJourney: resolve(__dirname, "ministry/bible-journey/index.html"),
+        ministryBibleJourney: resolve(__dirname, "ministry/bible-journey.html"),
         ministries:        resolve(__dirname, "ministries/index.html"),
         stories:           resolve(__dirname, "stories/index.html"),
         support:           resolve(__dirname, "support/index.html"),
