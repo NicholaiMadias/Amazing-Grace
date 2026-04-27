@@ -240,10 +240,12 @@
 // ============================================================
 // Constants
 // ============================================================
-const GRID_SIZE    = 7;
-const TARGET_XP    = 4000;
-const INITIAL_MOVES = 35;
-const MOVES_WARNING = 8;   // turns moves display red
+const GRID_SIZE      = 7;
+const TARGET_XP      = 4000;  // XP needed to win (~35 moves × avg 3-match cascade)
+const INITIAL_MOVES  = 35;
+const MOVES_WARNING  = 8;     // threshold below which the moves counter turns red
+const POINTS_PER_MATCH = 20;  // XP awarded per cell cleared in a match
+const SCANLINE_ROWS  = 28;    // decorative pseudo-random lines in the background panel
 
 const SYMBOLS = [
     { char: '🔭', name: 'Lens Piece'      },
@@ -353,7 +355,7 @@ async function processBoard() {
         await delay(280);
 
         // Award points + check win
-        state.score += matches.length * 20;
+        state.score += matches.length * POINTS_PER_MATCH;
         updateHUD();
         if (state.score >= TARGET_XP && state.phase === 'playing') {
             state.isProcessing = false;
@@ -641,7 +643,7 @@ function closeLog() {
 // ============================================================
 function buildScanline() {
     const el = document.getElementById('sm-scanline');
-    el.innerHTML = Array.from({ length: 28 }, () =>
+    el.innerHTML = Array.from({ length: SCANLINE_ROWS }, () =>
         `<div>${Math.random().toString(36).slice(2).repeat(3)}</div>`
     ).join('');
 }
