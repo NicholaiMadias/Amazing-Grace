@@ -117,10 +117,18 @@ jobs:
 
           curl -sf --max-time 15 "$MANIFEST_URL" -o /tmp/content-manifest.txt || {
             echo "::warning::Could not fetch content manifest from ministry domain."
+            echo "### 🔏 Content Signing" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Status | Note |"   >> "$GITHUB_STEP_SUMMARY"
+            echo "|--------|------|"   >> "$GITHUB_STEP_SUMMARY"
+            echo "| ⚠️ Unavailable | Could not fetch content manifest from ministry domain |" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           }
           curl -sf --max-time 15 "$SIG_URL" -o /tmp/content-manifest.txt.asc || {
             echo "::warning::Could not fetch content manifest signature from ministry domain."
+            echo "### 🔏 Content Signing" >> "$GITHUB_STEP_SUMMARY"
+            echo "| Status | Note |"   >> "$GITHUB_STEP_SUMMARY"
+            echo "|--------|------|"   >> "$GITHUB_STEP_SUMMARY"
+            echo "| ⚠️ Unavailable | Could not fetch content manifest signature from ministry domain |" >> "$GITHUB_STEP_SUMMARY"
             exit 0
           }
 
