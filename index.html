@@ -2,30 +2,512 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus Arcade | Amazing Grace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Amazing Grace Home Living — faith-based transitional housing, ministry outreach, and community support in Florida.">
+    <meta name="theme-color" content="#1e3a8a">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Amazing Grace Home Living">
+    <meta property="og:description" content="Faith-based transitional housing, ministry outreach, and community support.">
+    <meta property="og:url" content="https://amazinggracehl.org/">
+
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <title>Amazing Grace Home Living</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&display=swap');
-        :root { --neon-blue: #00f2ff; --neon-purple: #bc13fe; --deep-space: #020617; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--deep-space); color: #e2e8f0; margin: 0; overflow: hidden; height: 100vh; width: 100vw; touch-action: none; -webkit-tap-highlight-color: transparent; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .nexus-bg { background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%); position: fixed; inset: 0; z-index: -1; }
-        .glass-panel { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .grid-container { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; width: 100%; max-width: 500px; aspect-ratio: 1; margin: 0 auto; }
-        .tile { position: relative; border-radius: 8px; cursor: pointer; transition: transform 0.2s, opacity 0.3s; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.05); }
-        .tile.selected { outline: 3px solid var(--neon-blue); transform: scale(1.1); z-index: 10; box-shadow: 0 0 20px var(--neon-blue); }
-        .key-btn { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(0, 210, 255, 0.2); transition: all 0.2s; }
-        .key-btn:active { background: var(--neon-blue); color: var(--deep-space); transform: scale(0.9); }
-        .cmd-btn { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(0, 242, 255, 0.1); transition: all 0.3s; }
-        .cmd-btn:hover { background: rgba(0, 242, 255, 0.1); border-color: var(--neon-blue); transform: translateY(-2px); }
-        .loader { width: 40px; height: 40px; border: 4px solid #00D2FF; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .star-map { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; max-width: 400px; }
-        .star-item { background: rgba(15,23,42,0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; }
-        .star-item:hover:not(.locked) { border-color: #f59e0b; transform: translateY(-2px); }
-        .star-item.locked { opacity: 0.35; cursor: not-allowed; }
-        .star-item.completed { border-color: #f59e0b; box-shadow: 0 0 15px rgba(245,158,11,0.3); }
-        .star-item.active { border-color: #00f2ff; animation: starPulse 2s infinite; }
-        @keyframes starPulse { 0%,100% { box-shadow: 0 0 5px rgba(0,242,255,0.2); } 50% { box-shadow: 0 0 20px rgba(0,242,255,0.5); } }
-        @
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --navy: #1e3a8a;
+            --blue: #2563eb;
+            --gold: #d97706;
+            --green: #059669;
+            --bg:   #f3f4f6;
+        }
+
+        /* Reset layout-affecting flex styles so non-game pages render as block */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: stretch;
+        }
+
+        *:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+
+        /* ---- Header ---- */
+        .site-header {
+            background-color: var(--navy);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo img { height: 40px; width: auto; border-radius: 4px; }
+
+        .nav-links { display: flex; gap: 0.75rem; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.25); }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--navy);
+                padding: 1rem;
+                z-index: 100;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                gap: 0.5rem;
+            }
+            .nav-links.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; padding: 0.75rem 1rem; }
+        }
+
+        /* ---- Hero ---- */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 1.5rem 3rem;
+        }
+
+        .hero-icon { font-size: 3.5rem; margin-bottom: 0.75rem; }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            opacity: 0.85;
+            max-width: 560px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: var(--green);
+            color: white;
+            font-weight: 700;
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover { background: #047857; }
+
+        .btn-secondary {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+        /* ---- Section titles ---- */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ---- Quick Links ---- */
+        .quick-links {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 2rem 1.25rem;
+            text-decoration: none;
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 1rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+        }
+
+        .link-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30,58,138,0.12);
+            border-color: var(--blue);
+        }
+
+        .link-card-icon { font-size: 2rem; }
+        .link-card-desc { font-size: 0.8rem; color: #6b7280; font-weight: 400; }
+
+        /* ---- Properties preview ---- */
+        #properties {
+            background: white;
+            padding: 3rem 1.5rem;
+        }
+
+        .prop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .prop-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #f9fafb;
+            transition: box-shadow 0.2s;
+        }
+
+        .prop-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+        .prop-card-body { padding: 1.25rem; }
+
+        .prop-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.1rem;
+            margin: 0 0 0.35rem;
+        }
+
+        .prop-card p { font-size: 0.875rem; color: #6b7280; margin: 0 0 1rem; }
+
+        .prop-card a {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .prop-card a:hover { background: #1d4ed8; }
+
+        /* ---- Contact ---- */
+        #contact {
+            padding: 3.5rem 1.5rem;
+            background: var(--bg);
+        }
+
+        .contact-wrap {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            padding: 0.65rem 0.875rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 120px; }
+
+        .form-submit {
+            width: 100%;
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 0.875rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .form-submit:hover { background: #047857; }
+
+        /* ---- Main / Footer ---- */
+        main { flex: 1; }
+
+        .site-footer {
+            background: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .site-footer a { color: #d1d5db; text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="assets/logo.svg" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+
+        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
+            <a href="/" class="nav-btn active" aria-current="page">🏠 Home</a>
+            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+            <a href="/listings" class="nav-btn">🏘️ Listings</a>
+            <a href="#contact" class="nav-btn">✉️ Contact</a>
+        </nav>
+
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <main>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-icon">🕊️</div>
+            <h1>Amazing Grace Home Living</h1>
+            <p>
+                Faith-based transitional housing and community outreach — providing stable, supportive homes
+                and ministry in Florida.
+            </p>
+            <div class="hero-actions">
+                <a href="#properties" class="btn-primary">��️ View Properties</a>
+                <a href="/ministry" class="btn-secondary">🕊️ Ministry</a>
+            </div>
+        </section>
+
+        <!-- Quick Links -->
+        <section class="quick-links" aria-labelledby="ql-title">
+            <h2 class="section-title" id="ql-title">Explore Our Mission</h2>
+            <p class="section-sub">Housing, ministry, games, and community — all in one place.</p>
+            <div class="links-grid">
+                <a href="/listings" class="link-card">
+                    <span class="link-card-icon">🏘️</span>
+                    <span>Listings</span>
+                    <span class="link-card-desc">Browse available transitional homes</span>
+                </a>
+                <a href="/ministry" class="link-card">
+                    <span class="link-card-icon">🕊️</span>
+                    <span>Ministry</span>
+                    <span class="link-card-desc">Voice of Jesus outreach &amp; stories</span>
+                </a>
+                <a href="/arcade" class="link-card">
+                    <span class="link-card-icon">🎮</span>
+                    <span>Arcade</span>
+                    <span class="link-card-desc">Faith-based interactive games</span>
+                </a>
+                <a href="/support" class="link-card">
+                    <span class="link-card-icon">🤝</span>
+                    <span>Support</span>
+                    <span class="link-card-desc">Partner with our mission</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Properties Preview -->
+        <section id="properties" aria-labelledby="prop-title">
+            <div style="max-width:900px;margin:0 auto;padding:0 1.5rem;">
+                <h2 class="section-title" id="prop-title">Available Properties</h2>
+                <p class="section-sub">Comfortable, supportive transitional housing options across Florida.</p>
+                <div class="prop-grid">
+                    <div class="prop-card">
+                        <div class="prop-card-body">
+                            <h3>Grace Manor</h3>
+                            <p>Spacious 4-bed transitional home with full support services and community programming.</p>
+                            <a href="/listings/grace-manor">View Details →</a>
+                        </div>
+                    </div>
+                    <div class="prop-card">
+                        <div class="prop-card-body">
+                            <h3>1142 7th Street</h3>
+                            <p>3-bed residence near community resources, ideal for individuals in transition.</p>
+                            <a href="/galleries/1142-7th-street">View Gallery →</a>
+                        </div>
+                    </div>
+                    <div class="prop-card">
+                        <div class="prop-card-body">
+                            <h3>See All Listings</h3>
+                            <p>Browse all available Amazing Grace transitional housing properties in Florida.</p>
+                            <a href="/listings">Browse All →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" aria-labelledby="contact-title">
+            <div class="contact-wrap">
+                <h2 class="section-title" id="contact-title">✉️ Get in Touch</h2>
+                <p class="section-sub">
+                    Questions about housing, ministry partnerships, or how to get involved? Reach out below.
+                </p>
+                <form class="contact-form"
+                      action="mailto:gulfnexus@gmail.com"
+                      method="get"
+                      enctype="text/plain"
+                      aria-label="Contact form">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" name="name" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email Address</label>
+                        <input type="email" id="contact-email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-subject">Subject</label>
+                        <select id="contact-subject" name="subject">
+                            <option value="Housing Inquiry">Housing Inquiry</option>
+                            <option value="Ministry Partnership">Ministry Partnership</option>
+                            <option value="Volunteer">Volunteer</option>
+                            <option value="General Question">General Question</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" name="body" placeholder="How can we help?"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message ✉️</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+
+    <script>
+        (function () {
+            var toggle = document.querySelector('.menu-toggle');
+            var nav = document.getElementById('main-nav');
+            if (toggle && nav) {
+                toggle.addEventListener('click', function () {
+                    var isExpanded = nav.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
