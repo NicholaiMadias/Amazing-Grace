@@ -9,6 +9,8 @@ export default defineConfig({
       input: {
         main:              resolve(__dirname, "index.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
+        arcadeStarMatrix:   resolve(__dirname, "arcade/star-matrix/index.html"),
+        arcadeCertificates: resolve(__dirname, "arcade/certificates/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
         ministries:        resolve(__dirname, "ministries/index.html"),
         stories:           resolve(__dirname, "stories/index.html"),
