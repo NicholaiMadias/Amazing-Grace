@@ -95,7 +95,7 @@ function seedDemoUsers() {
  */
 const IS_DEMO_HOST = (() => {
   const h = location.hostname;
-  return h === 'localhost' || h === '127.0.0.1' || h === '' || h.endsWith('.github.io');
+  return h === 'localhost' || h === '127.0.0.1' || h.endsWith('.github.io');
 })();
 
 if (IS_DEMO_HOST) seedDemoUsers();

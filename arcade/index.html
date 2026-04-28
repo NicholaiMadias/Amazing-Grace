@@ -737,7 +737,7 @@
                 import('/star-map.js').then(function (m) {
                     var container = document.getElementById('star-map-container');
                     if (container) m.renderStarMap(container);
-                }).catch(function () {});
+                }).catch(function (err) { console.warn('[star-map] Failed to load star-map.js:', err); });
             }
 
             refreshStarMap();

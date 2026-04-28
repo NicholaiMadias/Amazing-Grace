@@ -43,7 +43,7 @@ export function loadBadges() {
       earnedBadges = [];
     } else {
       const parsed = JSON.parse(s);
-      earnedBadges = Array.isArray(parsed) && parsed.every(badge => typeof badge === 'string') ? parsed : [];
+      earnedBadges = Array.isArray(parsed) ? parsed.filter(b => typeof b === 'string') : [];
     }
   } catch (e) {
     earnedBadges = [];
