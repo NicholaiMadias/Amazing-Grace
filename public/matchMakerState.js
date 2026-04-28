@@ -2,8 +2,20 @@ export const GRID_SIZE = 7;
 
 const GEM_TYPES = ['heart', 'star', 'cross', 'flame', 'drop'];
 
+const STAR_SPAWN_CHANCE = 0.03; // 3% chance to spawn a supernova tile
+
 function randomGem() {
   return GEM_TYPES[Math.floor(Math.random() * GEM_TYPES.length)];
+}
+
+/**
+ * Returns a random gem, with a 3% chance of being a supernova special tile.
+ */
+function randomGemOrSpecial() {
+  if (Math.random() < STAR_SPAWN_CHANCE) {
+    return makeGem(GEM_TYPES[Math.floor(Math.random() * GEM_TYPES.length)], 'supernova');
+  }
+  return randomGem();
 }
 
 /**
@@ -114,15 +126,10 @@ export function findMatches(grid) {
 
 /**
  * Returns a new grid with matched cells set to null and optional replacements placed.
- * Accepts either a flat array of {r, c} cells or grouped match arrays as returned by findMatches().
  */
 export function clearMatches(grid, matchCells, replacements = []) {
   const next = cloneGrid(grid);
-  const cellsToClear = matchCells.flatMap(cellOrGroup =>
-    Array.isArray(cellOrGroup) ? cellOrGroup : [cellOrGroup]
-  );
-
-  cellsToClear.forEach(({ r, c }) => {
+  matchCells.forEach(({ r, c }) => {
     next[r][c] = null;
   });
   replacements.forEach(repl => {
@@ -133,6 +140,7 @@ export function clearMatches(grid, matchCells, replacements = []) {
 
 /**
  * Applies gravity: shifts non-null cells down, fills top with new random gems.
+ * New gems have a 3% chance of being a supernova special tile.
  */
 export function applyGravity(grid) {
   const next = cloneGrid(grid);
@@ -142,8 +150,30 @@ export function applyGravity(grid) {
       if (next[r][c] !== null) gems.push(next[r][c]);
     }
     for (let r = GRID_SIZE - 1; r >= 0; r--) {
-      next[r][c] = gems.length > 0 ? gems.shift() : randomGem();
+      next[r][c] = gems.length > 0 ? gems.shift() : randomGemOrSpecial();
     }
   }
   return next;
+}
+
+/**
+ * Clears the entire row and column of a supernova tile at (r, c).
+ * Returns { next: grid, cleared: [{r, c}, ...] } with nulled cells.
+ */
+export function clearSupernovaAt(grid, row, col) {
+  const next = cloneGrid(grid);
+  const cleared = [];
+  for (let c = 0; c < GRID_SIZE; c++) {
+    if (next[row][c] !== null) {
+      cleared.push({ r: row, c });
+      next[row][c] = null;
+    }
+  }
+  for (let r = 0; r < GRID_SIZE; r++) {
+    if (r !== row && next[r][col] !== null) {
+      cleared.push({ r, c: col });
+      next[r][col] = null;
+    }
+  }
+  return { next, cleared };
 }

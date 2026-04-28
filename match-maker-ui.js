@@ -5,7 +5,7 @@
  * (c) 2026 NicholaiMadias — MIT License
  */
 
-import { GRID_SIZE, createInitialGrid, canSwap, applySwap, findMatches, clearMatches, applyGravity } from './matchMakerState.js';
+import { GRID_SIZE, createInitialGrid, canSwap, applySwap, findMatches, clearMatches, applyGravity, clearSupernovaAt } from './matchMakerState.js';
 import { onLevelComplete } from './badges.js';
 import { saveGame, loadGame } from './saveSystem.js';
 import { getLevelConfig, checkLevelUp, MAX_LEVEL } from './levelSystem.js';
@@ -17,6 +17,7 @@ const ROWS = GRID_SIZE;
 const CASCADE_DELAY = 200;
 const BASE_POINTS = 50;
 const CHAIN_BONUS = 25;
+const SUPERNOVA_BONUS = 500;
 const CONSCIENCE_KEYS = ['empathy', 'justice', 'wisdom', 'growth'];
 
 const GEM_DISPLAY = {
@@ -40,6 +41,10 @@ let explosions   = 0;
 let daysPlayed   = 1;
 let slotSelect   = null;
 
+/** FX queue for supernova visual effects */
+let fxQueue  = [];
+let fxActive = false;
+
 const dom = {};
 
 function maybePlay(soundId) {
@@ -60,6 +65,7 @@ function cacheDom() {
   dom.level      = document.getElementById('match-level');
   dom.moves      = document.getElementById('match-moves');
   dom.msg        = document.getElementById('match-msg');
+  dom.narrative  = document.getElementById('match-narrative');
   dom.barEmpathy = document.getElementById('mc-empathy-bar');
   dom.barJustice = document.getElementById('mc-justice-bar');
   dom.barWisdom  = document.getElementById('mc-wisdom-bar');
@@ -136,6 +142,46 @@ function showMsg(text) {
   if (dom.msg) dom.msg.textContent = text;
 }
 
+/** Displays a contextual message in the narrative panel with a fade-out. */
+function pushNarrative(text) {
+  if (!dom.narrative) return;
+  dom.narrative.textContent = text;
+  dom.narrative.classList.add('narrative-visible');
+  setTimeout(() => {
+    if (dom.narrative) dom.narrative.classList.remove('narrative-visible');
+  }, 2200);
+}
+
+/** Adds an FX event to the queue and starts processing if idle. */
+function queueFx(type, cells) {
+  fxQueue.push({ type, cells });
+  if (!fxActive) processNextFx();
+}
+
+/** Processes one FX event: flashes the affected cells, then continues the queue. */
+function processNextFx() {
+  if (fxQueue.length === 0) { fxActive = false; return; }
+  fxActive = true;
+  const fx = fxQueue.shift();
+  if (fx.type === 'supernova') {
+    const cellEls = dom.board?.querySelectorAll('.gem-cell') || [];
+    fx.cells.forEach(({ r, c }) => {
+      const el = cellEls[r * COLS + c];
+      if (el) el.classList.add('fx-supernova-flash');
+    });
+    setTimeout(() => {
+      const cellEls2 = dom.board?.querySelectorAll('.gem-cell') || [];
+      fx.cells.forEach(({ r, c }) => {
+        const el = cellEls2[r * COLS + c];
+        if (el) el.classList.remove('fx-supernova-flash');
+      });
+      processNextFx();
+    }, 420);
+  } else {
+    processNextFx();
+  }
+}
+
 function updateConscience() {
   CONSCIENCE_KEYS.forEach(key => {
     const val  = Math.min(conscience[key], 100);
@@ -161,17 +207,20 @@ function renderBoard() {
 
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
-      const gemType = grid[r]?.[c];
-      const info    = GEM_DISPLAY[gemType] || { emoji: '?', cls: '', label: gemType };
-      const cell    = document.createElement('button');
-      const idx     = r * COLS + c;
+      const gemValue    = grid[r]?.[c];
+      const gemType     = typeof gemValue === 'string' ? gemValue : gemValue?.kind;
+      const isSupernova = typeof gemValue === 'object' && gemValue?.special === 'supernova';
+      const info        = GEM_DISPLAY[gemType] || { emoji: '?', cls: '', label: String(gemType) };
+      const cell        = document.createElement('button');
+      const idx         = r * COLS + c;
 
       cell.className = 'gem-cell ' + info.cls;
+      if (isSupernova) cell.classList.add('gem-supernova');
       cell.textContent = info.emoji;
       cell.dataset.row = r;
       cell.dataset.col = c;
       cell.setAttribute('role', 'gridcell');
-      cell.setAttribute('aria-label', info.label + ', row ' + (r + 1) + ' column ' + (c + 1));
+      cell.setAttribute('aria-label', (isSupernova ? 'Supernova ' : '') + info.label + ', row ' + (r + 1) + ' column ' + (c + 1));
       cell.setAttribute('tabindex', idx === 0 ? '0' : '-1');
 
       if (selected && selected.row === r && selected.col === c) {
@@ -265,15 +314,44 @@ function processCascade(chain) {
     return;
   }
 
-  const clearedCells = matches.reduce((sum, group) => sum + group.length, 0);
+  const flatMatches  = matches.flat();
+  const clearedCells = flatMatches.length;
   const points = clearedCells * (BASE_POINTS + CHAIN_BONUS * (chain - 1));
   score += points;
   totalClears += clearedCells;
   combo = Math.max(combo, ...matches.map(g => g.length));
   if (matches.some(g => g.length >= 4)) explosions += 1;
 
-  if (chain > 1) {
+  // Identify supernova tiles among matched cells
+  const supernovaHits = flatMatches.filter(({ r, c }) => {
+    const gem = grid[r]?.[c];
+    return typeof gem === 'object' && gem?.special === 'supernova';
+  });
+
+  // Score and FX for supernova hits (computed before board clears)
+  if (supernovaHits.length > 0) {
+    const supernovaScore = supernovaHits.length * SUPERNOVA_BONUS;
+    score += supernovaScore;
+
+    // Collect full row+col preview for flash FX
+    const previewCells = [];
+    supernovaHits.forEach(({ r, c }) => {
+      for (let col = 0; col < COLS; col++) {
+        if (!previewCells.some(x => x.r === r && x.c === col)) previewCells.push({ r, c: col });
+      }
+      for (let row = 0; row < ROWS; row++) {
+        if (!previewCells.some(x => x.r === row && x.c === c)) previewCells.push({ r: row, c });
+      }
+    });
+    queueFx('supernova', previewCells);
+    pushNarrative('⭐ Supernova' + (supernovaHits.length > 1 ? ' ×' + supernovaHits.length : '') + '! Row & column cleared! +' + supernovaScore);
+  } else if (chain > 1) {
     showMsg('Chain x' + chain + '! +' + points);
+    pushNarrative('🔗 Chain x' + chain + '! +' + points);
+  } else if (combo >= 4) {
+    pushNarrative('💥 Combo x' + combo + '! +' + points);
+  } else {
+    pushNarrative('✨ Match! +' + points);
   }
 
   bumpConscience(clearedCells);
@@ -282,7 +360,14 @@ function processCascade(chain) {
   updateHUD();
 
   setTimeout(() => {
-    grid = clearMatches(grid, matches);
+    // Apply supernova row+column clearances first
+    if (supernovaHits.length > 0) {
+      supernovaHits.forEach(({ r, c }) => {
+        const result = clearSupernovaAt(grid, r, c);
+        grid = result.next;
+      });
+    }
+    grid = clearMatches(grid, flatMatches);
     grid = applyGravity(grid);
     renderBoard();
     setTimeout(() => processCascade(chain + 1), CASCADE_DELAY);
@@ -348,7 +433,16 @@ export function initMatchMaker(db, user) {
   cacheDom();
   updateDayStreak();
 
-  grid         = createInitialGrid();
+  // Use built-in fallback grid if createInitialGrid fails (e.g. API/config unavailable)
+  try {
+    grid = createInitialGrid();
+  } catch (e) {
+    const types = Object.keys(GEM_DISPLAY);
+    grid = Array.from({ length: ROWS }, (_, r) =>
+      Array.from({ length: COLS }, (_, c) => types[(r * COLS + c) % types.length])
+    );
+  }
+
   score        = 0;
   level        = 1;
   totalClears  = 0;
@@ -356,6 +450,8 @@ export function initMatchMaker(db, user) {
   explosions   = 0;
   selected     = null;
   locked       = false;
+  fxQueue      = [];
+  fxActive     = false;
   conscience   = { empathy: 0, justice: 0, wisdom: 0, growth: 0 };
 
   initLevel();

@@ -564,7 +564,67 @@
             0%{transform:scale(1)} 50%{transform:scale(1.15);color:#7effd8} 100%{transform:scale(1)}
         }
 
-        /* ---- Footer ---- */
+        .gem-cell {
+            position: relative;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.35rem;
+            cursor: pointer;
+            background: linear-gradient(135deg,#0c1b24,#112436);
+            box-shadow: 0 0 6px rgba(0,0,0,.6),0 0 16px rgba(126,255,216,.05);
+            transition: transform .15s ease,box-shadow .15s ease,filter .15s ease;
+            user-select: none;
+            border: 1px solid rgba(126,255,216,.05);
+        }
+        .gem-cell:hover  { transform: scale(1.05); box-shadow: 0 0 18px rgba(126,255,216,.18); }
+        .gem-cell:active { transform: scale(.94); }
+        .gem-cell.selected { box-shadow: 0 0 0 3px #7effd8,0 0 20px rgba(126,255,216,.6); transform: scale(1.08); }
+        .gem-cell.matched { animation: mmPop .28s ease; filter: drop-shadow(0 0 16px rgba(255,255,255,.5)); }
+
+        /* Supernova star tile — golden glow overlay */
+        .gem-supernova {
+            box-shadow: 0 0 0 2px #ffd700, 0 0 14px rgba(255,215,0,.55), inset 0 0 10px rgba(255,215,0,.15);
+            animation: mmSpecialPulse 1.6s ease-in-out infinite;
+        }
+        .gem-supernova::after {
+            content: '✦';
+            position: absolute;
+            top: 1px; right: 2px;
+            font-size: .55rem;
+            color: #ffd700;
+            pointer-events: none;
+            opacity: .9;
+        }
+
+        /* Supernova flash FX */
+        .fx-supernova-flash {
+            animation: fxSupernovaFlash .42s ease forwards;
+        }
+        @keyframes fxSupernovaFlash {
+            0%   { filter: brightness(1); }
+            30%  { filter: brightness(3) saturate(1.5) drop-shadow(0 0 12px #ffd700); }
+            70%  { filter: brightness(2) drop-shadow(0 0 6px #ffd700); }
+            100% { filter: brightness(1); }
+        }
+
+        /* Narrative panel */
+        .match-narrative {
+            min-height: 1.6em;
+            text-align: center;
+            font-size: .875rem;
+            font-weight: 600;
+            color: var(--accent2);
+            letter-spacing: .03em;
+            margin-bottom: .35rem;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity .25s ease, transform .25s ease;
+        }
+        .match-narrative.narrative-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         .site-footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
@@ -689,6 +749,8 @@
             </div>
 
             <div id="match-msg" class="text-sm text-center min-h-[1.4em] mb-2" style="color:#7effd8"></div>
+
+            <div id="match-narrative" class="match-narrative" aria-live="polite"></div>
 
             <div id="match-badge-banner" class="hidden text-center font-bold py-2 px-4 rounded max-w-sm mx-auto mb-2 match-badge-banner"></div>
 
