@@ -1024,18 +1024,19 @@
                 <!-- Quick Contact Form -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
                     <h2 class="text-2xl font-bold text-blue-900 mb-4">Quick Message</h2>
-                    <form id="contact-form" class="flex flex-col gap-4">
+                    <form id="contact-form" action="mailto:gulfnexus@gmail.com" method="post" enctype="text/plain" class="flex flex-col gap-4">
+                        <input type="hidden" name="subject" value="Housing Inquiry - Amazing Grace">
                         <div>
                             <label for="contact-name" class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
-                            <input type="text" id="contact-name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
+                            <input type="text" id="contact-name" name="name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
                         </div>
                         <div>
                             <label for="contact-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
-                            <input type="email" id="contact-email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
+                            <input type="email" id="contact-email" name="email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
                         </div>
                         <div>
                             <label for="contact-message" class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
-                            <textarea id="contact-message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
+                            <textarea id="contact-message" name="message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
                         </div>
                         <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
                             Send Message
