@@ -621,6 +621,7 @@
 </head>
 <body>
 
+<div id="page-content">
 <!-- ═══════════════════════════ HEADER ════════════════════════════ -->
 <header class="site-header">
     <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
@@ -917,6 +918,8 @@
     <a href="mailto:gulfnexus@gmail.com" class="email-link" aria-label="Email gulfnexus@gmail.com">✉️ Email Us</a>
 </div>
 
+</div><!-- /#page-content -->
+
 <script>
     /* ── Mobile nav toggle ── */
     (function () {
@@ -960,13 +963,37 @@
         });
     })();
 
-    /* ── Apply form — supernova success ── */
+    /* ── Apply form — supernova success (with focus trap + inert background) ── */
     (function () {
-        var form    = document.getElementById('apply-form');
-        var overlay = document.getElementById('supernova-overlay');
-        var close   = document.getElementById('nova-close');
+        var form        = document.getElementById('apply-form');
+        var overlay     = document.getElementById('supernova-overlay');
+        var close       = document.getElementById('nova-close');
+        var submitBtn   = document.getElementById('submit-btn');
+        var pageContent = document.getElementById('page-content');
 
-        if (!form || !overlay) return;
+        if (!form || !overlay || !close || !pageContent) return;
+
+        var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        function getFocusable() {
+            return Array.from(overlay.querySelectorAll(FOCUSABLE)).filter(function (el) {
+                return !el.closest('[hidden]') && el.offsetParent !== null;
+            });
+        }
+
+        function openOverlay() {
+            overlay.classList.add('active');
+            pageContent.setAttribute('inert', '');
+            pageContent.setAttribute('aria-hidden', 'true');
+            close.focus();
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            pageContent.removeAttribute('inert');
+            pageContent.removeAttribute('aria-hidden');
+            if (submitBtn) submitBtn.focus();
+        }
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -976,20 +1003,27 @@
                 alert('Please fill in your name and phone number.');
                 return;
             }
-            overlay.classList.add('active');
-            close.focus();
+            openOverlay();
             form.reset();
         });
 
-        close.addEventListener('click', function () {
-            overlay.classList.remove('active');
-            document.getElementById('submit-btn').focus();
-        });
+        close.addEventListener('click', closeOverlay);
 
         overlay.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
-                overlay.classList.remove('active');
-                document.getElementById('submit-btn').focus();
+                closeOverlay();
+                return;
+            }
+            if (e.key === 'Tab') {
+                var focusable = getFocusable();
+                if (!focusable.length) { e.preventDefault(); return; }
+                var first = focusable[0];
+                var last  = focusable[focusable.length - 1];
+                if (e.shiftKey) {
+                    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+                } else {
+                    if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+                }
             }
         });
     })();
