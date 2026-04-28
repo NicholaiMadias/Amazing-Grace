@@ -3,511 +3,1029 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amazing Grace Home Living — faith-based transitional housing, ministry outreach, and community support in Florida.">
-    <meta name="theme-color" content="#1e3a8a">
-
-    <!-- Open Graph -->
+    <meta name="description" content="Affordable rooms for rent in Largo &amp; Tampa, Florida. Clean, safe, move-in ready with flexible residency options. Amazing Grace Home Living.">
+    <meta name="theme-color" content="#4a235a">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Amazing Grace Home Living">
-    <meta property="og:description" content="Faith-based transitional housing, ministry outreach, and community support.">
-    <meta property="og:url" content="https://amazinggracehl.org/">
+    <meta property="og:title" content="Affordable Rooms for Rent — Largo &amp; Tampa | Amazing Grace Home Living">
+    <meta property="og:description" content="Clean, safe, and ready-to-move-in rooms with flexible residency options in Largo &amp; Tampa, FL.">
+    <meta property="og:url" content="https://amazinggracehl.org">
+    <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+    <link rel="manifest" href="./manifest.json">
+    <title>Amazing Grace Home Living — Rooms for Rent in Largo &amp; Tampa, FL</title>
 
-    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-    <title>Amazing Grace Home Living</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap');
 
+        /* ── Design tokens ── */
         :root {
-            --navy: #1e3a8a;
-            --blue: #2563eb;
-            --gold: #d97706;
-            --green: #059669;
-            --bg:   #f3f4f6;
+            --deep-purple: #4a235a;
+            --deep-purple-dark: #2e1038;
+            --deep-purple-light: #6b3780;
+            --gold: #ffd700;
+            --gold-dim: #c9a800;
+            --gold-pale: #fff3b0;
+            --text: #f0e6ff;
+            --text-muted: #b89dc8;
+            --surface: rgba(74, 35, 90, 0.55);
+            --surface-dark: rgba(30, 10, 45, 0.85);
+            --border: rgba(255, 215, 0, 0.25);
+            --radius: 14px;
         }
 
-        /* Reset layout-affecting flex styles so non-game pages render as block */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        @media (prefers-reduced-motion: no-preference) {
+            html { scroll-behavior: smooth; }
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
+            background: var(--deep-purple-dark);
+            color: var(--text);
             min-height: 100vh;
-            align-items: stretch;
+            overflow-x: hidden;
         }
 
-        *:focus-visible { outline: 3px solid #3b82f6; outline-offset: 2px; }
+        /* star-field background (CSS only) */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(107,55,128,0.35) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, rgba(74,35,90,0.45) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, #1a0829 0%, #0d0115 100%);
+            z-index: -2;
+            pointer-events: none;
+        }
 
-        /* ---- Header ---- */
+        /* subtle starburst overlay on sections */
+        .starburst-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .starburst-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('./assets/starburt.png') center/cover no-repeat;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .starburst-overlay > * { position: relative; z-index: 1; }
+
+        /* ── Focus ── */
+        *:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+        /* ── Header ── */
         .site-header {
-            background-color: var(--navy);
-            color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(30,10,45,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 200;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
+            gap: 0.65rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
             font-weight: 700;
             text-decoration: none;
-            color: white;
+            color: var(--gold);
+            letter-spacing: 0.03em;
         }
+        .logo img { height: 34px; width: auto; border-radius: 4px; }
 
-        .logo img { height: 40px; width: auto; border-radius: 4px; }
-
-        .nav-links { display: flex; gap: 0.75rem; }
+        #main-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
 
         .nav-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
+            background: rgba(255,215,0,0.07);
+            border: 1px solid var(--border);
+            padding: 0.45rem 1rem;
             border-radius: 6px;
-            font-size: 0.9rem;
+            text-decoration: none;
+            color: var(--text);
             font-weight: 600;
-            transition: background 0.2s;
+            font-size: 0.85rem;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
         }
-
-        .nav-btn:hover, .nav-btn.active { background: rgba(255,255,255,0.25); }
+        .nav-btn:hover { background: rgba(255,215,0,0.18); border-color: var(--gold); color: var(--gold); }
 
         .menu-toggle {
             display: none;
             background: none;
             border: none;
             font-size: 1.75rem;
-            color: white;
+            color: var(--gold);
             cursor: pointer;
             padding: 0.25rem;
         }
 
-        @media (max-width: 640px) {
-            .nav-links {
+        @media (max-width: 700px) {
+            #main-nav {
                 display: none;
                 flex-direction: column;
                 position: absolute;
                 top: 100%;
-                left: 0;
-                right: 0;
-                background-color: var(--navy);
+                left: 0; right: 0;
+                background: rgba(20,5,35,0.98);
                 padding: 1rem;
-                z-index: 100;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                z-index: 200;
+                border-bottom: 1px solid var(--border);
                 gap: 0.5rem;
             }
-            .nav-links.show { display: flex; }
+            #main-nav.show { display: flex; }
             .menu-toggle { display: block; }
-            .nav-btn { width: 100%; padding: 0.75rem 1rem; }
+            .nav-btn { width: 100%; justify-content: flex-start; padding: 0.75rem 1rem; }
         }
 
-        /* ---- Hero ---- */
+        /* ── Hero ── */
         .hero {
-            background: linear-gradient(135deg, var(--navy) 0%, #1e40af 100%);
-            color: white;
+            padding: 5rem 1.5rem 4rem;
             text-align: center;
-            padding: 4rem 1.5rem 3rem;
+            background: linear-gradient(175deg, rgba(74,35,90,0.9) 0%, rgba(20,5,40,0.95) 100%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
         }
-
-        .hero-icon { font-size: 3.5rem; margin-bottom: 0.75rem; }
-
-        .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 0.75rem;
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('./assets/starburst_sequence.png') center/cover no-repeat;
+            opacity: 0.06;
+            pointer-events: none;
         }
-
-        .hero p {
-            font-size: 1.125rem;
-            opacity: 0.85;
-            max-width: 560px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.6;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            background: var(--green);
-            color: white;
-            font-weight: 700;
-            padding: 0.875rem 2rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
-
-        .btn-primary:hover { background: #047857; }
-
-        .btn-secondary {
-            display: inline-block;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            font-weight: 600;
-            padding: 0.875rem 2rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: background 0.2s;
-        }
-
-        .btn-secondary:hover { background: rgba(255,255,255,0.25); }
-
-        /* ---- Section titles ---- */
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 3vw, 2.25rem);
-            color: var(--navy);
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-sub {
-            text-align: center;
-            color: #6b7280;
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        /* ---- Quick Links ---- */
-        .quick-links {
-            max-width: 900px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .link-card {
-            display: flex;
-            flex-direction: column;
+        .hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 2rem 1.25rem;
+            background: rgba(255,215,0,0.12);
+            border: 1px solid rgba(255,215,0,0.4);
+            border-radius: 999px;
+            padding: 0.35rem 1rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.6rem, 4.5vw, 3rem);
+            font-weight: 900;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(255,215,0,0.25);
+        }
+        .hero h1 span { color: var(--gold); }
+        .hero-sub {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+        .hero-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* ── Buttons ── */
+        .btn-primary {
+            background: var(--gold);
+            color: var(--deep-purple-dark);
+            border: 2px solid var(--gold);
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
             text-decoration: none;
-            color: var(--navy);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,215,0,0.4); }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
             font-weight: 700;
             font-size: 1rem;
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
-        }
-
-        .link-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(30,58,138,0.12);
-            border-color: var(--blue);
-        }
-
-        .link-card-icon { font-size: 2rem; }
-        .link-card-desc { font-size: 0.8rem; color: #6b7280; font-weight: 400; }
-
-        /* ---- Properties preview ---- */
-        #properties {
-            background: white;
-            padding: 3rem 1.5rem;
-        }
-
-        .prop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .prop-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #f9fafb;
-            transition: box-shadow 0.2s;
-        }
-
-        .prop-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
-
-        .prop-card-body { padding: 1.25rem; }
-
-        .prop-card h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--navy);
-            font-size: 1.1rem;
-            margin: 0 0 0.35rem;
-        }
-
-        .prop-card p { font-size: 0.875rem; color: #6b7280; margin: 0 0 1rem; }
-
-        .prop-card a {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
+            cursor: pointer;
             text-decoration: none;
-            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .btn-outline:hover { background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+
+        /* ── Sticky contact bar (mobile) ── */
+        .sticky-contact {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 300;
+            background: var(--deep-purple-dark);
+            border-top: 2px solid var(--gold);
+            padding: 0.65rem 1rem;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.5);
+        }
+        .sticky-contact a {
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+            background: var(--gold);
+            color: var(--deep-purple-dark);
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 0.6rem 0.75rem;
+            border-radius: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+        .sticky-contact a.email-link {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+        @media (max-width: 700px) {
+            .sticky-contact { display: flex; }
+            body { padding-bottom: 72px; }
+        }
+
+        /* ── Section layout ── */
+        .section { padding: 4rem 1.5rem; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-alt { background: rgba(74,35,90,0.22); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+        .section-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            max-width: 640px;
+        }
+
+        /* ── Contact section ── */
+        .contact-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+        .contact-card {
+            flex: 1;
+            min-width: 240px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(255,215,0,0.15); }
+        .contact-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(255,215,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .contact-value { font-size: 1.15rem; font-weight: 700; color: #fff; }
+
+        /* ── Listings / Gallery ── */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .listing-card {
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+        .listing-card:hover,
+        .listing-card:focus-visible {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(255,215,0,0.18);
+        }
+        .listing-card.focused { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold); }
+
+        .listing-img-wrap {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #2e1038, #4a235a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .listing-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.3s;
+        }
+        .listing-card:hover .listing-img-wrap img,
+        .listing-card:focus-visible .listing-img-wrap img { transform: scale(1.04); }
+
+        .listing-price-badge {
+            position: absolute;
+            top: 0.75rem; right: 0.75rem;
+            background: var(--gold);
+            color: var(--deep-purple-dark);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        .listing-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+        .listing-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            line-height: 1.35;
+        }
+        .listing-location { font-size: 0.83rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; }
+
+        /* star crystal amenity badges */
+        .amenity-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .amenity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,215,0,0.07);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 999px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            transition: background 0.2s;
+            color: var(--gold-pale);
+            white-space: nowrap;
+        }
+        .amenity-badge img { width: 18px; height: 18px; }
+
+        .listing-actions { margin-top: auto; display: flex; gap: 0.6rem; }
+        .btn-sm {
+            flex: 1;
+            padding: 0.55rem 0.75rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .btn-sm-gold { background: var(--gold); color: var(--deep-purple-dark); }
+        .btn-sm-gold:hover { background: var(--gold-pale); transform: scale(1.03); }
+        .btn-sm-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-muted); }
+        .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+        /* ── Keyboard hint ── */
+        .kbd-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .kbd {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: var(--gold);
         }
 
-        .prop-card a:hover { background: #1d4ed8; }
-
-        /* ---- Contact ---- */
-        #contact {
-            padding: 3.5rem 1.5rem;
-            background: var(--bg);
+        /* ── Pricing section ── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
         }
+        .pricing-card {
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 1.5rem;
+            text-align: center;
+        }
+        .pricing-card.featured {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(255,215,0,0.12);
+        }
+        .pricing-price {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+            margin: 0.75rem 0 0.25rem;
+        }
+        .pricing-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+        .pricing-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
 
-        .contact-wrap {
-            max-width: 600px;
+        .logistics-box {
+            background: rgba(74,35,90,0.4);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 2rem;
+            margin-top: 2rem;
+        }
+        .logistics-box h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+        .logistics-box p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .logistics-box p strong { color: var(--gold-pale); }
+
+        /* ── Apply form ── */
+        .apply-form {
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            max-width: 680px;
             margin: 0 auto;
         }
-
-        .contact-form {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            width: 100%;
-            box-sizing: border-box;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.35rem;
-            color: #374151;
-        }
-
+        @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+        .form-group label { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.07em; }
         .form-group input,
         .form-group select,
         .form-group textarea {
-            width: 100%;
-            border: 1.5px solid #d1d5db;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 0.65rem 0.875rem;
+            color: #fff;
+            padding: 0.65rem 0.9rem;
             font-size: 0.95rem;
             font-family: inherit;
             transition: border-color 0.2s;
-            box-sizing: border-box;
+            width: 100%;
         }
-
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--blue);
-        }
-
-        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group textarea:focus { border-color: var(--gold); outline: none; }
+        .form-group textarea { resize: vertical; min-height: 90px; }
+        .form-group select option { background: #2e1038; }
 
         .form-submit {
-            width: 100%;
-            background: var(--green);
-            color: white;
-            border: none;
-            padding: 0.875rem;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .form-submit:hover { background: #047857; }
-
-        /* ---- Main / Footer ---- */
-        main { flex: 1; }
-
-        .site-footer {
-            background: #1f2937;
-            color: #9ca3af;
+            margin-top: 1.5rem;
             text-align: center;
-            padding: 1.5rem;
-            font-size: 0.875rem;
         }
 
-        .site-footer a { color: #d1d5db; text-decoration: none; }
-        .site-footer a:hover { text-decoration: underline; }
+        /* ── Supernova success overlay ── */
+        #supernova-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(10,0,20,0.88);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+            padding: 2rem;
+        }
+        #supernova-overlay.active { display: flex; }
+        .supernova-anim {
+            width: 140px;
+            height: 140px;
+            animation: novaExpand 0.7s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes novaExpand {
+            from { transform: scale(0.2) rotate(-30deg); opacity: 0; }
+            to   { transform: scale(1)   rotate(0deg);   opacity: 1; }
+        }
+        .supernova-ring {
+            animation: novaRing 1.4s ease-out 0.4s both;
+            position: absolute;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+        }
+        @keyframes novaRing {
+            from { transform: scale(0.5); opacity: 0.8; }
+            to   { transform: scale(2.5); opacity: 0; }
+        }
+        #supernova-overlay h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--gold);
+        }
+        #supernova-overlay p { color: var(--text-muted); max-width: 400px; }
+
+        /* ── Footer ── */
+        .site-footer {
+            background: rgba(10,0,20,0.9);
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1rem 0; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { color: var(--text-muted); font-size: 0.78rem; margin-top: 1rem; }
+        .footer-copy a { color: var(--gold-dim); text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="site-header">
-        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
-            <img src="assets/logo.svg" alt="Amazing Grace Home Living Logo">
-            <span>Amazing Grace</span>
-        </a>
+<div id="page-content">
+<!-- ═══════════════════════════ HEADER ════════════════════════════ -->
+<header class="site-header">
+    <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+        <img src="/assets/logo.svg" alt="Amazing Grace Logo">
+        Amazing Grace
+    </a>
+    <nav id="main-nav" aria-label="Main navigation">
+        <a href="/" class="nav-btn">🏠 Home</a>
+        <a href="#listings" class="nav-btn">🏘️ Listings</a>
+        <a href="#pricing" class="nav-btn">💰 Pricing</a>
+        <a href="#apply" class="nav-btn">✅ Apply</a>
+        <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+        <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+</header>
 
-        <nav id="main-nav" class="nav-links" aria-label="Main navigation">
-            <a href="/" class="nav-btn active" aria-current="page">🏠 Home</a>
-            <a href="/arcade" class="nav-btn">🎮 Arcade</a>
-            <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
-            <a href="/listings" class="nav-btn">🏘️ Listings</a>
-            <a href="#contact" class="nav-btn">✉️ Contact</a>
-        </nav>
+<!-- ═══════════════════════════ HERO ══════════════════════════════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">
+            <img src="/assets/star_crystal_gold.svg" alt="" width="18" height="18">
+            Largo &amp; Tampa, Florida
+        </div>
+        <h1>Affordable Rooms for Rent in <span>Largo &amp; Tampa, Florida.</span></h1>
+        <p class="hero-sub">Clean, safe, and ready-to-move-in rooms with flexible residency options.</p>
+        <div class="hero-cta-row">
+            <a href="tel:7274202873" class="btn-primary">📞 Call/Text: (727) 420-2873</a>
+            <a href="#apply" class="btn-outline">✅ Check Availability</a>
+        </div>
+    </div>
+</section>
 
-        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
-    </header>
+<!-- ═══════════════════════ CONTACT SECTION ══════════════════════ -->
+<section class="section starburst-overlay" id="contact">
+    <div class="section-inner">
+        <h2 class="section-heading">📡 Contact Us Directly</h2>
+        <p class="section-sub">Reach us anytime — we respond fast.</p>
+        <div class="contact-cards">
+            <a href="tel:7274202873" class="contact-card" aria-label="Call or text (727) 420-2873">
+                <div class="contact-icon">📞</div>
+                <div>
+                    <div class="contact-label">Call / Text</div>
+                    <div class="contact-value">(727) 420-2873</div>
+                </div>
+            </a>
+            <a href="mailto:gulfnexus@gmail.com" class="contact-card" aria-label="Email gulfnexus@gmail.com">
+                <div class="contact-icon">✉️</div>
+                <div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">gulfnexus@gmail.com</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
 
-    <main>
+<!-- ══════════════════════ LISTINGS GALLERY ══════════════════════ -->
+<section class="section section-alt starburst-overlay" id="listings">
+    <div class="section-inner">
+        <h2 class="section-heading">🏘️ Available Rooms</h2>
+        <p class="section-sub">Rooms available in Largo and Tampa. Use Arrow keys + Space/Enter to navigate.</p>
+        <p class="kbd-hint" aria-hidden="true">
+            Navigate: <kbd class="kbd">←</kbd><kbd class="kbd">→</kbd>
+            &nbsp;Select: <kbd class="kbd">Space</kbd> / <kbd class="kbd">Enter</kbd>
+        </p>
+        <div class="listings-grid" id="listings-grid" role="list" aria-label="Available rooms">
 
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero-icon">🕊️</div>
-            <h1>Amazing Grace Home Living</h1>
-            <p>
-                Faith-based transitional housing and community outreach — providing stable, supportive homes
-                and ministry in Florida.
-            </p>
-            <div class="hero-actions">
-                <a href="#properties" class="btn-primary">��️ View Properties</a>
-                <a href="/ministry" class="btn-secondary">🕊️ Ministry</a>
-            </div>
-        </section>
-
-        <!-- Quick Links -->
-        <section class="quick-links" aria-labelledby="ql-title">
-            <h2 class="section-title" id="ql-title">Explore Our Mission</h2>
-            <p class="section-sub">Housing, ministry, games, and community — all in one place.</p>
-            <div class="links-grid">
-                <a href="/listings" class="link-card">
-                    <span class="link-card-icon">🏘️</span>
-                    <span>Listings</span>
-                    <span class="link-card-desc">Browse available transitional homes</span>
-                </a>
-                <a href="/ministry" class="link-card">
-                    <span class="link-card-icon">🕊️</span>
-                    <span>Ministry</span>
-                    <span class="link-card-desc">Voice of Jesus outreach &amp; stories</span>
-                </a>
-                <a href="/arcade" class="link-card">
-                    <span class="link-card-icon">🎮</span>
-                    <span>Arcade</span>
-                    <span class="link-card-desc">Faith-based interactive games</span>
-                </a>
-                <a href="/support" class="link-card">
-                    <span class="link-card-icon">🤝</span>
-                    <span>Support</span>
-                    <span class="link-card-desc">Partner with our mission</span>
-                </a>
-            </div>
-        </section>
-
-        <!-- Properties Preview -->
-        <section id="properties" aria-labelledby="prop-title">
-            <div style="max-width:900px;margin:0 auto;padding:0 1.5rem;">
-                <h2 class="section-title" id="prop-title">Available Properties</h2>
-                <p class="section-sub">Comfortable, supportive transitional housing options across Florida.</p>
-                <div class="prop-grid">
-                    <div class="prop-card">
-                        <div class="prop-card-body">
-                            <h3>Grace Manor</h3>
-                            <p>Spacious 4-bed transitional home with full support services and community programming.</p>
-                            <a href="/listings/grace-manor">View Details →</a>
-                        </div>
+            <!-- Card 1 — 1144 7th St NW, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="1144 7th St NW, Largo — $1,000/mo" data-href="/galleries/1144-7th-street/">
+                <div class="listing-img-wrap">
+                    <span aria-hidden="true">🏠</span>
+                    <div class="listing-price-badge">$1,000/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">1144 7th St NW, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Wi-Fi</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Shared Kitchen</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Furnished</span>
                     </div>
-                    <div class="prop-card">
-                        <div class="prop-card-body">
-                            <h3>1142 7th Street</h3>
-                            <p>3-bed residence near community resources, ideal for individuals in transition.</p>
-                            <a href="/galleries/1142-7th-street">View Gallery →</a>
-                        </div>
-                    </div>
-                    <div class="prop-card">
-                        <div class="prop-card-body">
-                            <h3>See All Listings</h3>
-                            <p>Browse all available Amazing Grace transitional housing properties in Florida.</p>
-                            <a href="/listings">Browse All →</a>
-                        </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/1144-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
                     </div>
                 </div>
+            </article>
+
+            <!-- Card 2 — 1142 7th St NW, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="1142 7th St NW, Largo — $950/mo" data-href="/galleries/1142-7th-street/">
+                <div class="listing-img-wrap">
+                    <span aria-hidden="true">🏡</span>
+                    <div class="listing-price-badge">$950/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">1142 7th St NW, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Cable TV</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Parking</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Laundry</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/1142-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3 — 926 Poinsettia, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="926 Poinsettia Ave, Largo — $900/mo" data-href="/galleries/926-poinsettia/">
+                <div class="listing-img-wrap">
+                    <span aria-hidden="true">🏘️</span>
+                    <div class="listing-price-badge">$900/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">926 Poinsettia Ave, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Quiet Area</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/926-poinsettia/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 4 — Tampa Property -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="Tampa Property — $975/mo" data-href="/galleries/tampa-property/">
+                <div class="listing-img-wrap">
+                    <span aria-hidden="true">🌆</span>
+                    <div class="listing-price-badge">$975/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">Tampa Property</h3>
+                    <p class="listing-location">📍 Tampa, FL</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Near Transit</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_red.svg" alt="">Move-In Ready</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Wi-Fi</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/tampa-property/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═════════════════════ PRICING & LOGISTICS ════════════════════ -->
+<section class="section starburst-overlay" id="pricing">
+    <div class="section-inner">
+        <h2 class="section-heading">💰 Pricing &amp; Logistics</h2>
+        <p class="section-sub">Transparent, all-inclusive pricing with no hidden fees.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div style="font-size:2rem">🏠</div>
+                <div class="pricing-price">$900</div>
+                <div class="pricing-label">/ month · Standard Room</div>
+                <p class="pricing-note">Shared kitchen, utilities included. Available at Largo properties.</p>
             </div>
-        </section>
-
-        <!-- Contact -->
-        <section id="contact" aria-labelledby="contact-title">
-            <div class="contact-wrap">
-                <h2 class="section-title" id="contact-title">✉️ Get in Touch</h2>
-                <p class="section-sub">
-                    Questions about housing, ministry partnerships, or how to get involved? Reach out below.
-                </p>
-                <form class="contact-form"
-                      action="mailto:gulfnexus@gmail.com"
-                      method="get"
-                      enctype="text/plain"
-                      aria-label="Contact form">
-                    <div class="form-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" name="name" placeholder="Full name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-email">Email Address</label>
-                        <input type="email" id="contact-email" name="email" placeholder="you@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-subject">Subject</label>
-                        <select id="contact-subject" name="subject">
-                            <option value="Housing Inquiry">Housing Inquiry</option>
-                            <option value="Ministry Partnership">Ministry Partnership</option>
-                            <option value="Volunteer">Volunteer</option>
-                            <option value="General Question">General Question</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="body" placeholder="How can we help?"></textarea>
-                    </div>
-                    <button type="submit" class="form-submit">Send Message ✉️</button>
-                </form>
+            <div class="pricing-card featured">
+                <div style="font-size:2rem"><img src="/assets/star_crystal_gold.svg" alt="" width="32" height="32"></div>
+                <div class="pricing-price">$1,000</div>
+                <div class="pricing-label">/ month · Milestone Rate (1144)</div>
+                <p class="pricing-note">Affordability milestone unit at 1144 7th St NW. See logistics note below.</p>
             </div>
-        </section>
+            <div class="pricing-card">
+                <div style="font-size:2rem">🌆</div>
+                <div class="pricing-price">$975</div>
+                <div class="pricing-label">/ month · Tampa Room</div>
+                <p class="pricing-note">Move-in ready room near public transit in Tampa. All-inclusive.</p>
+            </div>
+        </div>
 
-    </main>
+        <div class="logistics-box">
+            <h3>⚙️ 1144 Capacity &amp; Affordability Note</h3>
+            <p>
+                We are <strong>currently optimizing unit capacity to 1144</strong> to maintain a
+                <strong>$1,000/mo affordability milestone</strong> for our residents.
+                The 1144 pricing adjustment reflects our ongoing commitment to keeping housing accessible
+                in the Largo area. As we reach full operational capacity at this address, residents benefit
+                from reduced overhead shared across the unit — locking in the $1,000/mo rate as a long-term
+                affordability baseline. All utilities, Wi-Fi, and common-area maintenance are included.
+            </p>
+        </div>
 
-    <footer class="site-footer">
-        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
-    </footer>
+        <div class="logistics-box" style="margin-top:1rem">
+            <h3>📋 Move-In Requirements</h3>
+            <p>
+                <strong>First month + security deposit</strong> required at move-in.
+                Flexible payment options available. No long-term lease required —
+                month-to-month residency available. <strong>Background check</strong> may be requested.
+                Call <strong>(727) 420-2873</strong> or email <strong>gulfnexus@gmail.com</strong> to
+                schedule a viewing.
+            </p>
+        </div>
+    </div>
+</section>
 
-    <script>
-        (function () {
-            var toggle = document.querySelector('.menu-toggle');
-            var nav = document.getElementById('main-nav');
-            if (toggle && nav) {
-                toggle.addEventListener('click', function () {
-                    var isExpanded = nav.classList.toggle('show');
-                    toggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-                });
+<!-- ═══════════════════════ APPLY NOW FORM ════════════════════════ -->
+<section class="section section-alt starburst-overlay" id="apply">
+    <div class="section-inner">
+        <h2 class="section-heading">✅ Apply Now</h2>
+        <p class="section-sub">Submit your interest and we'll get back to you within 24 hours.</p>
+        <form class="apply-form" id="apply-form" novalidate aria-label="Room application form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="f-name">Full Name *</label>
+                    <input type="text" id="f-name" name="name" placeholder="Jane Smith" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="f-phone">Phone / Text *</label>
+                    <input type="tel" id="f-phone" name="phone" placeholder="(727) 000-0000" required autocomplete="tel">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="f-email">Email Address</label>
+                    <input type="email" id="f-email" name="email" placeholder="you@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="f-property">Property of Interest</label>
+                    <select id="f-property" name="property">
+                        <option value="">— Select a property —</option>
+                        <option value="1144-largo">1144 7th St NW, Largo ($1,000/mo)</option>
+                        <option value="1142-largo">1142 7th St NW, Largo ($950/mo)</option>
+                        <option value="926-largo">926 Poinsettia Ave, Largo ($900/mo)</option>
+                        <option value="tampa">Tampa Property ($975/mo)</option>
+                        <option value="any">Any available room</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label for="f-message">Message (optional)</label>
+                <textarea id="f-message" name="message" placeholder="Move-in date, any questions..."></textarea>
+            </div>
+            <div class="form-submit">
+                <button type="submit" class="btn-primary" id="submit-btn">
+                    <img src="/assets/star_crystal_gold.svg" alt="" width="20" height="20">
+                    Submit Application
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- ═══════════════════ SUPERNOVA SUCCESS OVERLAY ═════════════════ -->
+<div id="supernova-overlay" role="dialog" aria-modal="true" aria-labelledby="nova-title" aria-describedby="nova-desc">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+        <div class="supernova-ring" aria-hidden="true"></div>
+        <img src="/assets/supernova_explosion.svg" alt="Success!" class="supernova-anim">
+    </div>
+    <h2 id="nova-title">Application Sent! ✨</h2>
+    <p id="nova-desc">Thank you! We'll reach out within 24 hours.<br>Questions? Call <strong>(727) 420-2873</strong> or email <strong>gulfnexus@gmail.com</strong>.</p>
+    <button class="btn-primary" id="nova-close" style="margin-top:1rem">Close</button>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-logo">⭐ Amazing Grace Home Living</div>
+        <div class="footer-links">
+            <a href="#listings">Listings</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#apply">Apply Now</a>
+            <a href="tel:7274202873">📞 (727) 420-2873</a>
+            <a href="mailto:gulfnexus@gmail.com">✉️ gulfnexus@gmail.com</a>
+            <a href="/arcade">🎮 Arcade</a>
+            <a href="/ministry">🕊️ Ministry</a>
+        </div>
+        <p class="footer-copy">
+            &copy; 2026 Amazing Grace Home Living &mdash;
+            <a href="https://amazinggracehl.org">amazinggracehl.org</a> &mdash;
+            Serving Largo &amp; Tampa, FL
+        </p>
+    </div>
+</footer>
+
+<!-- ══════════════ STICKY MOBILE CONTACT BAR ══════════════════════ -->
+<div class="sticky-contact" aria-label="Quick contact" role="complementary">
+    <a href="tel:7274202873" aria-label="Call or text (727) 420-2873">📞 (727) 420-2873</a>
+    <a href="mailto:gulfnexus@gmail.com" class="email-link" aria-label="Email gulfnexus@gmail.com">✉️ Email Us</a>
+</div>
+
+</div><!-- /#page-content -->
+
+<script>
+    /* ── Mobile nav toggle ── */
+    (function () {
+        var toggle = document.querySelector('.menu-toggle');
+        var nav    = document.getElementById('main-nav');
+        if (!toggle || !nav) return;
+        toggle.addEventListener('click', function () {
+            var expanded = nav.classList.toggle('show');
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        });
+        document.addEventListener('click', function (e) {
+            if (nav.classList.contains('show') && !nav.contains(e.target) && e.target !== toggle) {
+                nav.classList.remove('show');
+                toggle.setAttribute('aria-expanded', 'false');
             }
-        })();
-    </script>
+        });
+    })();
+
+    /* ── Keyboard/Spacebar gallery navigation ── */
+    (function () {
+        var grid  = document.getElementById('listings-grid');
+        var cards = Array.from(grid.querySelectorAll('.listing-card'));
+        if (!cards.length) return;
+
+        cards.forEach(function (card, idx) {
+            card.addEventListener('keydown', function (e) {
+                var next;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    next = cards[(idx + 1) % cards.length];
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    next = cards[(idx - 1 + cards.length) % cards.length];
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    var href = card.dataset.href;
+                    if (href) window.location.href = href;
+                }
+                if (next) next.focus();
+            });
+        });
+    })();
+
+    /* ── Apply form — supernova success (with focus trap + inert background) ── */
+    (function () {
+        var form        = document.getElementById('apply-form');
+        var overlay     = document.getElementById('supernova-overlay');
+        var close       = document.getElementById('nova-close');
+        var submitBtn   = document.getElementById('submit-btn');
+        var pageContent = document.getElementById('page-content');
+
+        if (!form || !overlay || !close || !pageContent) return;
+
+        var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        function getFocusable() {
+            return Array.from(overlay.querySelectorAll(FOCUSABLE)).filter(function (el) {
+                return !el.closest('[hidden]') && el.offsetParent !== null;
+            });
+        }
+
+        function openOverlay() {
+            overlay.classList.add('active');
+            pageContent.setAttribute('inert', '');
+            pageContent.setAttribute('aria-hidden', 'true');
+            close.focus();
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            pageContent.removeAttribute('inert');
+            pageContent.removeAttribute('aria-hidden');
+            if (submitBtn) submitBtn.focus();
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var name  = form.querySelector('#f-name').value.trim();
+            var phone = form.querySelector('#f-phone').value.trim();
+            if (!name || !phone) {
+                alert('Please fill in your name and phone number.');
+                return;
+            }
+            openOverlay();
+            form.reset();
+        });
+
+        close.addEventListener('click', closeOverlay);
+
+        overlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeOverlay();
+                return;
+            }
+            if (e.key === 'Tab') {
+                var focusable = getFocusable();
+                if (!focusable.length) { e.preventDefault(); return; }
+                var first = focusable[0];
+                var last  = focusable[focusable.length - 1];
+                if (e.shiftKey) {
+                    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+                } else {
+                    if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+                }
+            }
+        });
+    })();
+</script>
 </body>
 </html>
