@@ -713,6 +713,14 @@
                     <option value="slot3">Slot 3</option>
                 </select>
             </div>
+
+            <!-- Star Progress Map -->
+            <div id="star-map-container" class="mx-auto mt-4" style="max-width:560px;background:var(--surface);border-radius:0.75rem;border:1px solid var(--border);" aria-label="Star progress map"></div>
+
+            <!-- Certificates link -->
+            <div class="text-center mt-3">
+                <a href="/arcade/certificates/" style="font-size:0.75rem;color:var(--text-muted);text-decoration:none;">📜 My Certificates</a>
+            </div>
         </div>
 
     </main>
@@ -721,6 +729,22 @@
     <footer class="site-footer">
         <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
     </footer>
+
+    <!-- Star map module (updates on level completion) -->
+    <script>
+        (function () {
+            function refreshStarMap() {
+                import('/star-map.js').then(function (m) {
+                    var container = document.getElementById('star-map-container');
+                    if (container) m.renderStarMap(container);
+                }).catch(function (err) { console.warn('[star-map] Failed to load star-map.js:', err); });
+            }
+
+            refreshStarMap();
+            document.addEventListener('matchmaker-level-complete', refreshStarMap);
+            document.addEventListener('matchmakerComplete', refreshStarMap);
+        })();
+    </script>
 
     <script>
         // ── Mobile menu toggle ──────────────────────────────────────────
