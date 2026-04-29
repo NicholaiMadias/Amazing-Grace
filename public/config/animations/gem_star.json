@@ -4,5 +4,5 @@
   "frameRate": 0,
   "loop": false,
   "glow": 0.8,
-  "spritePath": "/assets/stars/gem/frame_"
+  "spritePath": "/assets/icons/gem_frame_"
 }

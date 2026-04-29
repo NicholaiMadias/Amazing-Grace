@@ -4,5 +4,5 @@
   "frameRate": 10,
   "loop": true,
   "glow": 1.2,
-  "spritePath": "/assets/stars/cosmic/frame_"
+  "spritePath": "/assets/icons/cosmic_frame_"
 }

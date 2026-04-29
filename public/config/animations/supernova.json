@@ -5,5 +5,5 @@
   "loop": false,
   "glow": 1.4,
   "burstParticles": 32,
-  "spritePath": "/assets/stars/supernova/frame_"
+  "spritePath": "/assets/icons/supernova_frame_"
 }
