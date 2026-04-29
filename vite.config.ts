@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         main:              resolve(__dirname, "index.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
+        arcadeCertificates: resolve(__dirname, "arcade/certificates/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
         ministries:        resolve(__dirname, "ministries/index.html"),
         stories:           resolve(__dirname, "stories/index.html"),
@@ -18,8 +19,6 @@ export default defineConfig({
         gallery926:        resolve(__dirname, "galleries/926-poinsettia/index.html"),
         galleryTampa:      resolve(__dirname, "galleries/tampa-property/index.html"),
         galleryMinistry:   resolve(__dirname, "galleries/ministry/index.html"),
-        listings:          resolve(__dirname, "listings/index.html"),
-        listingsGraceManor: resolve(__dirname, "listings/grace-manor/index.html"),
       }
     }
   }

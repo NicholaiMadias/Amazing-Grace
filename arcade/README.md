@@ -1,2 +1,0 @@
-# arcade
-Gamified Learning Arcade
