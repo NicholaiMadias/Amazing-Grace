@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Amazing Grace Nexus Arcade — play Seven Stars and Match Maker, interactive faith-based games from Amazing Grace Home Living.">
+    <meta name="description" content="The Amazing Grace Nexus Arcade — play Seven Stars, Match Maker, and Matrix of Conscience, interactive faith-based games from Amazing Grace Home Living.">
     <meta name="theme-color" content="#0f172a">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Nexus Arcade — Amazing Grace Home Living">
-    <meta property="og:description" content="Play Seven Stars and Match Maker at the Amazing Grace Nexus Arcade.">
+    <meta property="og:description" content="Play Seven Stars, Match Maker, and Matrix of Conscience at the Amazing Grace Nexus Arcade.">
     <meta property="og:url" content="https://amazinggracehl.org/arcade">
 
     <link rel="icon" type="image/png" href="/assets/logo.png">
@@ -204,8 +204,11 @@
             transition: opacity 0.3s;
             pointer-events: none;
         }
-        .game-card.card-stars::before  { background: radial-gradient(circle at 30% 20%, rgba(255,215,0,0.12), transparent 60%); }
-        .game-card.card-match::before  { background: radial-gradient(circle at 30% 20%, rgba(126,255,216,0.12), transparent 60%); }
+        .game-card.card-stars::before   { background: radial-gradient(circle at 30% 20%, rgba(255,215,0,0.12), transparent 60%); }
+        .game-card.card-match::before   { background: radial-gradient(circle at 30% 20%, rgba(126,255,216,0.12), transparent 60%); }
+        .game-card.card-matrix::before  { background: radial-gradient(circle at 30% 20%, rgba(167,139,250,0.12), transparent 60%); }
+        .badge-violet { background: rgba(167,139,250,0.12); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+        .play-btn-violet { background: #a78bfa; color: #1a1035; }
         .game-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: var(--accent); }
         .game-card:hover::before { opacity: 1; }
 
@@ -649,6 +652,15 @@
                     <div class="game-card-desc">Swap and match virtuous gems on a 7×7 board. Unlock special tiles, build combos, and grow your Conscience Meter.</div>
                     <span class="game-card-badge badge-teal">Gem Puzzle</span>
                     <button class="play-btn play-btn-teal" tabindex="-1">▶ Play Now</button>
+                </div>
+
+                <!-- Matrix of Conscience Card -->
+                <div class="game-card card-matrix" role="button" tabindex="0" aria-label="Play Matrix of Conscience" onclick="location.href='/arcade/matrix-of-conscience/'" onkeydown="if(event.key==='Enter'||event.key===' ')location.href='/arcade/matrix-of-conscience/'">
+                    <div class="game-card-icon">🧠</div>
+                    <div class="game-card-title">Matrix of Conscience</div>
+                    <div class="game-card-desc">Navigate nine moral crossroads from the Star Matrix journey. Your choices shape four conscience dimensions and reveal your Conscience Archetype.</div>
+                    <span class="game-card-badge badge-violet">Moral Choice</span>
+                    <button class="play-btn play-btn-violet" tabindex="-1">▶ Play Now</button>
                 </div>
 
             </div>
