@@ -77,6 +77,16 @@
       position: relative;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      /* button reset */
+      padding: 0;
+      font-family: inherit;
+      line-height: 1;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .star-cell:focus-visible {
+      outline: 2px solid var(--neon-blue);
+      outline-offset: 2px;
     }
     .star-cell.selected {
       border-color: var(--neon-blue);
@@ -323,7 +333,8 @@
       for (let r = 0; r < GRID_SIZE; r++) {
         for (let c = 0; c < GRID_SIZE; c++) {
           const star = board[r][c];
-          const cell = document.createElement('div');
+          const cell = document.createElement('button');
+          cell.type = 'button';
           cell.className = 'star-cell' + (selected && selected.r === r && selected.c === c ? ' selected' : '');
           cell.setAttribute('data-type', star ? star.id : '');
           cell.setAttribute('role', 'gridcell');
