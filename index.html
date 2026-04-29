@@ -157,9 +157,9 @@
 
         /* ── Hero ── */
         .hero {
-            padding: 5rem 1.5rem 4rem;
+            padding: 5.5rem 1.5rem 4.5rem;
             text-align: center;
-            background: linear-gradient(175deg, rgba(74,35,90,0.9) 0%, rgba(20,5,40,0.95) 100%);
+            background: linear-gradient(160deg, rgba(80, 20, 110, 0.85) 0%, rgba(15, 4, 30, 0.97) 100%);
             border-bottom: 1px solid var(--border);
             position: relative;
             overflow: hidden;
@@ -172,21 +172,30 @@
             opacity: 0.06;
             pointer-events: none;
         }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; left: 50%; transform: translateX(-50%);
+            width: 600px; height: 120px;
+            background: radial-gradient(ellipse, rgba(140, 60, 220, 0.25) 0%, transparent 70%);
+            pointer-events: none;
+        }
         .hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255,215,0,0.12);
-            border: 1px solid rgba(255,215,0,0.4);
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.5);
             border-radius: 999px;
-            padding: 0.35rem 1rem;
+            padding: 0.38rem 1.1rem;
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--gold);
             margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(255,215,0,0.1);
         }
         .hero h1 {
             font-family: 'Orbitron', sans-serif;
@@ -195,7 +204,7 @@
             line-height: 1.2;
             color: #fff;
             margin-bottom: 1rem;
-            text-shadow: 0 0 30px rgba(255,215,0,0.25);
+            text-shadow: 0 0 40px rgba(180, 80, 255, 0.3), 0 0 80px rgba(255,215,0,0.1);
         }
         .hero h1 span { color: var(--gold); }
         .hero-sub {
@@ -214,11 +223,11 @@
 
         /* ── Buttons ── */
         .btn-primary {
-            background: var(--gold);
-            color: var(--deep-purple-dark);
-            border: 2px solid var(--gold);
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius);
+            background: linear-gradient(135deg, #ffd700, #f5a000);
+            color: #1a0535;
+            border: none;
+            padding: 0.82rem 2.2rem;
+            border-radius: 999px;
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
@@ -227,16 +236,18 @@
             align-items: center;
             gap: 0.5rem;
             transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+            letter-spacing: 0.01em;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,215,0,0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(255,215,0,0.55); }
         .btn-primary:active { transform: scale(0.97); }
 
         .btn-outline {
-            background: transparent;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            padding: 0.75rem 2rem;
-            border-radius: var(--radius);
+            background: rgba(180, 80, 255, 0.1);
+            color: #e8c8ff;
+            border: 2px solid rgba(180, 80, 255, 0.5);
+            padding: 0.82rem 2.2rem;
+            border-radius: 999px;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
@@ -244,9 +255,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: background 0.2s, transform 0.2s;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
         }
-        .btn-outline:hover { background: rgba(255,215,0,0.1); transform: translateY(-2px); }
+        .btn-outline:hover {
+            background: rgba(180, 80, 255, 0.2);
+            border-color: rgba(180, 80, 255, 0.8);
+            transform: translateY(-3px);
+        }
 
         /* ── Sticky contact bar (mobile) ── */
         .sticky-contact {
@@ -348,94 +363,113 @@
         .listings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            gap: 1.75rem;
         }
 
         .listing-card {
-            background: var(--surface-dark);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            background: rgba(15, 8, 30, 0.85);
+            border: 1px solid rgba(120, 70, 180, 0.3);
+            border-radius: 18px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
             outline: none;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
         }
         .listing-card:hover,
         .listing-card:focus-visible {
             border-color: var(--gold);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 40px rgba(255,215,0,0.18);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(255,215,0,0.2);
         }
         .listing-card.focused { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold); }
 
         .listing-img-wrap {
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, #2e1038, #4a235a);
+            background: linear-gradient(135deg, #1a0535, #2e1550);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 0.75rem;
+            color: #64748b;
             position: relative;
             overflow: hidden;
         }
         .listing-img-wrap img {
             width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 0.3s;
+            transition: transform 0.4s ease;
         }
         .listing-card:hover .listing-img-wrap img,
-        .listing-card:focus-visible .listing-img-wrap img { transform: scale(1.04); }
+        .listing-card:focus-visible .listing-img-wrap img { transform: scale(1.06); }
 
         .listing-price-badge {
             position: absolute;
             top: 0.75rem; right: 0.75rem;
-            background: var(--gold);
-            color: var(--deep-purple-dark);
+            background: linear-gradient(135deg, #ffd700, #f5a000);
+            color: #1a0535;
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            font-size: 0.9rem;
-            padding: 0.3rem 0.75rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+            font-size: 0.85rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            box-shadow: 0 2px 12px rgba(255,215,0,0.5);
+            letter-spacing: 0.03em;
         }
 
-        .listing-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+        .listing-badge-avail {
+            position: absolute;
+            top: 0.75rem; left: 0.75rem;
+            background: rgba(74, 222, 128, 0.9);
+            color: #0a1a0a;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .listing-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 0.85rem; }
         .listing-title {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #fff;
             line-height: 1.35;
         }
-        .listing-location { font-size: 0.83rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; }
+        .listing-location {
+            font-size: 0.82rem; color: var(--text-muted);
+            display: flex; align-items: center; gap: 0.3rem;
+        }
 
         /* star crystal amenity badges */
-        .amenity-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .amenity-badges { display: flex; flex-wrap: wrap; gap: 0.45rem; }
         .amenity-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background: rgba(255,215,0,0.07);
-            border: 1px solid rgba(255,215,0,0.3);
+            background: rgba(120, 70, 180, 0.15);
+            border: 1px solid rgba(120, 70, 180, 0.35);
             border-radius: 999px;
-            padding: 0.3rem 0.75rem;
-            font-size: 0.75rem;
+            padding: 0.28rem 0.7rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            color: var(--gold-pale);
+            color: #d4b8f0;
             white-space: nowrap;
         }
-        .amenity-badge img { width: 18px; height: 18px; }
+        .amenity-badge img { width: 16px; height: 16px; }
 
         .listing-actions { margin-top: auto; display: flex; gap: 0.6rem; }
         .btn-sm {
             flex: 1;
-            padding: 0.55rem 0.75rem;
-            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+            border-radius: 999px;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             text-align: center;
             text-decoration: none;
-            transition: background 0.2s, transform 0.15s;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
             cursor: pointer;
             border: none;
             display: inline-flex;
@@ -443,9 +477,17 @@
             justify-content: center;
             gap: 0.3rem;
         }
-        .btn-sm-gold { background: var(--gold); color: var(--deep-purple-dark); }
-        .btn-sm-gold:hover { background: var(--gold-pale); transform: scale(1.03); }
-        .btn-sm-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-muted); }
+        .btn-sm-gold {
+            background: linear-gradient(135deg, #ffd700, #f5a000);
+            color: #1a0535;
+            box-shadow: 0 2px 10px rgba(255,215,0,0.35);
+        }
+        .btn-sm-gold:hover { transform: scale(1.04); box-shadow: 0 4px 18px rgba(255,215,0,0.5); }
+        .btn-sm-outline {
+            background: rgba(120, 70, 180, 0.12);
+            border: 1.5px solid rgba(120, 70, 180, 0.4);
+            color: #c4a0e8;
+        }
         .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
 
         /* ── Keyboard hint ── */
@@ -692,8 +734,9 @@
             <!-- Card 1 — 1144 7th St NW, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="1144 7th St NW, Largo — $1,000/mo" data-href="/galleries/1144-7th-street/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏠</span>
+                    <img src="/assets/property-1144.svg" alt="1144 7th St NW, Largo — exterior view" loading="lazy">
                     <div class="listing-price-badge">$1,000/mo</div>
+                    <div class="listing-badge-avail">Available</div>
                 </div>
                 <div class="listing-body">
                     <h3 class="listing-title">1144 7th St NW, Largo</h3>
@@ -702,8 +745,7 @@
                         <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
                         <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
                         <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Wi-Fi</span>
-                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Shared Kitchen</span>
-                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Furnished</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Furnished</span>
                     </div>
                     <div class="listing-actions">
                         <a href="/galleries/1144-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
@@ -715,8 +757,9 @@
             <!-- Card 2 — 1142 7th St NW, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="1142 7th St NW, Largo — $950/mo" data-href="/galleries/1142-7th-street/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏡</span>
+                    <img src="/assets/property-1142.svg" alt="1142 7th St NW, Largo — exterior view" loading="lazy">
                     <div class="listing-price-badge">$950/mo</div>
+                    <div class="listing-badge-avail">Available</div>
                 </div>
                 <div class="listing-body">
                     <h3 class="listing-title">1142 7th St NW, Largo</h3>
@@ -737,8 +780,9 @@
             <!-- Card 3 — 926 Poinsettia, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="926 Poinsettia Ave, Largo — $900/mo" data-href="/galleries/926-poinsettia/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏘️</span>
+                    <img src="/assets/property-926.svg" alt="926 Poinsettia Ave, Largo — exterior view" loading="lazy">
                     <div class="listing-price-badge">$900/mo</div>
+                    <div class="listing-badge-avail">Available</div>
                 </div>
                 <div class="listing-body">
                     <h3 class="listing-title">926 Poinsettia Ave, Largo</h3>
@@ -758,8 +802,9 @@
             <!-- Card 4 — Tampa Property -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="Tampa Property — $975/mo" data-href="/galleries/tampa-property/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🌆</span>
+                    <img src="/assets/property-tampa.svg" alt="Tampa Property — exterior view" loading="lazy">
                     <div class="listing-price-badge">$975/mo</div>
+                    <div class="listing-badge-avail">Available</div>
                 </div>
                 <div class="listing-body">
                     <h3 class="listing-title">Tampa Property</h3>

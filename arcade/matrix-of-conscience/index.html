@@ -276,13 +276,9 @@
       }
     }
 
-    // Boot
+    // Boot — always start at Pillar 1 (no resume gate)
     window.addEventListener('DOMContentLoaded', () => {
-      const read = mcGetRead();
-      for (let i = 0; i < PILLARS.length; i++) {
-        if (!read[i]) { currentPage = i; break; }
-        if (i === PILLARS.length - 1) currentPage = i;
-      }
+      currentPage = 0;
       mcRender();
     });
   </script>
