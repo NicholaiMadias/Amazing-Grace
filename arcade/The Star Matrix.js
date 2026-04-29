@@ -6,15 +6,15 @@
 
 const StoryConfig = {
     chapters: [
-        { id: 1, title: "The Red Queen's Gravity", tone: "heavy", music: "storm.mp3" },
-        { id: 2, title: "Call of the White Rabbit", tone: "mystical", music: "exploration.mp3" },
-        { id: 3, title: "Ascent to Nimbus Land", tone: "hopeful", music: "fairy_flying.mp3" },
-        { id: 4, title: "The Seven Pillars", tone: "instructional", music: "puzzle.mp3" },
-        { id: 5, title: "Mystery of the Sixth Star", tone: "intense", music: "hit_the_floor.mp3" },
-        { id: 6, title: "Covenant of Fellowship", tone: "emotional", music: "victory.mp3" },
-        { id: 7, title: "The New Beginning", tone: "radiant", music: "ending.mp3" },
-        { id: 8, title: "The Star Matrix Vision", tone: "ascendant", music: "spiritual_stone.mp3" },
-        { id: 9, title: "Threshold of Conscience", tone: "destined", music: "minigame.mp3" }
+        { id: 1, title: "The Red Queen's Gravity", tone: "heavy", music: "/assets/audio/storm.mp3" },
+        { id: 2, title: "Call of the White Rabbit", tone: "mystical", music: "/assets/audio/exploration.mp3" },
+        { id: 3, title: "Ascent to Nimbus Land", tone: "hopeful", music: "/assets/audio/fairy_flying.mp3" },
+        { id: 4, title: "The Seven Pillars", tone: "instructional", music: "/assets/audio/puzzle.mp3" },
+        { id: 5, title: "Mystery of the Sixth Star", tone: "intense", music: "/assets/audio/hit_the_floor.mp3" },
+        { id: 6, title: "Covenant of Fellowship", tone: "emotional", music: "/assets/audio/victory.mp3" },
+        { id: 7, title: "The New Beginning", tone: "radiant", music: "/assets/audio/ending.mp3" },
+        { id: 8, title: "The Star Matrix Vision", tone: "ascendant", music: "/assets/audio/spiritual_stone.mp3" },
+        { id: 9, title: "Threshold of Conscience", tone: "destined", music: "/assets/audio/minigame.mp3" }
     ],
     // The "Sheila" Vision Logic (Chapter 8)
     visionScript: {
@@ -61,7 +61,7 @@ class StoryEngine {
     awardStar() {
         this.starsCollected++;
         // Play Ocarina 'Spiritual Stone' fanfare [cite: 429, 509]
-        audioManager.playSFX('badge.mp3'); 
+        audioManager.playSFX('/assets/audio/badge.mp3'); 
         // Save to Nexus OS Progression System [cite: 340, 552]
         saveSystem.addStar('match_master'); 
     }
@@ -76,7 +76,7 @@ class StoryEngine {
             </div>
         `;
         // Play mystical background music [cite: 310, 508]
-        audioManager.playMusic('fairy_flying.mp3');
+        audioManager.playMusic('/assets/audio/fairy_flying.mp3');
     }
 
     showMatrixThreshold() {
