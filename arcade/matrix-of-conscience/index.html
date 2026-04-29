@@ -1051,10 +1051,12 @@
     async function fetchGeminiInsight(prompt) {
         if (!GEMINI_API_KEY) return null;
         try {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
-            const res = await fetch(url, {
+            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
                     generationConfig: { maxOutputTokens: 120, temperature: 0.85 }
@@ -1102,8 +1104,12 @@
         const scenario = SCENARIOS[scenarioIndex];
         const choice   = scenario.choices[choiceIndex];
 
-        // Lock buttons
-        document.querySelectorAll('.choice-btn').forEach(btn => { btn.disabled = true; btn.style.opacity = '0.5'; });
+        // Lock buttons — prevent double-submit; mark disabled for screen readers
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            btn.disabled = true;
+            btn.setAttribute('aria-disabled', 'true');
+            btn.style.opacity = '0.5';
+        });
 
         // Apply deltas
         pendingDelta = choice.deltas;
