@@ -37,10 +37,12 @@ jobs:
 
       - name: Log deployment comment
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.comment != '' }}
+        env:
+          DEPLOY_COMMENT: ${{ inputs.comment }}
         run: |
           echo "## 📝 Deployment Note" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "${{ inputs.comment }}" >> $GITHUB_STEP_SUMMARY
+          echo "$DEPLOY_COMMENT" >> $GITHUB_STEP_SUMMARY
 
       - name: Build
         run: npm run build
