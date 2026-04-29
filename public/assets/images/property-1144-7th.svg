@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d0115"/>
+      <stop offset="60%" stop-color="#2e1038"/>
+      <stop offset="100%" stop-color="#4a235a"/>
+    </linearGradient>
+    <linearGradient id="house1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c2d72"/>
+      <stop offset="100%" stop-color="#3a1a50"/>
+    </linearGradient>
+    <linearGradient id="roof1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#c9a800"/>
+    </linearGradient>
+    <linearGradient id="ground1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1040"/>
+      <stop offset="100%" stop-color="#1a0829"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="800" height="450" fill="url(#sky1)"/>
+
+  <!-- Stars -->
+  <circle cx="50" cy="40" r="1.5" fill="#ffd700" opacity="0.8"/>
+  <circle cx="120" cy="25" r="1" fill="white" opacity="0.6"/>
+  <circle cx="200" cy="55" r="1.5" fill="#ffd700" opacity="0.7"/>
+  <circle cx="280" cy="20" r="1" fill="white" opacity="0.5"/>
+  <circle cx="350" cy="45" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="430" cy="30" r="1" fill="white" opacity="0.7"/>
+  <circle cx="510" cy="60" r="1.5" fill="#ffd700" opacity="0.5"/>
+  <circle cx="600" cy="22" r="1" fill="white" opacity="0.6"/>
+  <circle cx="680" cy="48" r="1.5" fill="#ffd700" opacity="0.8"/>
+  <circle cx="740" cy="35" r="1" fill="white" opacity="0.5"/>
+  <circle cx="90" cy="80" r="1" fill="#ffd700" opacity="0.4"/>
+  <circle cx="330" cy="75" r="1" fill="white" opacity="0.4"/>
+  <circle cx="570" cy="85" r="1" fill="#ffd700" opacity="0.5"/>
+  <circle cx="720" cy="70" r="1" fill="white" opacity="0.4"/>
+
+  <!-- Moon glow -->
+  <circle cx="680" cy="80" r="35" fill="rgba(255,215,0,0.08)"/>
+  <circle cx="680" cy="80" r="22" fill="rgba(255,215,0,0.12)"/>
+  <circle cx="680" cy="80" r="14" fill="#ffd700" opacity="0.25"/>
+
+  <!-- Ground -->
+  <rect x="0" y="330" width="800" height="120" fill="url(#ground1)"/>
+
+  <!-- Bushes/shrubs -->
+  <ellipse cx="185" cy="335" rx="45" ry="22" fill="#2a1040"/>
+  <ellipse cx="615" cy="335" rx="45" ry="22" fill="#2a1040"/>
+  <ellipse cx="160" cy="332" rx="30" ry="18" fill="#3a1a50"/>
+  <ellipse cx="640" cy="332" rx="30" ry="18" fill="#3a1a50"/>
+
+  <!-- Driveway path -->
+  <path d="M340 450 L380 330 L420 330 L460 450 Z" fill="rgba(255,215,0,0.06)"/>
+
+  <!-- Main house body -->
+  <rect x="220" y="230" width="360" height="145" fill="url(#house1)" rx="4"/>
+
+  <!-- Chimney -->
+  <rect x="480" y="150" width="30" height="80" fill="#4a235a"/>
+  <rect x="474" y="145" width="42" height="10" fill="#ffd700"/>
+
+  <!-- Main roof -->
+  <polygon points="195,230 400,95 605,230" fill="url(#roof1)"/>
+
+  <!-- Roof ridge line -->
+  <line x1="400" y1="95" x2="400" y2="230" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
+
+  <!-- Roof shingles -->
+  <line x1="240" y1="185" x2="565" y2="185" stroke="rgba(0,0,0,0.15)" stroke-width="1.5"/>
+  <line x1="253" y1="205" x2="550" y2="205" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
+
+  <!-- Front porch overhang -->
+  <rect x="310" y="315" width="180" height="15" fill="#ffd700" opacity="0.5" rx="2"/>
+  <rect x="320" y="295" width="8" height="50" fill="#ffd700" opacity="0.4"/>
+  <rect x="472" y="295" width="8" height="50" fill="#ffd700" opacity="0.4"/>
+
+  <!-- Front door -->
+  <rect x="360" y="300" width="80" height="75" fill="#1a0829" rx="4"/>
+  <rect x="362" y="302" width="76" height="71" fill="#120618" rx="3"/>
+  <circle cx="395" cy="337" r="5" fill="#ffd700"/>
+  <rect x="368" y="308" width="28" height="22" fill="rgba(255,215,0,0.08)" rx="2"/>
+  <rect x="404" y="308" width="28" height="22" fill="rgba(255,215,0,0.08)" rx="2"/>
+  <path d="M362 302 Q400 285 438 302" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="2"/>
+
+  <!-- Left window -->
+  <rect x="245" y="255" width="85" height="65" fill="#1a0829" rx="4"/>
+  <rect x="247" y="257" width="81" height="61" fill="#0d0520" rx="3"/>
+  <line x1="287" y1="257" x2="287" y2="318" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <line x1="247" y1="287" x2="328" y2="287" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <rect x="247" y="257" width="81" height="61" fill="rgba(255,215,0,0.06)" rx="3"/>
+
+  <!-- Right window -->
+  <rect x="470" y="255" width="85" height="65" fill="#1a0829" rx="4"/>
+  <rect x="472" y="257" width="81" height="61" fill="#0d0520" rx="3"/>
+  <line x1="512" y1="257" x2="512" y2="318" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <line x1="472" y1="287" x2="553" y2="287" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <rect x="472" y="257" width="81" height="61" fill="rgba(255,215,0,0.06)" rx="3"/>
+
+  <!-- Upper window (gable) -->
+  <circle cx="400" cy="155" r="25" fill="#1a0829"/>
+  <circle cx="400" cy="155" r="23" fill="#0d0520"/>
+  <line x1="400" y1="132" x2="400" y2="178" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <line x1="377" y1="155" x2="423" y2="155" stroke="rgba(255,215,0,0.35)" stroke-width="2"/>
+  <circle cx="400" cy="155" r="23" fill="rgba(255,215,0,0.07)"/>
+
+  <!-- Gold accent lines on house -->
+  <line x1="220" y1="265" x2="580" y2="265" stroke="rgba(255,215,0,0.08)" stroke-width="1"/>
+  <line x1="220" y1="280" x2="580" y2="280" stroke="rgba(255,215,0,0.08)" stroke-width="1"/>
+
+  <!-- Purple glow beneath house -->
+  <ellipse cx="400" cy="380" rx="180" ry="25" fill="rgba(74,35,90,0.5)"/>
+
+  <!-- Label bar -->
+  <rect x="0" y="390" width="800" height="60" fill="rgba(10,0,20,0.75)"/>
+  <text x="400" y="420" font-family="'Arial Black', Arial, sans-serif" font-size="17" font-weight="900" fill="#ffd700" text-anchor="middle" letter-spacing="0.05em">1144 7th St NW, Largo, FL</text>
+  <text x="400" y="440" font-family="Arial, sans-serif" font-size="12" fill="rgba(240,230,255,0.75)" text-anchor="middle" letter-spacing="0.08em">ALL-INCLUSIVE · UTILITIES PAID · WI-FI INCLUDED</text>
+</svg>

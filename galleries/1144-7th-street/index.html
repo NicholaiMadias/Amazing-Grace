@@ -4,47 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Property photos — 1144 7th St NW, Largo, FL. Amazing Grace Home Living.">
-    <meta name="theme-color" content="#1e3a8a">
+    <meta name="theme-color" content="#4a235a">
     <link rel="icon" type="image/png" href="/assets/logo.png">
     <title>Gallery — 1144 7th St NW | Amazing Grace Home Living</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
-        :root { --navy: #1e3a8a; }
-        body { font-family:'Inter',sans-serif; background:#f3f4f6; color:#333; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh; }
-        *:focus-visible { outline:3px solid #3b82f6; outline-offset:2px; }
-        .site-header { background:var(--navy); color:white; padding:1rem 2rem; box-shadow:0 4px 6px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; position:relative; }
-        .logo { display:flex; align-items:center; gap:0.75rem; font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; text-decoration:none; color:white; }
-        .logo img { height:40px; width:auto; border-radius:4px; }
-        .nav-links { display:flex; gap:0.75rem; }
-        .nav-btn { background:rgba(255,255,255,0.1); color:white; text-decoration:none; padding:0.5rem 1rem; border-radius:6px; font-size:0.9rem; font-weight:600; transition:background 0.2s; }
-        .nav-btn:hover { background:rgba(255,255,255,0.25); }
-        .menu-toggle { display:none; background:none; border:none; font-size:1.75rem; color:white; cursor:pointer; padding:0.25rem; }
-        @media(max-width:640px){
-            .nav-links{ display:none; flex-direction:column; position:absolute; top:100%; left:0; right:0; background-color:var(--navy); padding:1rem; z-index:100; box-shadow:0 4px 6px rgba(0,0,0,0.2); gap:0.5rem; }
-            .nav-links.show{ display:flex; }
-            .menu-toggle{ display:block; }
-            .nav-btn{ width:100%; padding:0.75rem 1rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap');
+        :root {
+            --deep-purple:#4a235a; --deep-purple-dark:#2e1038; --gold:#ffd700;
+            --text:#f0e6ff; --text-muted:#b89dc8; --surface:rgba(74,35,90,0.55);
+            --border:rgba(255,215,0,0.25); --radius:12px;
         }
-        .hero { background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 100%); color:white; text-align:center; padding:3rem 1.5rem 2rem; }
-        .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2.25rem); margin-bottom:0.5rem; }
-        .hero p { opacity:0.85; font-size:0.95rem; }
-        .container { max-width:1000px; margin:2rem auto; padding:0 1.5rem; flex:1; }
-        .breadcrumb { font-size:0.825rem; color:#6b7280; margin-bottom:1.5rem; }
-        .breadcrumb a { color:#2563eb; text-decoration:none; }
-        .breadcrumb a:hover { text-decoration:underline; }
-        .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
-        .gallery-item { border-radius:12px; overflow:hidden; background:white; box-shadow:0 1px 3px rgba(0,0,0,0.1); aspect-ratio:4/3; }
-        .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.2s; }
-        .gallery-item img:hover { transform:scale(1.03); }
-        .gallery-empty { background:white; border-radius:16px; padding:3rem; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
-        .gallery-empty-icon { font-size:3rem; margin-bottom:1rem; }
-        .gallery-empty p { color:#6b7280; font-size:1rem; }
-        #gallery-status { color:#6b7280; font-size:0.875rem; margin-bottom:1rem; }
-        main { flex:1; display:flex; flex-direction:column; }
-        .site-footer { background:#1f2937; color:#9ca3af; text-align:center; padding:1.5rem; font-size:0.875rem; margin-top:auto; }
-        .site-footer a { color:#60a5fa; text-decoration:none; }
-        .site-footer a:hover { text-decoration:underline; }
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'Inter',sans-serif;background:#0d0115;color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(107,55,128,0.3) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(74,35,90,0.4) 0%,transparent 55%),#0d0115;z-index:-1;pointer-events:none;}
+        *:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+        .site-header{background:rgba(30,10,45,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.85rem 2rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:200;}
+        .logo{display:flex;align-items:center;gap:0.65rem;font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;text-decoration:none;color:var(--gold);}
+        .logo img{height:34px;width:auto;border-radius:4px;}
+        .nav-links{display:flex;gap:0.5rem;}
+        .nav-btn{background:rgba(255,215,0,0.07);border:1px solid var(--border);padding:0.45rem 1rem;border-radius:6px;text-decoration:none;color:var(--text);font-weight:600;font-size:0.85rem;transition:background 0.2s,color 0.2s,border-color 0.2s;}
+        .nav-btn:hover{background:rgba(255,215,0,0.18);border-color:var(--gold);color:var(--gold);}
+        .menu-toggle{display:none;background:none;border:none;font-size:1.75rem;color:var(--gold);cursor:pointer;padding:0.25rem;}
+        @media(max-width:640px){
+            .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(20,5,35,0.98);padding:1rem;z-index:200;border-bottom:1px solid var(--border);gap:0.5rem;}
+            .nav-links.show{display:flex;}
+            .menu-toggle{display:block;}
+            .nav-btn{width:100%;padding:0.75rem 1rem;}
+        }
+        .hero{background:linear-gradient(175deg,rgba(74,35,90,0.9) 0%,rgba(20,5,40,0.95) 100%);border-bottom:1px solid var(--border);text-align:center;padding:3rem 1.5rem 2rem;}
+        .hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:900;color:#fff;margin-bottom:0.5rem;text-shadow:0 0 20px rgba(255,215,0,0.2);}
+        .hero h1 span{color:var(--gold);}
+        .hero p{color:var(--text-muted);font-size:0.95rem;}
+        .container{max-width:1000px;margin:2rem auto;padding:0 1.5rem;flex:1;}
+        .breadcrumb{font-size:0.825rem;color:var(--text-muted);margin-bottom:1.5rem;}
+        .breadcrumb a{color:var(--gold);text-decoration:none;}
+        .breadcrumb a:hover{text-decoration:underline;}
+        .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;}
+        .gallery-item{border-radius:var(--radius);overflow:hidden;background:rgba(30,10,45,0.85);border:1px solid var(--border);aspect-ratio:4/3;transition:border-color 0.2s,transform 0.2s;}
+        .gallery-item:hover{border-color:var(--gold);transform:translateY(-2px);}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.2s;}
+        .gallery-item img:hover{transform:scale(1.03);}
+        .gallery-empty{background:rgba(30,10,45,0.85);border:1px solid var(--border);border-radius:16px;padding:3rem;text-align:center;}
+        .gallery-empty-icon{font-size:3rem;margin-bottom:1rem;}
+        .gallery-empty p{color:var(--text-muted);font-size:1rem;}
+        #gallery-status{color:var(--text-muted);font-size:0.875rem;margin-bottom:1rem;}
+        main{flex:1;display:flex;flex-direction:column;}
+        .site-footer{background:rgba(10,0,20,0.9);border-top:1px solid var(--border);color:var(--text-muted);text-align:center;padding:1.5rem;font-size:0.875rem;margin-top:auto;}
+        .site-footer a{color:var(--gold);text-decoration:none;}
+        .site-footer a:hover{text-decoration:underline;}
     </style>
 </head>
 <body>
@@ -62,7 +69,7 @@
     </header>
     <main>
         <div class="hero">
-            <h1>🏠 1144 7th St NW, Largo</h1>
+            <h1>🏠 <span>1144 7th St NW</span>, Largo</h1>
             <p>All-Inclusive Rooms &mdash; $900/month</p>
         </div>
         <div class="container">

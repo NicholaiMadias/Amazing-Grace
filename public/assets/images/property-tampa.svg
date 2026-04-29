@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#080112"/>
+      <stop offset="45%" stop-color="#1e0830"/>
+      <stop offset="100%" stop-color="#3a1a50"/>
+    </linearGradient>
+    <linearGradient id="bldg4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a235a"/>
+      <stop offset="100%" stop-color="#2e1038"/>
+    </linearGradient>
+    <linearGradient id="bldg4b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d1a50"/>
+      <stop offset="100%" stop-color="#240c35"/>
+    </linearGradient>
+    <linearGradient id="ground4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0828"/>
+      <stop offset="100%" stop-color="#0d0518"/>
+    </linearGradient>
+    <linearGradient id="accent4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="100%" stop-color="#c9a800"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky background -->
+  <rect width="800" height="450" fill="url(#sky4)"/>
+
+  <!-- City glow on horizon -->
+  <ellipse cx="400" cy="310" rx="400" ry="80" fill="rgba(107,55,128,0.2)"/>
+
+  <!-- Stars -->
+  <circle cx="45" cy="35" r="1.5" fill="#ffd700" opacity="0.7"/>
+  <circle cx="100" cy="20" r="1" fill="white" opacity="0.5"/>
+  <circle cx="170" cy="50" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="255" cy="28" r="1" fill="white" opacity="0.7"/>
+  <circle cx="335" cy="42" r="1.5" fill="#ffd700" opacity="0.5"/>
+  <circle cx="418" cy="18" r="1" fill="white" opacity="0.6"/>
+  <circle cx="500" cy="48" r="1.5" fill="#ffd700" opacity="0.7"/>
+  <circle cx="582" cy="32" r="1" fill="white" opacity="0.5"/>
+  <circle cx="650" cy="55" r="1.5" fill="#ffd700" opacity="0.6"/>
+  <circle cx="730" cy="25" r="1" fill="white" opacity="0.7"/>
+  <circle cx="780" cy="42" r="1.5" fill="#ffd700" opacity="0.5"/>
+  <circle cx="130" cy="78" r="1" fill="#ffd700" opacity="0.3"/>
+  <circle cx="450" cy="68" r="1" fill="white" opacity="0.3"/>
+  <circle cx="680" cy="72" r="1" fill="#ffd700" opacity="0.35"/>
+
+  <!-- Distant city skyline silhouette -->
+  <rect x="0" y="270" width="800" height="60" fill="rgba(20,5,35,0.6)"/>
+  <!-- Tall buildings (background) -->
+  <rect x="50" y="238" width="28" height="62" fill="rgba(30,10,50,0.9)"/>
+  <rect x="85" y="225" width="22" height="75" fill="rgba(30,10,50,0.9)"/>
+  <rect x="115" y="245" width="30" height="55" fill="rgba(30,10,50,0.9)"/>
+  <rect x="620" y="240" width="25" height="60" fill="rgba(30,10,50,0.9)"/>
+  <rect x="652" y="228" width="30" height="72" fill="rgba(30,10,50,0.9)"/>
+  <rect x="688" y="245" width="22" height="55" fill="rgba(30,10,50,0.9)"/>
+  <rect x="716" y="235" width="25" height="65" fill="rgba(30,10,50,0.9)"/>
+  <!-- Antenna tops -->
+  <line x1="96" y1="225" x2="96" y2="215" stroke="rgba(255,215,0,0.4)" stroke-width="2"/>
+  <circle cx="96" cy="213" r="3" fill="#ffd700" opacity="0.6"/>
+  <line x1="666" y1="228" x2="666" y2="215" stroke="rgba(255,215,0,0.4)" stroke-width="2"/>
+  <circle cx="666" cy="213" r="3" fill="#ffd700" opacity="0.6"/>
+  <!-- Building windows (city) -->
+  <rect x="54" y="244" width="8" height="6" fill="rgba(255,215,0,0.3)"/>
+  <rect x="67" y="244" width="8" height="6" fill="rgba(255,215,0,0.2)"/>
+  <rect x="54" y="255" width="8" height="6" fill="rgba(255,215,0,0.15)"/>
+  <rect x="90" y="232" width="7" height="5" fill="rgba(255,215,0,0.3)"/>
+  <rect x="90" y="242" width="7" height="5" fill="rgba(255,215,0,0.2)"/>
+  <rect x="90" y="252" width="7" height="5" fill="rgba(255,215,0,0.15)"/>
+
+  <!-- Ground/street -->
+  <rect x="0" y="330" width="800" height="120" fill="url(#ground4)"/>
+  <!-- Sidewalk -->
+  <rect x="0" y="330" width="800" height="15" fill="rgba(255,215,0,0.06)"/>
+
+  <!-- Street lamp left -->
+  <line x1="148" y1="330" x2="148" y2="240" stroke="#3a1a50" stroke-width="5" stroke-linecap="round"/>
+  <path d="M148 240 Q148 225 165 225" stroke="#3a1a50" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="166" cy="224" r="6" fill="#ffd700" opacity="0.6"/>
+  <circle cx="166" cy="224" r="12" fill="rgba(255,215,0,0.15)"/>
+
+  <!-- Street lamp right -->
+  <line x1="652" y1="330" x2="652" y2="240" stroke="#3a1a50" stroke-width="5" stroke-linecap="round"/>
+  <path d="M652 240 Q652 225 635 225" stroke="#3a1a50" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="634" cy="224" r="6" fill="#ffd700" opacity="0.6"/>
+  <circle cx="634" cy="224" r="12" fill="rgba(255,215,0,0.15)"/>
+
+  <!-- Main apartment/condo building -->
+  <rect x="200" y="185" width="400" height="180" fill="url(#bldg4)" rx="4"/>
+
+  <!-- Building base/foundation -->
+  <rect x="195" y="355" width="410" height="20" fill="#240c35" rx="2"/>
+
+  <!-- Flat roof with parapet -->
+  <rect x="195" y="178" width="410" height="22" fill="url(#accent4)" rx="2"/>
+  <!-- Rooftop details -->
+  <rect x="260" y="160" width="40" height="22" fill="#3a1a50" rx="2"/>
+  <rect x="360" y="148" width="80" height="35" fill="#3a1a50" rx="3"/>
+  <rect x="500" y="160" width="40" height="22" fill="#3a1a50" rx="2"/>
+  <!-- AC units on roof -->
+  <rect x="270" y="162" width="20" height="15" fill="#2e1038"/>
+  <rect x="370" y="152" width="30" height="20" fill="#2e1038"/>
+  <rect x="508" y="162" width="20" height="15" fill="#2e1038"/>
+
+  <!-- Building facade - horizontal floor lines -->
+  <line x1="200" y1="250" x2="600" y2="250" stroke="rgba(255,215,0,0.12)" stroke-width="1.5"/>
+  <line x1="200" y1="305" x2="600" y2="305" stroke="rgba(255,215,0,0.12)" stroke-width="1.5"/>
+
+  <!-- Windows - Floor 1 (top) -->
+  <rect x="220" y="198" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="222" y="200" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="222" y="200" width="41" height="34" fill="rgba(255,215,0,0.09)" rx="2"/>
+
+  <rect x="285" y="198" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="287" y="200" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="287" y="200" width="41" height="34" fill="rgba(255,215,0,0.07)" rx="2"/>
+
+  <rect x="350" y="198" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="352" y="200" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="352" y="200" width="41" height="34" fill="rgba(255,215,0,0.1)" rx="2"/>
+
+  <rect x="415" y="198" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="417" y="200" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="417" y="200" width="41" height="34" fill="rgba(255,215,0,0.06)" rx="2"/>
+
+  <rect x="480" y="198" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="482" y="200" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="482" y="200" width="41" height="34" fill="rgba(255,215,0,0.09)" rx="2"/>
+
+  <rect x="545" y="198" width="38" height="38" fill="#0d0520" rx="3"/>
+  <rect x="547" y="200" width="34" height="34" fill="#1a0829" rx="2"/>
+  <rect x="547" y="200" width="34" height="34" fill="rgba(255,215,0,0.07)" rx="2"/>
+
+  <!-- Windows - Floor 2 (middle) -->
+  <rect x="220" y="260" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="222" y="262" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="222" y="262" width="41" height="34" fill="rgba(255,215,0,0.08)" rx="2"/>
+
+  <rect x="285" y="260" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="287" y="262" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="287" y="262" width="41" height="34" fill="rgba(255,215,0,0.1)" rx="2"/>
+
+  <rect x="350" y="260" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="352" y="262" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="352" y="262" width="41" height="34" fill="rgba(255,215,0,0.07)" rx="2"/>
+
+  <rect x="415" y="260" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="417" y="262" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="417" y="262" width="41" height="34" fill="rgba(255,215,0,0.09)" rx="2"/>
+
+  <rect x="480" y="260" width="45" height="38" fill="#0d0520" rx="3"/>
+  <rect x="482" y="262" width="41" height="34" fill="#1a0829" rx="2"/>
+  <rect x="482" y="262" width="41" height="34" fill="rgba(255,215,0,0.08)" rx="2"/>
+
+  <rect x="545" y="260" width="38" height="38" fill="#0d0520" rx="3"/>
+  <rect x="547" y="262" width="34" height="34" fill="#1a0829" rx="2"/>
+  <rect x="547" y="262" width="34" height="34" fill="rgba(255,215,0,0.1)" rx="2"/>
+
+  <!-- Ground floor entrance -->
+  <rect x="345" y="316" width="110" height="50" fill="#120618" rx="3"/>
+  <line x1="400" y1="316" x2="400" y2="366" stroke="rgba(255,215,0,0.25)" stroke-width="2"/>
+  <!-- Entrance canopy -->
+  <rect x="330" y="308" width="140" height="12" fill="#ffd700" opacity="0.35" rx="2"/>
+  <!-- Door handles -->
+  <circle cx="388" cy="340" r="3.5" fill="#ffd700" opacity="0.7"/>
+  <circle cx="412" cy="340" r="3.5" fill="#ffd700" opacity="0.7"/>
+
+  <!-- Ground floor windows left -->
+  <rect x="222" y="316" width="45" height="40" fill="#0d0520" rx="3"/>
+  <rect x="222" y="316" width="45" height="40" fill="rgba(255,215,0,0.07)" rx="3"/>
+  <rect x="280" y="316" width="45" height="40" fill="#0d0520" rx="3"/>
+  <rect x="280" y="316" width="45" height="40" fill="rgba(255,215,0,0.06)" rx="3"/>
+
+  <!-- Ground floor windows right -->
+  <rect x="475" y="316" width="45" height="40" fill="#0d0520" rx="3"/>
+  <rect x="475" y="316" width="45" height="40" fill="rgba(255,215,0,0.08)" rx="3"/>
+  <rect x="535" y="316" width="45" height="40" fill="#0d0520" rx="3"/>
+  <rect x="535" y="316" width="45" height="40" fill="rgba(255,215,0,0.07)" rx="3"/>
+
+  <!-- Vertical pilasters on building -->
+  <rect x="200" y="185" width="8" height="180" fill="rgba(255,215,0,0.08)"/>
+  <rect x="592" y="185" width="8" height="180" fill="rgba(255,215,0,0.08)"/>
+
+  <!-- "Available" badge -->
+  <rect x="215" y="195" width="0" height="0" fill="none"/>
+
+  <!-- Purple glow base -->
+  <ellipse cx="400" cy="378" rx="220" ry="18" fill="rgba(74,35,90,0.45)"/>
+
+  <!-- Label -->
+  <rect x="0" y="392" width="800" height="58" fill="rgba(8,0,18,0.8)"/>
+  <text x="400" y="420" font-family="'Arial Black', Arial, sans-serif" font-size="17" font-weight="900" fill="#ffd700" text-anchor="middle" letter-spacing="0.05em">Tampa, FL — Move-In Ready</text>
+  <text x="400" y="441" font-family="Arial, sans-serif" font-size="12" fill="rgba(240,230,255,0.75)" text-anchor="middle" letter-spacing="0.08em">ALL-INCLUSIVE · NEAR TRANSIT · WI-FI · FURNISHED</text>
+</svg>

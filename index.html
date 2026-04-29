@@ -445,8 +445,12 @@
         }
         .btn-sm-gold { background: var(--gold); color: var(--deep-purple-dark); }
         .btn-sm-gold:hover { background: var(--gold-pale); transform: scale(1.03); }
-        .btn-sm-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-muted); }
-        .btn-sm-outline:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-sm-outline {
+            background: transparent;
+            border: 1.5px solid rgba(255,215,0,0.55);
+            color: var(--gold);
+        }
+        .btn-sm-outline:hover { background: rgba(255,215,0,0.12); border-color: var(--gold); transform: scale(1.03); }
 
         /* ── Keyboard hint ── */
         .kbd-hint {
@@ -692,7 +696,7 @@
             <!-- Card 1 — 1144 7th St NW, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="1144 7th St NW, Largo — $1,000/mo" data-href="/galleries/1144-7th-street/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏠</span>
+                    <img src="/assets/images/property-1144-7th.svg" alt="1144 7th St NW, Largo — a two-story home with gold roof">
                     <div class="listing-price-badge">$1,000/mo</div>
                 </div>
                 <div class="listing-body">
@@ -707,7 +711,7 @@
                     </div>
                     <div class="listing-actions">
                         <a href="/galleries/1144-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
-                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
                     </div>
                 </div>
             </article>
@@ -715,7 +719,7 @@
             <!-- Card 2 — 1142 7th St NW, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="1142 7th St NW, Largo — $950/mo" data-href="/galleries/1142-7th-street/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏡</span>
+                    <img src="/assets/images/property-1142-7th.svg" alt="1142 7th St NW, Largo — a house with garage and gold roof">
                     <div class="listing-price-badge">$950/mo</div>
                 </div>
                 <div class="listing-body">
@@ -729,7 +733,7 @@
                     </div>
                     <div class="listing-actions">
                         <a href="/galleries/1142-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
-                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
                     </div>
                 </div>
             </article>
@@ -737,7 +741,7 @@
             <!-- Card 3 — 926 Poinsettia, Largo -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="926 Poinsettia Ave, Largo — $900/mo" data-href="/galleries/926-poinsettia/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🏘️</span>
+                    <img src="/assets/images/property-926-poinsettia.svg" alt="926 Poinsettia Ave, Largo — a ranch-style home with palm trees">
                     <div class="listing-price-badge">$900/mo</div>
                 </div>
                 <div class="listing-body">
@@ -750,7 +754,7 @@
                     </div>
                     <div class="listing-actions">
                         <a href="/galleries/926-poinsettia/" class="btn-sm btn-sm-gold">📸 View Photos</a>
-                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
                     </div>
                 </div>
             </article>
@@ -758,7 +762,7 @@
             <!-- Card 4 — Tampa Property -->
             <article class="listing-card" tabindex="0" role="listitem" aria-label="Tampa Property — $975/mo" data-href="/galleries/tampa-property/">
                 <div class="listing-img-wrap">
-                    <span aria-hidden="true">🌆</span>
+                    <img src="/assets/images/property-tampa.svg" alt="Tampa Property — a modern apartment building in Tampa, FL">
                     <div class="listing-price-badge">$975/mo</div>
                 </div>
                 <div class="listing-body">
@@ -772,7 +776,7 @@
                     </div>
                     <div class="listing-actions">
                         <a href="/galleries/tampa-property/" class="btn-sm btn-sm-gold">📸 View Photos</a>
-                        <a href="#apply" class="btn-sm btn-sm-outline">Apply Now</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
                     </div>
                 </div>
             </article>
