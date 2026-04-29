@@ -37,6 +37,50 @@ demo/dev use and is designed to be upgraded to Firebase Auth in production.
   - `owner@matrix.dev` / any password (4+ chars)
   - `superadmin@matrix.dev` / any password
   - `admin@matrix.dev` / any password
-- On production (`amazinggracehl.org`), live Firebase Auth must be configured in
-  `public/admin/js/auth.js` before the admin login will work.
+
+
+---
+
+## 🏠 Property Addresses
+
+| Reference | Full Address | Gallery Path |
+|---|---|---|
+| 1144 | 1144 7th St NW, Largo, FL 33770 | `/galleries/1144-7th-street/` |
+| 1142 | 1142 7th St NW, Largo, FL 33770 | `/galleries/1142-7th-street/` |
+| 926 | **926 E Poinsettia Ave, Tampa, FL 33612, United States** | `/galleries/926-poinsettia/` |
+| Tampa | Tampa Property, Tampa, FL | `/galleries/tampa-property/` |
+
+> **Note for contributors:** The 926 listing is in **Tampa** (not Largo). When referencing this property in code, copy, or file names use the `926-poinsettia` slug but always display the full address `926 E Poinsettia Ave, Tampa, FL 33612`.
+
+---
+
+## 📁 Asset Folder Structure
+
+```
+public/assets/
+├── logo.png                     ← Site nav logo (8.7 KB, 120×80 px)
+├── icon-192.png                 ← PWA icon
+├── icon-512.png                 ← PWA icon
+├── icon-512-maskable.png        ← PWA maskable icon
+│
+├── images/                      ← High-res property thumbnails + illustrations
+│   ├── property-1144.svg        ← 1144 7th St NW, Largo
+│   ├── property-1142.svg        ← 1142 7th St NW, Largo
+│   ├── property-926.svg         ← 926 E Poinsettia Ave, Tampa
+│   ├── property-tampa.svg       ← Tampa Property
+│   └── supernova_explosion.svg  ← Game illustration
+│
+├── icons/                       ← Small game-optimised icons & sprite frames
+│   ├── star_crystal_gold.svg
+│   ├── star_crystal_blue.svg
+│   ├── star_crystal_purple.svg
+│   ├── star_crystal_red.svg
+│   └── <name>_frame_N.png      ← Star Matrix animation sprites (add when ready)
+│
+└── audio/                       ← MP3 music & SFX (drop files here)
+    └── (e.g. storm.mp3, badge.mp3, exploration.mp3 …)
+        served at /assets/audio/<filename>.mp3
+```
+
+Gallery photo sets live under `public/galleries/<slug>/` and are indexed by `images.json` in each folder.
 
