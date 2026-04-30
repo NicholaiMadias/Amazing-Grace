@@ -40,7 +40,7 @@ class StoryEngine {
         if (container) {
             container.style.width = '100%';
             container.style.minHeight = '80vh';
-            container.classList.add('glass-morphism', 'neon-glow'); [cite: 566, 571]
+            container.classList.add('glass-morphism', 'neon-glow'); // [cite: 566, 571]
         }
     }
 
