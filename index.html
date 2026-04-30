@@ -603,6 +603,128 @@
         .footer-copy { color: rgba(255,255,255,0.45); font-size: 0.78rem; margin-top: 1rem; }
         .footer-copy a { color: rgba(255,255,255,0.65); text-decoration: none; }
         .footer-copy a:hover { color: #fff; }
+
+        /* ── Reduced-motion guard ── */
+        @media (prefers-reduced-motion: reduce) {
+            .listing-card, .contact-card, .pricing-card,
+            .btn-primary, .btn-outline, .btn-sm,
+            .portal-tile { transition: none !important; transform: none !important; }
+        }
+
+        /* ── Mobile tap-target boost ── */
+        @media (max-width: 700px) {
+            .btn-sm { min-height: 44px; }
+            .btn-primary, .btn-outline { min-height: 48px; }
+        }
+
+        /* ── Listing card focus ── */
+        .listing-card:focus-visible {
+            outline: 3px solid var(--blue-mid);
+            outline-offset: 2px;
+            border-color: var(--blue);
+        }
+        /* ── Contact card focus ── */
+        .contact-card:focus-visible {
+            outline: 3px solid var(--blue-mid);
+            outline-offset: 2px;
+            border-color: var(--blue);
+        }
+        /* ── Pricing card focus ── */
+        .pricing-card:focus { outline: 3px solid var(--blue-mid); outline-offset: 3px; }
+
+        /* ── Section: dark ── */
+        .section-dark {
+            background: var(--text); /* #1C1C2E */
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .section-dark .section-heading { color: #fff; }
+        .section-dark .section-sub { color: rgba(255,255,255,0.55); }
+
+        /* ── Digital portal tiles ── */
+        .portals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .portal-tile {
+            background: #252535;
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+        }
+        .portal-tile::before {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: var(--radius);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .portal-tile-matrix::before  { background: radial-gradient(circle at 30% 20%, rgba(167,139,250,0.18), transparent 60%); }
+        .portal-tile-defense::before { background: radial-gradient(circle at 30% 20%, rgba(26,82,118,0.25), transparent 60%); }
+        .portal-tile-weaver::before  { background: radial-gradient(circle at 30% 20%, rgba(255,215,0,0.14), transparent 60%); }
+        .portal-tile:hover,
+        .portal-tile:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+            border-color: rgba(255,255,255,0.22);
+        }
+        .portal-tile:hover::before,
+        .portal-tile:focus-visible::before { opacity: 1; }
+        .portal-tile:focus-visible {
+            outline: 3px solid rgba(255,255,255,0.5);
+            outline-offset: 2px;
+        }
+        .portal-tile-icon {
+            width: 54px; height: 54px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.75rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .portal-tile-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .portal-tile-desc {
+            font-size: 0.83rem;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.55;
+            flex: 1;
+        }
+        .portal-tile-badge {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            padding: 0.22rem 0.65rem; border-radius: 999px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.65);
+            align-self: flex-start;
+        }
+        .portal-tile-badge-soon { color: rgba(255,215,0,0.75); border-color: rgba(255,215,0,0.25); background: rgba(255,215,0,0.06); }
+        .portal-tile-cta {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.8rem; font-weight: 700;
+            color: rgba(255,255,255,0.55);
+            margin-top: 0.25rem;
+            transition: color 0.2s;
+        }
+        .portal-tile:hover .portal-tile-cta,
+        .portal-tile:focus-visible .portal-tile-cta { color: rgba(255,255,255,0.9); }
     </style>
 </head>
 <body>
@@ -818,6 +940,47 @@
     </div>
 </section>
 
+<!-- ═══════════════════════ DIGITAL PORTALS ══════════════════════ -->
+<section class="section section-dark starburst-overlay" id="portals">
+    <div class="section-inner">
+        <h2 class="section-heading">⚡ Digital Portals</h2>
+        <p class="section-sub">Interactive experiences and tools from the Amazing Grace ecosystem.</p>
+        <div class="portals-grid">
+
+            <a href="/arcade/matrix-of-conscience/" class="portal-tile portal-tile-matrix" tabindex="0" aria-label="Play Matrix of Conscience">
+                <div class="portal-tile-icon">🧠</div>
+                <div>
+                    <div class="portal-tile-title">Matrix of Conscience</div>
+                    <div class="portal-tile-desc">Navigate 9 moral crossroads and discover your Conscience Archetype through faith-based dilemmas.</div>
+                </div>
+                <span class="portal-tile-badge">🎮 Moral Choice</span>
+                <span class="portal-tile-cta">Play Now →</span>
+            </a>
+
+            <a href="/arcade/" class="portal-tile portal-tile-defense" tabindex="0" aria-label="Professional Defense — coming soon">
+                <div class="portal-tile-icon">🛡️</div>
+                <div>
+                    <div class="portal-tile-title">Professional Defense</div>
+                    <div class="portal-tile-desc">Strategic, faith-guided challenges that sharpen your knowledge, resolve, and discernment under pressure.</div>
+                </div>
+                <span class="portal-tile-badge portal-tile-badge-soon">⏳ Coming Soon</span>
+                <span class="portal-tile-cta">Explore Arcade →</span>
+            </a>
+
+            <a href="/arcade/" class="portal-tile portal-tile-weaver" tabindex="0" aria-label="Gemini Weaver Terminal — coming soon">
+                <div class="portal-tile-icon">✨</div>
+                <div>
+                    <div class="portal-tile-title">Gemini Weaver Terminal</div>
+                    <div class="portal-tile-desc">AI-powered story-weaving tool for crafting faith-based narratives, reflections, and ministry content.</div>
+                </div>
+                <span class="portal-tile-badge portal-tile-badge-soon">⏳ Coming Soon</span>
+                <span class="portal-tile-cta">Enter Arcade →</span>
+            </a>
+
+        </div>
+    </div>
+</section>
+
 <!-- ═══════════════════════ APPLY NOW FORM ════════════════════════ -->
 <section class="section section-alt starburst-overlay" id="apply">
     <div class="section-inner">
@@ -882,6 +1045,7 @@
         <div class="footer-links">
             <a href="#listings">Listings</a>
             <a href="#pricing">Pricing</a>
+            <a href="#portals">⚡ Portals</a>
             <a href="#apply">Apply Now</a>
             <a href="tel:7274202873">📞 (727) 420-2873</a>
             <a href="mailto:gulfnexus@gmail.com">✉️ gulfnexus@gmail.com</a>

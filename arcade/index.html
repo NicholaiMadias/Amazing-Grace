@@ -249,6 +249,40 @@
         .play-btn-teal  { background: var(--accent);  color: #0f172a; }
         .play-btn:hover { filter: brightness(1.1); transform: scale(1.04); }
 
+        /* ── Improved icon area ── */
+        .game-card-icon-wrap {
+            width: 60px; height: 60px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.85rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            flex-shrink: 0;
+        }
+        .card-stars .game-card-icon-wrap  { background: rgba(255,215,0,0.10);  border-color: rgba(255,215,0,0.20); }
+        .card-match .game-card-icon-wrap  { background: rgba(126,255,216,0.08); border-color: rgba(126,255,216,0.18); }
+        .card-matrix .game-card-icon-wrap { background: rgba(167,139,250,0.10); border-color: rgba(167,139,250,0.22); }
+
+        /* ── Improved focus states (per-card accent) ── */
+        .game-card:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+        .card-stars:focus-visible  { outline-color: var(--accent2); }
+        .card-match:focus-visible  { outline-color: var(--accent); }
+        .card-matrix:focus-visible { outline-color: #a78bfa; }
+
+        /* ── Play button tap target ── */
+        .play-btn {
+            min-height: 44px;
+        }
+
+        /* ── Reduced-motion guard ── */
+        @media (prefers-reduced-motion: reduce) {
+            .game-card, .play-btn, .portal-link, .map-item { transition: none !important; transform: none !important; }
+            .game-card::before { transition: none !important; }
+        }
+
         /* ---- Game Stage (full play area) ---- */
         .game-stage {
             display: none;
@@ -638,7 +672,7 @@
 
                 <!-- Seven Stars Card -->
                 <div class="game-card card-stars" role="button" tabindex="0" aria-label="Play The Mystery of the Seven Stars" onclick="launchGame('sevenstars')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('sevenstars')">
-                    <div class="game-card-icon">⭐</div>
+                    <div class="game-card-icon-wrap"><span class="game-card-icon">⭐</span></div>
                     <div class="game-card-title">Mystery of the Seven Stars</div>
                     <div class="game-card-desc">Journey through the seven churches of Asia Minor. Read their stories and test your biblical knowledge to collect all seven stars.</div>
                     <span class="game-card-badge badge-gold">Knowledge Quest</span>
@@ -647,7 +681,7 @@
 
                 <!-- Match Maker Card -->
                 <div class="game-card card-match" role="button" tabindex="0" aria-label="Play Match Maker" onclick="launchGame('matchmaker')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('matchmaker')">
-                    <div class="game-card-icon">🔮</div>
+                    <div class="game-card-icon-wrap"><span class="game-card-icon">🔮</span></div>
                     <div class="game-card-title">Match Maker</div>
                     <div class="game-card-desc">Swap and match virtuous gems on a 7×7 board. Unlock special tiles, build combos, and grow your Conscience Meter.</div>
                     <span class="game-card-badge badge-teal">Gem Puzzle</span>
@@ -656,7 +690,7 @@
 
                 <!-- Matrix of Conscience Card -->
                 <div class="game-card card-matrix" role="button" tabindex="0" aria-label="Play Matrix of Conscience" onclick="location.href='/arcade/matrix-of-conscience/'" onkeydown="if(event.key==='Enter'||event.key===' ')location.href='/arcade/matrix-of-conscience/'">
-                    <div class="game-card-icon">🧠</div>
+                    <div class="game-card-icon-wrap"><span class="game-card-icon">🧠</span></div>
                     <div class="game-card-title">Matrix of Conscience</div>
                     <div class="game-card-desc">Navigate nine moral crossroads from the Star Matrix journey. Your choices shape four conscience dimensions and reveal your Conscience Archetype.</div>
                     <span class="game-card-badge badge-violet">Moral Choice</span>
