@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Affordable rooms for rent in Largo &amp; Tampa, Florida. Clean, safe, move-in ready with flexible residency options. Amazing Grace Home Living.">
-    <meta name="theme-color" content="#1A5276">
+    <meta name="theme-color" content="#0a0a14">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Affordable Rooms for Rent — Largo &amp; Tampa | Amazing Grace Home Living">
     <meta property="og:description" content="Clean, safe, and ready-to-move-in rooms with flexible residency options in Largo &amp; Tampa, FL.">
@@ -14,25 +14,31 @@
     <title>Amazing Grace Home Living — Rooms for Rent in Largo &amp; Tampa, FL</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-        /* ── Design tokens — logo-inspired palette (red heart, blue roof, cream house) ── */
+        /* ── Seven Stars · Starry Night design tokens ── */
         :root {
-            --red:         #E63946;
-            --red-dark:    #C1121F;
-            --red-pale:    #FFF0F0;
-            --blue:        #1A5276;
-            --blue-mid:    #2874A6;
-            --blue-pale:   #EBF5FB;
-            --cream:       #FFF9F2;
-            --text:        #1C1C2E;
-            --text-muted:  #64748B;
-            --border:      rgba(0,0,0,0.09);
-            --shadow-sm:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md:   0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
-            --shadow-lg:   0 12px 40px rgba(0,0,0,0.10);
-            --radius:      14px;
-            --radius-sm:   8px;
+            --night:           #0a0a14;
+            --night-surface:   #111122;
+            --night-card:      #161628;
+            --gold:            #ffd700;
+            --gold-dim:        rgba(255, 215, 0, 0.15);
+            --gold-border:     rgba(255, 215, 0, 0.25);
+            --gold-glow:       rgba(255, 215, 0, 0.35);
+            --star-silver:     #c0c0c0;
+            --star-sapphire:   #1e90ff;
+            --star-emerald:    #50c878;
+            --star-ruby:       #e0115f;
+            --star-amethyst:   #9966cc;
+            --star-obsidian:   #3a3a4a;
+            --text:            #e8e0f0;
+            --text-muted:      #9090b0;
+            --border:          rgba(255, 215, 0, 0.12);
+            --shadow-sm:       0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-md:       0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg:       0 12px 40px rgba(0, 0, 0, 0.6);
+            --radius:          14px;
+            --radius-sm:       8px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,21 +49,34 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--cream);
+            background: var(--night);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* starburst-overlay — class kept for HTML compatibility, no visual effect on homepage */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(30, 144, 255, 0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, rgba(153, 102, 204, 0.10) 0%, transparent 55%),
+                var(--night);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* starburst-overlay — class kept for HTML compatibility */
         .starburst-overlay { }
 
         /* ── Focus ── */
-        *:focus-visible { outline: 3px solid var(--blue-mid); outline-offset: 3px; }
+        *:focus-visible { outline: 3px solid var(--star-sapphire); outline-offset: 3px; }
 
         /* ── Header ── */
         .site-header {
-            background: #fff;
+            background: rgba(10, 10, 20, 0.95);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             padding: 0.85rem 2rem;
             display: flex;
@@ -73,12 +92,12 @@
             display: flex;
             align-items: center;
             gap: 0.65rem;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
             font-weight: 700;
             text-decoration: none;
-            color: var(--blue);
-            letter-spacing: 0.01em;
+            color: var(--gold);
+            letter-spacing: 0.04em;
         }
         .logo img { height: 36px; width: auto; border-radius: 4px; }
 
@@ -94,22 +113,35 @@
             padding: 0.45rem 1rem;
             border-radius: 6px;
             text-decoration: none;
-            color: var(--text);
+            color: var(--text-muted);
             font-weight: 600;
             font-size: 0.85rem;
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
         }
-        .nav-btn:hover { background: var(--blue-pale); color: var(--blue); }
+
+        /* Star virtue nav colors */
+        .nav-gold     { --nav-color: var(--gold); }
+        .nav-sapphire { --nav-color: var(--star-sapphire); }
+        .nav-emerald  { --nav-color: var(--star-emerald); }
+        .nav-ruby     { --nav-color: var(--star-ruby); }
+        .nav-amethyst { --nav-color: var(--star-amethyst); }
+        .nav-silver   { --nav-color: var(--star-silver); }
+
+        .nav-btn:hover {
+            background: var(--gold-dim);
+            color: var(--nav-color, var(--gold));
+            border-color: var(--nav-color, var(--gold-border));
+        }
 
         .menu-toggle {
             display: none;
             background: none;
             border: none;
             font-size: 1.75rem;
-            color: var(--blue);
+            color: var(--gold);
             cursor: pointer;
             padding: 0.25rem;
         }
@@ -121,7 +153,7 @@
                 position: absolute;
                 top: 100%;
                 left: 0; right: 0;
-                background: #fff;
+                background: rgba(10, 10, 20, 0.98);
                 padding: 1rem;
                 z-index: 200;
                 border-bottom: 1px solid var(--border);
@@ -133,22 +165,21 @@
             .nav-btn { width: 100%; justify-content: flex-start; padding: 0.75rem 1rem; }
         }
 
-        /* ── Hero — deep blue gradient, pure CSS, no image overlays ── */
+        /* ── Hero ── */
         .hero {
             padding: 5rem 1.5rem 4.5rem;
             text-align: center;
-            background: linear-gradient(155deg, var(--blue) 0%, #122b47 100%);
+            background: linear-gradient(155deg, var(--night-surface) 0%, var(--night) 100%);
             position: relative;
             overflow: hidden;
         }
-        /* Radial colour accents — CSS only, no game assets */
         .hero::before {
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse at 18% 55%, rgba(230,57,70,0.20) 0%, transparent 48%),
-                radial-gradient(ellipse at 82% 20%, rgba(255,255,255,0.06) 0%, transparent 42%);
+                radial-gradient(ellipse at 18% 55%, rgba(153, 102, 204, 0.15) 0%, transparent 48%),
+                radial-gradient(ellipse at 82% 20%, rgba(255, 215, 0, 0.06) 0%, transparent 42%);
             pointer-events: none;
         }
         .hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
@@ -156,29 +187,30 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.25);
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-border);
             border-radius: 999px;
             padding: 0.35rem 1.1rem;
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #fff;
+            color: var(--gold);
             margin-bottom: 1.5rem;
         }
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.8rem, 5vw, 3.25rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.4rem, 4vw, 2.5rem);
             font-weight: 700;
             line-height: 1.2;
             color: #fff;
             margin-bottom: 1rem;
+            text-shadow: 0 0 30px var(--gold-glow);
         }
-        .hero h1 span { color: #FFD166; }
+        .hero h1 span { color: var(--gold); }
         .hero-sub {
             font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: rgba(255,255,255,0.80);
+            color: var(--text-muted);
             max-width: 600px;
             margin: 0 auto 2.5rem;
             line-height: 1.6;
@@ -192,9 +224,9 @@
 
         /* ── Buttons ── */
         .btn-primary {
-            background: var(--blue);
+            background: var(--night-card);
             color: #fff;
-            border: 2px solid var(--blue);
+            border: 2px solid rgba(255, 255, 255, 0.22);
             padding: 0.75rem 2rem;
             border-radius: var(--radius);
             font-weight: 800;
@@ -206,13 +238,13 @@
             gap: 0.5rem;
             transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,82,118,0.40); background: var(--blue-mid); border-color: var(--blue-mid); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); background: var(--night-surface); border-color: var(--gold-border); }
         .btn-primary:active { transform: scale(0.97); }
 
         .btn-outline {
             background: transparent;
-            color: #fff;
-            border: 2px solid rgba(255,255,255,0.60);
+            color: var(--star-sapphire);
+            border: 2px solid var(--star-sapphire);
             padding: 0.75rem 2rem;
             border-radius: var(--radius);
             font-weight: 700;
@@ -224,7 +256,7 @@
             gap: 0.5rem;
             transition: background 0.2s, transform 0.2s, border-color 0.2s;
         }
-        .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: #fff; transform: translateY(-2px); }
+        .btn-outline:hover { background: rgba(30, 144, 255, 0.12); border-color: var(--star-sapphire); transform: translateY(-2px); }
 
         /* ── Sticky contact bar (mobile) ── */
         .sticky-contact {
@@ -232,18 +264,18 @@
             position: fixed;
             bottom: 0; left: 0; right: 0;
             z-index: 300;
-            background: var(--blue);
-            border-top: 3px solid var(--blue-mid);
+            background: var(--night-card);
+            border-top: 3px solid var(--gold-border);
             padding: 0.65rem 1rem;
             justify-content: center;
             gap: 1rem;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
         }
         .sticky-contact a {
             flex: 1;
             max-width: 200px;
             text-align: center;
-            background: var(--blue-mid);
+            background: var(--night-surface);
             color: #fff;
             font-weight: 800;
             font-size: 0.9rem;
@@ -257,8 +289,8 @@
         }
         .sticky-contact a.email-link {
             background: transparent;
-            border: 2px solid rgba(255,255,255,0.55);
-            color: #fff;
+            border: 2px solid var(--star-sapphire);
+            color: var(--star-sapphire);
         }
         @media (max-width: 700px) {
             .sticky-contact { display: flex; }
@@ -266,15 +298,15 @@
         }
 
         /* ── Section layout ── */
-        .section { padding: 4rem 1.5rem; background: #fff; }
+        .section { padding: 4rem 1.5rem; background: var(--night-surface); }
         .section-inner { max-width: 1100px; margin: 0 auto; }
-        .section-alt { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .section-alt { background: var(--night-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
         .section-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.35rem, 3vw, 1.9rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 1.75rem);
             font-weight: 700;
-            color: var(--blue);
+            color: var(--gold);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -296,7 +328,7 @@
         .contact-card {
             flex: 1;
             min-width: 240px;
-            background: #fff;
+            background: var(--night-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 1.5rem 2rem;
@@ -308,19 +340,19 @@
             transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
             box-shadow: var(--shadow-sm);
         }
-        .contact-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,82,118,0.12); }
+        .contact-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 24px var(--gold-glow); }
         .contact-icon {
             font-size: 2rem;
             flex-shrink: 0;
             width: 52px;
             height: 52px;
             border-radius: 50%;
-            background: var(--blue-pale);
+            background: var(--gold-dim);
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
         .contact-value { font-size: 1.15rem; font-weight: 700; color: var(--text); }
 
         /* ── Listings / Gallery ── */
@@ -331,7 +363,7 @@
         }
 
         .listing-card {
-            background: #fff;
+            background: var(--night-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
@@ -343,15 +375,15 @@
         }
         .listing-card:hover,
         .listing-card:focus-visible {
-            border-color: var(--blue);
+            border-color: var(--gold);
             transform: translateY(-5px);
-            box-shadow: 0 14px 40px rgba(26,82,118,0.12);
+            box-shadow: 0 14px 40px var(--gold-glow);
         }
-        .listing-card.focused { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,82,118,0.18); }
+        .listing-card.focused { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-dim); }
 
         .listing-img-wrap {
             aspect-ratio: 16/9;
-            background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+            background: linear-gradient(135deg, var(--night-surface), var(--night-card));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -369,21 +401,21 @@
         .listing-price-badge {
             position: absolute;
             top: 0.75rem; right: 0.75rem;
-            background: var(--blue);
-            color: #fff;
+            background: var(--gold);
+            color: var(--night);
             font-family: 'Inter', sans-serif;
             font-weight: 800;
             font-size: 0.9rem;
             padding: 0.3rem 0.75rem;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
         }
 
         .listing-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
         .listing-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: var(--text);
             line-height: 1.35;
         }
@@ -394,13 +426,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background: var(--blue-pale);
-            border: 1px solid rgba(26,82,118,0.15);
+            background: var(--gold-dim);
+            border: 1px solid var(--gold-border);
             border-radius: 999px;
             padding: 0.3rem 0.75rem;
             font-size: 0.75rem;
             font-weight: 600;
-            color: var(--blue);
+            color: var(--gold);
             white-space: nowrap;
         }
         .amenity-badge img { width: 16px; height: 16px; }
@@ -422,14 +454,14 @@
             justify-content: center;
             gap: 0.3rem;
         }
-        .btn-sm-gold { background: var(--blue); color: #fff; }
-        .btn-sm-gold:hover { background: var(--blue-mid); transform: scale(1.03); box-shadow: var(--shadow-sm); }
+        .btn-sm-gold { background: var(--gold); color: var(--night); }
+        .btn-sm-gold:hover { background: #e6c200; transform: scale(1.03); box-shadow: var(--shadow-sm); }
         .btn-sm-outline {
             background: transparent;
-            border: 1.5px solid var(--blue);
-            color: var(--blue);
+            border: 1.5px solid var(--gold-border);
+            color: var(--gold);
         }
-        .btn-sm-outline:hover { background: var(--blue-pale); transform: scale(1.03); }
+        .btn-sm-outline:hover { background: var(--gold-dim); transform: scale(1.03); }
 
         /* ── Keyboard hint ── */
         .kbd-hint {
@@ -441,13 +473,13 @@
             gap: 0.4rem;
         }
         .kbd {
-            background: #F0F4F8;
-            border: 1px solid rgba(0,0,0,0.15);
+            background: var(--night-card);
+            border: 1px solid var(--border);
             border-radius: 4px;
             padding: 0.1rem 0.45rem;
             font-size: 0.7rem;
             font-family: monospace;
-            color: var(--blue);
+            color: var(--text-muted);
         }
 
         /* ── Pricing section ── */
@@ -457,7 +489,7 @@
             gap: 1.25rem;
         }
         .pricing-card {
-            background: #fff;
+            background: var(--night-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 1.75rem 1.5rem;
@@ -467,14 +499,14 @@
         }
         .pricing-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
         .pricing-card.featured {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 3px rgba(26,82,118,0.08), var(--shadow-sm);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-dim), var(--shadow-sm);
         }
         .pricing-price {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--blue);
+            color: var(--gold);
             line-height: 1;
             margin: 0.75rem 0 0.25rem;
         }
@@ -482,25 +514,25 @@
         .pricing-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
 
         .logistics-box {
-            background: var(--blue-pale);
-            border: 1px solid rgba(26,82,118,0.18);
+            background: var(--night-card);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 1.75rem 2rem;
             margin-top: 2rem;
         }
         .logistics-box h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.05rem;
             font-weight: 700;
-            color: var(--blue);
+            color: var(--gold);
             margin-bottom: 0.75rem;
         }
-        .logistics-box p { color: #4A5568; font-size: 0.9rem; line-height: 1.7; }
-        .logistics-box p strong { color: var(--blue); }
+        .logistics-box p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .logistics-box p strong { color: var(--text); }
 
         /* ── Apply form ── */
         .apply-form {
-            background: #fff;
+            background: var(--night-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 2.5rem 2rem;
@@ -516,12 +548,12 @@
         }
         @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
         .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
-        .form-group label { font-size: 0.8rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.07em; }
+        .form-group label { font-size: 0.8rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.07em; }
         .form-group input,
         .form-group select,
         .form-group textarea {
-            background: #fff;
-            border: 1px solid rgba(0,0,0,0.15);
+            background: var(--night-surface);
+            border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text);
             padding: 0.65rem 0.9rem;
@@ -532,9 +564,9 @@
         }
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(26,82,118,0.10); }
+        .form-group textarea:focus { border-color: var(--star-sapphire); outline: none; box-shadow: 0 0 0 3px var(--gold-dim); }
         .form-group textarea { resize: vertical; min-height: 90px; }
-        .form-group select option { background: #fff; color: var(--text); }
+        .form-group select option { background: var(--night-card); color: var(--text); }
 
         .form-submit {
             margin-top: 1.5rem;
@@ -547,7 +579,7 @@
             position: fixed;
             inset: 0;
             z-index: 500;
-            background: rgba(10,0,20,0.90);
+            background: rgba(10, 0, 20, 0.90);
             align-items: center;
             justify-content: center;
             flex-direction: column;
@@ -559,7 +591,7 @@
         .supernova-anim {
             width: 140px;
             height: 140px;
-            animation: novaExpand 0.7s cubic-bezier(0.22,1,0.36,1) both;
+            animation: novaExpand 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
         @keyframes novaExpand {
             from { transform: scale(0.2) rotate(-30deg); opacity: 0; }
@@ -570,39 +602,40 @@
             position: absolute;
             width: 200px; height: 200px;
             border-radius: 50%;
-            border: 3px solid var(--blue-mid);
+            border: 3px solid var(--gold);
         }
         @keyframes novaRing {
             from { transform: scale(0.5); opacity: 0.8; }
             to   { transform: scale(2.5); opacity: 0; }
         }
         #supernova-overlay h2 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: clamp(1.5rem, 4vw, 2rem);
-            color: #FFD166;
+            color: var(--gold);
         }
-        #supernova-overlay p { color: rgba(255,255,255,0.75); max-width: 400px; }
+        #supernova-overlay p { color: rgba(255, 255, 255, 0.75); max-width: 400px; }
 
         /* ── Footer ── */
         .site-footer {
-            background: var(--blue);
+            background: var(--night-card);
+            border-top: 1px solid var(--border);
             padding: 2.5rem 1.5rem;
             text-align: center;
         }
         .footer-inner { max-width: 1100px; margin: 0 auto; }
         .footer-logo {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 1.15rem;
-            color: #fff;
+            font-size: 1rem;
+            color: var(--gold);
             margin-bottom: 0.5rem;
         }
         .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1rem 0; }
-        .footer-links a { color: rgba(255,255,255,0.70); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-        .footer-links a:hover { color: #fff; }
-        .footer-copy { color: rgba(255,255,255,0.45); font-size: 0.78rem; margin-top: 1rem; }
-        .footer-copy a { color: rgba(255,255,255,0.65); text-decoration: none; }
-        .footer-copy a:hover { color: #fff; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-copy { color: var(--text-muted); font-size: 0.78rem; margin-top: 1rem; }
+        .footer-copy a { color: var(--text-muted); text-decoration: none; }
+        .footer-copy a:hover { color: var(--gold); }
     </style>
 </head>
 <body>
@@ -615,12 +648,12 @@
         Amazing Grace
     </a>
     <nav id="main-nav" aria-label="Main navigation">
-        <a href="/" class="nav-btn">🏠 Home</a>
-        <a href="#listings" class="nav-btn">🏘️ Listings</a>
-        <a href="#pricing" class="nav-btn">💰 Pricing</a>
-        <a href="#apply" class="nav-btn">✅ Apply</a>
-        <a href="/arcade" class="nav-btn">🎮 Arcade</a>
-        <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+        <a href="/" class="nav-btn nav-gold" aria-label="Home — Knowledge">Home</a>
+        <a href="#listings" class="nav-btn nav-sapphire" aria-label="Listings — Truth">Listings</a>
+        <a href="#pricing" class="nav-btn nav-emerald" aria-label="Pricing — Compassion">Pricing</a>
+        <a href="#apply" class="nav-btn nav-ruby" aria-label="Apply — Courage">Apply</a>
+        <a href="/arcade" class="nav-btn nav-amethyst" aria-label="Arcade — Creativity">Arcade</a>
+        <a href="/ministry" class="nav-btn nav-silver" aria-label="Ministry — Faith">Ministry</a>
     </nav>
     <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
 </header>
@@ -720,15 +753,15 @@
                 </div>
             </article>
 
-            <!-- Card 3 — 926 Poinsettia, Largo -->
-            <article class="listing-card" tabindex="0" role="listitem" aria-label="926 Poinsettia Ave, Largo — $850/mo" data-href="/galleries/926-poinsettia/">
+            <!-- Card 3 — 926 E Poinsettia Ave, Tampa -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="926 E Poinsettia Ave, Tampa — $850/mo" data-href="/galleries/926-poinsettia/">
                 <div class="listing-img-wrap">
-                    <img src="/assets/images/property-926-poinsettia.svg" alt="926 Poinsettia Ave, Largo — a ranch-style home with palm trees">
+                    <img src="/assets/images/property-926-poinsettia.svg" alt="926 E Poinsettia Ave, Tampa, FL — a ranch-style home with palm trees">
                     <div class="listing-price-badge">$850/mo</div>
                 </div>
                 <div class="listing-body">
-                    <h3 class="listing-title">926 Poinsettia Ave, Largo</h3>
-                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <h3 class="listing-title">926 E Poinsettia Ave, Tampa</h3>
+                    <p class="listing-location">📍 Tampa, FL 33612</p>
                     <div class="amenity-badges" aria-label="Amenities">
                         <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
                         <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
@@ -845,7 +878,7 @@
                         <option value="">— Select a property —</option>
                         <option value="1144-largo">1144 7th St NW, Largo ($1,000/mo)</option>
                         <option value="1142-largo">1142 7th St NW, Largo ($1,000/mo)</option>
-                        <option value="926-largo">926 Poinsettia Ave, Largo ($850/mo)</option>
+                        <option value="926-tampa">926 E Poinsettia Ave, Tampa ($850/mo)</option>
                         <option value="tampa">Tampa Property ($975/mo)</option>
                         <option value="any">Any available room</option>
                     </select>
@@ -878,7 +911,7 @@
 <!-- ═══════════════════════════ FOOTER ════════════════════════════ -->
 <footer class="site-footer">
     <div class="footer-inner">
-        <div class="footer-logo">❤️ Amazing Grace Home Living</div>
+        <div class="footer-logo">✦ Amazing Grace Home Living</div>
         <div class="footer-links">
             <a href="#listings">Listings</a>
             <a href="#pricing">Pricing</a>
