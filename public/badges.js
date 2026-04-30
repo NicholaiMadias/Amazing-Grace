@@ -15,6 +15,9 @@ const BADGE_TIERS = [
 ];
 
 let earnedBadges = [];
+// Initialise from localStorage immediately so earnedBadges is always in sync
+// before any onLevelComplete() call — prevents badges re-triggering on reload.
+loadBadges();
 
 function showBadgeBanner(badge) {
   const banner = document.getElementById('match-badge-banner');
