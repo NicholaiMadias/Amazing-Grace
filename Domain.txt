@@ -2,20 +2,20 @@ Amazing Grace Home Living
 ─────────────────────────────────────────────
 Domain: amazinggracehl.org
 Repo:   NicholaiMadias/Amazing-Grace
-Pages:  https://nicholaimadias.github.io/Amazing-Grace/
-CNAME:  amazinggracehl.org
+Host:   Cloudflare Pages (production)
 
-DNS Requirements (amazinggracehl.org):
-  A @ → 185.199.108.153
-  A @ → 185.199.109.153
-  A @ → 185.199.110.153
-  A @ → 185.199.111.153
-  CNAME www → nicholaimadias.github.io
+DNS Requirements (amazinggracehl.org via Cloudflare):
+  CNAME @ → amazing-grace.pages.dev
+  CNAME www → amazing-grace.pages.dev
+  (Managed in Cloudflare dashboard — proxied / orange-cloud on)
 
-Arcade Subdomain (arcade.amazinggracehl.org):
-  CNAME arcade → nicholaimadias.github.io
-  (Points to the Seven Stars arcade hosted on GitHub Pages)
+Cloudflare Pages Project:
+  Project:    amazing-grace
+  Production: https://amazinggracehl.org
+  Branch:     main
+  Build cmd:  npm run build
+  Output dir: dist
 
-PR Preview URLs (Cloudflare Pages):
-  Auto-posted to pull requests via cloudflare-pages-preview-comment.yml
+PR Preview URLs:
+  Auto-posted to pull requests via .github/workflows/cloudflare-pages-preview-comment.yml
   Example: https://<hash>.amazing-grace.pages.dev

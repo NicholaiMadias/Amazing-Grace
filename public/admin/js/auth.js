@@ -48,7 +48,11 @@ function getDemoUsers() {
 }
 
 function saveDemoUsers(users) {
-  localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users));
+  try {
+    localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(users));
+  } catch {
+    /* storage blocked (private mode / quota exceeded) — continue without persisting */
+  }
 }
 
 function seedDemoUsers() {

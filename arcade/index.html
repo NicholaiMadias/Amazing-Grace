@@ -751,7 +751,14 @@
                 import('/star-map.js').then(function (m) {
                     var container = document.getElementById('star-map-container');
                     if (container) m.renderStarMap(container);
-                }).catch(function (err) { console.warn('[star-map] Failed to load star-map.js:', err); });
+                }).catch(function (err) {
+                    console.warn('[star-map] Failed to load star-map.js:', err);
+                    var container = document.getElementById('star-map-container');
+                    if (container && !container.dataset.fallbackShown) {
+                        container.dataset.fallbackShown = '1';
+                        container.innerHTML = '<p style="text-align:center;padding:1rem;color:var(--text-muted);font-size:0.8rem;">⭐ Star map unavailable offline</p>';
+                    }
+                });
             }
 
             refreshStarMap();
