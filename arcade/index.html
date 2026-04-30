@@ -46,6 +46,17 @@
             min-height: 100vh;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(15, 23, 42, 0.62) 0%, rgba(15, 23, 42, 0.82) 100%),
+                url('https://github.com/user-attachments/assets/4f2cc6b0-ad39-4ade-bcc7-868d75e1ff5d') center / cover no-repeat;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         @media (prefers-reduced-motion: no-preference) {
             body { scroll-behavior: smooth; }
         }
@@ -248,6 +259,31 @@
         .play-btn-gold  { background: var(--accent2); color: #1a1a2e; }
         .play-btn-teal  { background: var(--accent);  color: #0f172a; }
         .play-btn:hover { filter: brightness(1.1); transform: scale(1.04); }
+
+        /* ---- Game card thumbnail image ---- */
+        .game-card-img {
+            margin: -1.75rem -1.75rem 1rem;
+            height: 148px;
+            overflow: hidden;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+        .game-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .game-card:hover .game-card-img img { transform: scale(1.05); }
+        .game-card-img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+        }
 
         /* ---- Game Stage (full play area) ---- */
         .game-stage {
@@ -638,6 +674,9 @@
 
                 <!-- Seven Stars Card -->
                 <div class="game-card card-stars" role="button" tabindex="0" aria-label="Play The Mystery of the Seven Stars" onclick="launchGame('sevenstars')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('sevenstars')">
+                    <div class="game-card-img">
+                        <img src="https://github.com/user-attachments/assets/03bc7c9d-acc4-4bed-a935-83ad9cd48881" alt="Mystery of the Seven Stars — game screenshot" loading="lazy">
+                    </div>
                     <div class="game-card-icon">⭐</div>
                     <div class="game-card-title">Mystery of the Seven Stars</div>
                     <div class="game-card-desc">Journey through the seven churches of Asia Minor. Read their stories and test your biblical knowledge to collect all seven stars.</div>
@@ -647,6 +686,9 @@
 
                 <!-- Match Maker Card -->
                 <div class="game-card card-match" role="button" tabindex="0" aria-label="Play Match Maker" onclick="launchGame('matchmaker')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('matchmaker')">
+                    <div class="game-card-img">
+                        <div class="game-card-img-placeholder" style="background:radial-gradient(circle at 40% 35%,rgba(126,255,216,0.22),transparent 60%),radial-gradient(circle at 75% 70%,rgba(79,195,247,0.18),transparent 55%),#0b0f1c;">🔮</div>
+                    </div>
                     <div class="game-card-icon">🔮</div>
                     <div class="game-card-title">Match Maker</div>
                     <div class="game-card-desc">Swap and match virtuous gems on a 7×7 board. Unlock special tiles, build combos, and grow your Conscience Meter.</div>
@@ -656,6 +698,9 @@
 
                 <!-- Matrix of Conscience Card -->
                 <div class="game-card card-matrix" role="button" tabindex="0" aria-label="Play Matrix of Conscience" onclick="location.href='/arcade/matrix-of-conscience/'" onkeydown="if(event.key==='Enter'||event.key===' ')location.href='/arcade/matrix-of-conscience/'">
+                    <div class="game-card-img">
+                        <img src="https://github.com/user-attachments/assets/76d83d74-bf38-4847-9b2b-208aabc1e760" alt="Matrix of Conscience — game screenshot" loading="lazy">
+                    </div>
                     <div class="game-card-icon">🧠</div>
                     <div class="game-card-title">Matrix of Conscience</div>
                     <div class="game-card-desc">Navigate nine moral crossroads from the Star Matrix journey. Your choices shape four conscience dimensions and reveal your Conscience Archetype.</div>
