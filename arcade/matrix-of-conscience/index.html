@@ -552,6 +552,45 @@
             .matrix-grid, .completion-matrix { grid-template-columns: 1fr 1fr; }
             main { padding: 1.25rem 0.75rem 2.5rem; }
         }
+
+        /* ── Tap target & focus improvements ── */
+        .choice-btn {
+            min-height: 52px;
+        }
+        .choice-btn:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+            border-color: var(--accent);
+        }
+        .start-btn, .continue-btn {
+            min-height: 48px;
+        }
+        .action-btn {
+            min-height: 44px;
+        }
+        .nav-btn {
+            min-height: 38px;
+        }
+        .nav-btn:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+        .portal-link:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ── Portal link mobile ── */
+        @media (max-width: 480px) {
+            .portal-bar { gap: 0.35rem; padding: 0.5rem 0.75rem; }
+            .portal-link { font-size: 0.7rem; padding: 0.3rem 0.6rem; min-height: 36px; display: inline-flex; align-items: center; }
+        }
+
+        /* ── Reduced-motion guard ── */
+        @media (prefers-reduced-motion: reduce) {
+            .choice-btn, .start-btn, .continue-btn, .action-btn,
+            .matrix-bar-fill, .feedback-overlay { transition: none !important; transform: none !important; animation: none !important; }
+        }
     </style>
 </head>
 <body>
