@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Amazing Grace: The Matrix of Conscience — navigate moral dilemmas, shape your conscience, and discover how your choices reflect your values.">
+    <meta name="theme-color" content="#0f172a">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Matrix of Conscience — Amazing Grace Nexus Arcade">
+    <meta property="og:description" content="Navigate moral dilemmas and shape your conscience in this faith-based interactive experience.">
+    <meta property="og:url" content="https://amazinggracehl.org/arcade/matrix-of-conscience">
+
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <title>Matrix of Conscience | Nexus Arcade — Amazing Grace</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --bg:           #0f172a;
+            --surface:      #1e293b;
+            --surface2:     #0f172a;
+            --border:       #334155;
+            --accent:       #a78bfa;   /* violet — matrix colour */
+            --accent2:      #ffd700;
+            --accent3:      #7effd8;
+            --text:         #e2e8f0;
+            --text-muted:   #94a3b8;
+            --header-bg:    #0f172a;
+            --nav-btn:      #1e3a8a;
+            --nav-btn-h:    #2563eb;
+            --matrix-glow:  rgba(167,139,250,0.25);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            body { scroll-behavior: smooth; }
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ── Header ── */
+        .site-header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-decoration: none;
+            color: white;
+        }
+        .logo img { height: 36px; width: auto; border-radius: 4px; }
+
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .nav-btn {
+            background-color: var(--nav-btn);
+            border: 1px solid transparent;
+            padding: 0.45rem 1.1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #bfdbfe;
+            transition: background-color 0.2s, color 0.2s;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--nav-btn-h);
+            color: white;
+        }
+        .nav-btn.active { border-color: var(--accent); }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.25rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 700px) {
+            .main-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0; right: 0;
+                background: var(--header-bg);
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
+                z-index: 100;
+            }
+            .main-nav.show { display: flex; }
+            .menu-toggle { display: block; }
+        }
+
+        /* ── Portal bar ── */
+        .portal-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: rgba(15,23,42,0.8);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .portal-link {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            text-decoration: none;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .portal-link:hover { color: white; border-color: var(--border); }
+        .portal-link.active { color: var(--accent); border-color: var(--accent); }
+
+        /* ── Main ── */
+        main {
+            flex: 1;
+            padding: 2rem 1rem 3rem;
+            max-width: 860px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ── Game header ── */
+        .game-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .game-header-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+        .game-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.75rem, 5vw, 2.75rem);
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 24px var(--matrix-glow);
+            margin-bottom: 0.4rem;
+        }
+        .game-header p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; max-width: 560px; margin: 0 auto; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            margin-bottom: 1.75rem;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .back-link:hover { color: white; border-color: var(--accent); }
+
+        /* ── Game shell screens ── */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* ── Intro / Welcome screen ── */
+        .intro-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .intro-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+        .intro-card p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.25rem; font-size: 0.9rem; }
+
+        .start-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #1a1035;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: filter 0.2s, transform 0.15s;
+        }
+        .start-btn:hover { filter: brightness(1.1); transform: scale(1.04); }
+
+        /* ── Scenario screen ── */
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .scenario-progress {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .scenario-progress span { color: var(--accent); }
+
+        .scenario-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .scenario-category {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(167,139,250,0.12);
+            color: var(--accent);
+            border: 1px solid rgba(167,139,250,0.3);
+            margin-bottom: 0.85rem;
+        }
+        .scenario-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        .scenario-card p { color: var(--text-muted); line-height: 1.7; font-size: 0.9rem; }
+
+        /* ── Choice buttons ── */
+        .choices { display: flex; flex-direction: column; gap: 0.75rem; }
+        .choice-btn {
+            background: rgba(30,41,59,0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            width: 100%;
+        }
+        .choice-btn:hover {
+            background: rgba(167,139,250,0.1);
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        .choice-btn .choice-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .choice-btn .choice-text { display: block; }
+
+        /* ── Conscience Matrix ── */
+        .conscience-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .conscience-panel h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .matrix-cell {
+            background: rgba(15,23,42,0.6);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+        .matrix-cell-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+        }
+        .matrix-cell-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .matrix-cell-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .matrix-bar-track {
+            height: 6px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .matrix-bar-fill {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .bar-karma     { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .bar-community { background: linear-gradient(90deg, #10b981, #34d399); }
+        .bar-wisdom    { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .bar-integrity { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+        /* ── Feedback overlay ── */
+        .feedback-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .feedback-overlay.show { display: flex; }
+        .feedback-box {
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 40px var(--matrix-glow);
+        }
+        .feedback-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .feedback-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 0.6rem;
+        }
+        .feedback-text { color: var(--text-muted); font-size: 0.875rem; line-height: 1.65; margin-bottom: 1rem; }
+        .feedback-deltas {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+        .delta-chip {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            border: 1px solid;
+        }
+        .delta-pos { background: rgba(52,211,153,0.12); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .delta-neg { background: rgba(248,113,113,0.12); color: #f87171; border-color: rgba(248,113,113,0.3); }
+        .delta-neu { background: rgba(148,163,184,0.1); color: var(--text-muted); border-color: var(--border); }
+
+        .continue-btn {
+            background: var(--accent);
+            color: #1a1035;
+            font-weight: 700;
+            font-size: 0.875rem;
+            padding: 0.65rem 1.75rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+        .continue-btn:hover { filter: brightness(1.1); }
+
+        /* ── AI Insight ── */
+        .ai-insight {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--accent);
+            opacity: 0.85;
+            border-left: 2px solid var(--accent);
+            padding-left: 0.75rem;
+            margin: 0.75rem 0 1rem;
+            text-align: left;
+            min-height: 1.2em;
+        }
+        .ai-insight-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── Completion screen ── */
+        .completion-card {
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 0 60px var(--matrix-glow);
+        }
+        .completion-card .trophy { font-size: 4rem; margin-bottom: 0.75rem; }
+        .completion-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .completion-card > p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+        .archetype-banner {
+            background: rgba(167,139,250,0.1);
+            border: 1px solid rgba(167,139,250,0.35);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .archetype-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--accent2);
+            margin-bottom: 0.3rem;
+        }
+        .archetype-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+
+        .completion-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .completion-cell {
+            background: rgba(15,23,42,0.6);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .completion-cell-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .completion-cell-value { font-size: 1.5rem; font-weight: 700; color: white; }
+
+        .completion-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .action-btn {
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: filter 0.2s, transform 0.15s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .action-btn:hover { filter: brightness(1.1); transform: scale(1.03); }
+        .btn-primary   { background: var(--accent); color: #1a1035; }
+        .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+
+        /* ── Footer ── */
+        .site-footer {
+            text-align: center;
+            padding: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            background: var(--header-bg);
+        }
+        .site-footer a { color: var(--accent3); text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeSlideIn 0.3s ease; }
+
+        @keyframes matrixPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--matrix-glow); }
+            50%       { text-shadow: 0 0 40px rgba(167,139,250,0.5); }
+        }
+        .pulse-glow { animation: matrixPulse 3s ease-in-out infinite; }
+
+        @media (max-width: 480px) {
+            .matrix-grid, .completion-matrix { grid-template-columns: 1fr 1fr; }
+            main { padding: 1.25rem 0.75rem 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+            <img src="/assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+            <a href="/" class="nav-btn">🏠 Home</a>
+            <a href="/arcade" class="nav-btn active" aria-current="page">🎮 Arcade</a>
+            <a href="/#properties" class="nav-btn">🏘️ Listings</a>
+            <a href="/ministries/" class="nav-btn" style="background:rgba(124,58,237,0.4);">✨ Seven Stars</a>
+            <a href="/#contact" class="nav-btn">✉️ Contact</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+    </header>
+
+    <!-- Portal Selector -->
+    <div class="portal-bar" role="navigation" aria-label="Portal navigation">
+        <a href="/" class="portal-link">🏠 Listings</a>
+        <a href="/arcade" class="portal-link active" aria-current="page">🎮 Arcade</a>
+        <a href="/ministry" class="portal-link">🕊️ Ministry</a>
+        <a href="/ministries/" class="portal-link">✨ Seven Stars</a>
+    </div>
+
+    <!-- Main -->
+    <main>
+        <a href="/arcade" class="back-link" aria-label="Back to Arcade">← Back to Arcade</a>
+
+        <!-- Game header -->
+        <div class="game-header">
+            <div class="game-header-icon">🧠</div>
+            <h1 class="pulse-glow">Matrix of Conscience</h1>
+            <p>Navigate moral dilemmas drawn from real faith, community, and integrity. Each choice reshapes your conscience matrix — revealing the pattern of who you are.</p>
+        </div>
+
+        <!-- ── Screen: Intro ── -->
+        <div id="screen-intro" class="screen active animate-in">
+            <div class="intro-card">
+                <h2>Welcome, Traveler</h2>
+                <p>
+                    In this experience, you will face <strong style="color:white">9 moral crossroads</strong> drawn from the Seven Stars journey. There are no wrong answers — only honest ones. Your choices shape four conscience dimensions:
+                </p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin:1rem 0;text-align:left;">
+                    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:0.65rem;font-size:0.8rem;">
+                        <span style="font-weight:700;color:#fbbf24;">⚡ Karma</span><br>
+                        <span style="color:var(--text-muted)">Actions &amp; consequences</span>
+                    </div>
+                    <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:0.65rem;font-size:0.8rem;">
+                        <span style="font-weight:700;color:#34d399;">🤝 Community</span><br>
+                        <span style="color:var(--text-muted)">Generosity &amp; solidarity</span>
+                    </div>
+                    <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:0.65rem;font-size:0.8rem;">
+                        <span style="font-weight:700;color:#a78bfa;">🔮 Wisdom</span><br>
+                        <span style="color:var(--text-muted)">Insight &amp; discernment</span>
+                    </div>
+                    <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:0.65rem;font-size:0.8rem;">
+                        <span style="font-weight:700;color:#60a5fa;">🛡️ Integrity</span><br>
+                        <span style="color:var(--text-muted)">Honesty &amp; reliability</span>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.25rem;">At the end, your <strong style="color:var(--accent)">Conscience Archetype</strong> will be revealed.</p>
+                <button class="start-btn" onclick="startGame()">⚡ Begin Your Journey</button>
+            </div>
+        </div>
+
+        <!-- ── Screen: Scenario ── -->
+        <div id="screen-scenario" class="screen">
+            <!-- Conscience Matrix (always visible during play) -->
+            <div class="conscience-panel animate-in" id="conscience-panel">
+                <h3>Your Conscience Matrix</h3>
+                <div class="matrix-grid">
+                    <div class="matrix-cell">
+                        <div class="matrix-cell-label">
+                            <span class="matrix-cell-name">⚡ Karma</span>
+                            <span class="matrix-cell-value" id="val-karma">0</span>
+                        </div>
+                        <div class="matrix-bar-track"><div id="bar-karma" class="matrix-bar-fill bar-karma" style="width:50%"></div></div>
+                    </div>
+                    <div class="matrix-cell">
+                        <div class="matrix-cell-label">
+                            <span class="matrix-cell-name">🤝 Community</span>
+                            <span class="matrix-cell-value" id="val-community">0</span>
+                        </div>
+                        <div class="matrix-bar-track"><div id="bar-community" class="matrix-bar-fill bar-community" style="width:50%"></div></div>
+                    </div>
+                    <div class="matrix-cell">
+                        <div class="matrix-cell-label">
+                            <span class="matrix-cell-name">🔮 Wisdom</span>
+                            <span class="matrix-cell-value" id="val-wisdom">0</span>
+                        </div>
+                        <div class="matrix-bar-track"><div id="bar-wisdom" class="matrix-bar-fill bar-wisdom" style="width:50%"></div></div>
+                    </div>
+                    <div class="matrix-cell">
+                        <div class="matrix-cell-label">
+                            <span class="matrix-cell-name">🛡️ Integrity</span>
+                            <span class="matrix-cell-value" id="val-integrity">0</span>
+                        </div>
+                        <div class="matrix-bar-track"><div id="bar-integrity" class="matrix-bar-fill bar-integrity" style="width:50%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario area -->
+            <div id="scenario-area"></div>
+        </div>
+
+        <!-- ── Screen: Completion ── -->
+        <div id="screen-completion" class="screen">
+            <div class="completion-card animate-in">
+                <div class="trophy">🏆</div>
+                <h2>Your Matrix is Complete</h2>
+                <p id="completion-subtitle">You have walked the Nine Roads of the Star Matrix. The pattern of your choices forms a constellation unique to you.</p>
+
+                <div class="archetype-banner">
+                    <div class="archetype-name" id="archetype-name">The Seeker</div>
+                    <div class="archetype-desc" id="archetype-desc"></div>
+                </div>
+
+                <div class="completion-matrix" id="completion-matrix"></div>
+
+                <div class="ai-insight" id="ai-completion-insight" style="display:none">
+                    <div class="ai-insight-label">✨ Gemini Reflection</div>
+                    <div id="ai-completion-text"></div>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="action-btn btn-primary" onclick="restartGame()">↩ Play Again</button>
+                    <a href="/arcade" class="action-btn btn-secondary">🎮 Back to Arcade</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Amazing Grace Home Living &mdash; <a href="/">amazinggracehl.org</a></p>
+    </footer>
+
+    <!-- Feedback overlay -->
+    <div id="feedback-overlay" class="feedback-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
+        <div class="feedback-box">
+            <div class="feedback-icon" id="feedback-icon"></div>
+            <div class="feedback-title" id="feedback-title"></div>
+            <div class="feedback-text" id="feedback-text"></div>
+            <div class="feedback-deltas" id="feedback-deltas"></div>
+            <div id="ai-insight-block" style="display:none;text-align:left;margin-bottom:1rem;">
+                <div class="ai-insight-label">✨ Gemini Reflection</div>
+                <div class="ai-insight" id="ai-insight-text" style="margin:0"></div>
+            </div>
+            <button class="continue-btn" id="continue-btn" onclick="closeFeedback()">Continue →</button>
+        </div>
+    </div>
+
+    <script>
+    // ─────────────────────────────────────────────────────────────────
+    //  MATRIX OF CONSCIENCE — Game Logic
+    //  Optional: set GEMINI_API_KEY to a valid key to enable AI insights
+    // ─────────────────────────────────────────────────────────────────
+    const GEMINI_API_KEY = '';  // leave empty to disable AI insights
+
+    // ── Scenario data ────────────────────────────────────────────────
+    const SCENARIOS = [
+        {
+            id: 1,
+            category: 'Integrity',
+            title: 'The Red Queen\'s Temptation',
+            story: 'A powerful voice whispers that you could take a shortcut — bending the truth just once to gain an advantage. The opportunity seems harmless, and no one would know. What do you do?',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Decline, even though it costs you the opportunity. Your word is your bond.',
+                    icon: '🛡️',
+                    feedback: 'You stood firm. Integrity under pressure is the foundation of trust.',
+                    deltas: { karma: 8, community: 2, wisdom: 3, integrity: 12 }
+                },
+                {
+                    label: 'B',
+                    text: 'Accept the shortcut but resolve to make it right later.',
+                    icon: '⚖️',
+                    feedback: 'Compromise is sometimes inevitable — but the road back to integrity is longer than it looks.',
+                    deltas: { karma: 2, community: 0, wisdom: 4, integrity: -6 }
+                },
+                {
+                    label: 'C',
+                    text: 'Expose the offer to others so no one else is tempted.',
+                    icon: '📣',
+                    feedback: 'Courageous transparency protects the community from corruption.',
+                    deltas: { karma: 5, community: 8, wisdom: 6, integrity: 8 }
+                }
+            ]
+        },
+        {
+            id: 2,
+            category: 'Community',
+            title: 'Call of the White Rabbit',
+            story: 'A neighbor in your housing community is struggling — they can\'t pay rent and may face eviction. You have limited resources yourself. A mutual friend asks if you can help organise support.',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Rally others in the community to pool small contributions.',
+                    icon: '🤝',
+                    feedback: 'Collective solidarity is more powerful than individual charity. You brought people together.',
+                    deltas: { karma: 10, community: 15, wisdom: 5, integrity: 5 }
+                },
+                {
+                    label: 'B',
+                    text: 'Give what you can personally, even if it stretches you.',
+                    icon: '💛',
+                    feedback: 'Generous sacrifice speaks louder than words. Your community felt your love.',
+                    deltas: { karma: 12, community: 8, wisdom: 2, integrity: 8 }
+                },
+                {
+                    label: 'C',
+                    text: 'Help them draft a formal hardship request to the landlord.',
+                    icon: '📝',
+                    feedback: 'Wisdom navigates systems on behalf of the vulnerable. Practical help is a form of love.',
+                    deltas: { karma: 6, community: 6, wisdom: 10, integrity: 6 }
+                }
+            ]
+        },
+        {
+            id: 3,
+            category: 'Wisdom',
+            title: 'Ascent to Nimbus Land',
+            story: 'You are offered two paths forward: one is certain and safe, the other is uncertain but offers far greater impact for others. Wise counsel is divided. What guides your choice?',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Pray and fast for three days before deciding — discernment takes time.',
+                    icon: '🙏',
+                    feedback: 'Patience is a form of wisdom. Not every decision needs to be made today.',
+                    deltas: { karma: 3, community: 2, wisdom: 14, integrity: 5 }
+                },
+                {
+                    label: 'B',
+                    text: 'Choose the uncertain path because its potential to serve others is greater.',
+                    icon: '🌟',
+                    feedback: 'Faith walks into the unknown. The greater call is worth the greater risk.',
+                    deltas: { karma: 10, community: 8, wisdom: 8, integrity: 6 }
+                },
+                {
+                    label: 'C',
+                    text: 'Choose the safe path and invest the gained stability in future service.',
+                    icon: '🏗️',
+                    feedback: 'Building a stable foundation is itself a form of service. Wisdom knows when to consolidate.',
+                    deltas: { karma: 4, community: 4, wisdom: 6, integrity: 8 }
+                }
+            ]
+        },
+        {
+            id: 4,
+            category: 'Integrity',
+            title: 'The Seven Pillars',
+            story: 'You discover that a respected leader in your community has been quietly mismanaging funds — nothing criminal, but it betrays trust. You have proof. Others look up to this person.',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Confront the leader privately and give them a chance to make it right.',
+                    icon: '🗣️',
+                    feedback: 'Grace gives people room to repent before consequences. This is the hardest kind of courage.',
+                    deltas: { karma: 6, community: 6, wisdom: 10, integrity: 12 }
+                },
+                {
+                    label: 'B',
+                    text: 'Bring the evidence to the community board immediately.',
+                    icon: '⚖️',
+                    feedback: 'Accountability protects the many. Sometimes the community must be shielded from one person\'s failures.',
+                    deltas: { karma: 8, community: 10, wisdom: 6, integrity: 10 }
+                },
+                {
+                    label: 'C',
+                    text: 'Stay silent to protect community harmony.',
+                    icon: '🤫',
+                    feedback: 'Silence can wound the community more deeply than disclosure. Trust, once discovered to be protected by silence, is harder to rebuild.',
+                    deltas: { karma: -4, community: -8, wisdom: 2, integrity: -10 }
+                }
+            ]
+        },
+        {
+            id: 5,
+            category: 'Karma',
+            title: 'Mystery of the Sixth Star',
+            story: 'Someone who once wronged you deeply is now in need. They have not apologised. You have the means to help them — or to do nothing without anyone judging you.',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Help them unconditionally. What they did no longer binds your heart.',
+                    icon: '💜',
+                    feedback: 'Forgiveness extended without request is the rarest and most powerful form of grace.',
+                    deltas: { karma: 15, community: 6, wisdom: 8, integrity: 10 }
+                },
+                {
+                    label: 'B',
+                    text: 'Help them, and gently open a conversation about what happened.',
+                    icon: '🌱',
+                    feedback: 'Healing requires honesty. You offered both mercy and truth — a courageous gift.',
+                    deltas: { karma: 10, community: 8, wisdom: 12, integrity: 10 }
+                },
+                {
+                    label: 'C',
+                    text: 'Direct them to other resources without involving yourself.',
+                    icon: '➡️',
+                    feedback: 'You chose a boundary. Boundaries can be wise — but examine whether they serve your growth or protect a wound.',
+                    deltas: { karma: 2, community: 4, wisdom: 6, integrity: 4 }
+                }
+            ]
+        },
+        {
+            id: 6,
+            category: 'Community',
+            title: 'Covenant of Fellowship',
+            story: 'Your faith community is splitting over a theological disagreement. Both sides are sincere. You are respected by both. Leaders ask you to take a public position.',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Refuse to take sides — focus everyone on what unites them in Christ.',
+                    icon: '✝️',
+                    feedback: 'Unity is a spiritual discipline. You chose the harder path of holding people together.',
+                    deltas: { karma: 8, community: 14, wisdom: 12, integrity: 8 }
+                },
+                {
+                    label: 'B',
+                    text: 'State your honest conviction clearly, with humility and charity.',
+                    icon: '📖',
+                    feedback: 'Authentic witness requires honest conviction. You modelled faithful disagreement.',
+                    deltas: { karma: 6, community: 4, wisdom: 8, integrity: 14 }
+                },
+                {
+                    label: 'C',
+                    text: 'Privately support both sides while helping them find a formal process.',
+                    icon: '🕊️',
+                    feedback: 'Peacemakers create structures that outlast the conflict. Your wisdom built a bridge.',
+                    deltas: { karma: 6, community: 10, wisdom: 14, integrity: 8 }
+                }
+            ]
+        },
+        {
+            id: 7,
+            category: 'Wisdom',
+            title: 'The New Beginning',
+            story: 'You have an opportunity to start fresh — a new city, new community, a clean slate. But there are responsibilities at home still unresolved. What do you do?',
+            choices: [
+                {
+                    label: 'A',
+                    text: 'Stay to fulfil your commitments before pursuing the new opportunity.',
+                    icon: '🏠',
+                    feedback: 'Faithfulness in small things is the preparation for great ones. You honoured your word.',
+                    deltas: { karma: 8, community: 6, wisdom: 8, integrity: 14 }
+                },
+                {
+                    label: 'B',
+                    text: 'Go, but arrange for trusted others to handle what you leave behind.',
+                    icon: '🌅',
+                    feedback: 'Delegating responsibly is not abandonment — it is wisdom. You moved forward without leaving others behind.',
+                    deltas: { karma: 6, community: 8, wisdom: 12, integrity: 8 }
+                },
+                {
+                    label: 'C',
+                    text: 'Decline the new opportunity entirely to focus on what already exists.',
+                    icon: '⚓',
+                    feedback: 'Contentment is a virtue. Not every open door is meant to be walked through.',
+                    deltas: { karma: 4, community: 6, wisdom: 6, integrity: 10 }
+                }
+            ]
+        },
+        {
+            id: 8,
+            category: 'Karma',
+            title: 'The Star Matrix Vision',
+            story: 'Sheila — Guardian of Grace — appears in a vision. She shows you a lattice of every choice you have ever made, radiating light or shadow. She asks: "If you could change one thing about the pattern, what would it be?"',
+            choices: [
+                {
+                    label: 'A',
+                    text: '"I would have spoken truth sooner, even when it cost me."',
+                    icon: '💬',
+                    feedback: 'You name the wound of silence. In acknowledging it, you break its power.',
+                    deltas: { karma: 8, community: 4, wisdom: 10, integrity: 14 }
+                },
+                {
+                    label: 'B',
+                    text: '"I would have trusted others more — I tried to carry too much alone."',
+                    icon: '🤲',
+                    feedback: 'Vulnerability is strength. You recognise that community is not a luxury — it is how we were made.',
+                    deltas: { karma: 6, community: 14, wisdom: 10, integrity: 8 }
+                },
+                {
+                    label: 'C',
+                    text: '"I would change nothing — every shadow taught me something light alone cannot."',
+                    icon: '🌓',
+                    feedback: 'Radical acceptance is not complacency — it is the wisdom that transforms suffering into growth.',
+                    deltas: { karma: 10, community: 6, wisdom: 14, integrity: 8 }
+                }
+            ]
+        },
+        {
+            id: 9,
+            category: 'Integrity',
+            title: 'Threshold of Conscience',
+            story: 'You stand at the threshold. Behind you: every choice, every cross-road, every person you have touched. Ahead: the unknown. The Guardian asks one final question — "Who are you?"',
+            choices: [
+                {
+                    label: 'A',
+                    text: '"I am still becoming — and I accept that."',
+                    icon: '🌱',
+                    feedback: 'Humility about your own unfinished nature is the beginning of all growth. The threshold is not an end — it is a door.',
+                    deltas: { karma: 10, community: 8, wisdom: 14, integrity: 10 }
+                },
+                {
+                    label: 'B',
+                    text: '"I am the sum of those I have loved and those who have loved me."',
+                    icon: '💞',
+                    feedback: 'Identity rooted in relationship is unshakeable. No circumstance can take away what love has built.',
+                    deltas: { karma: 8, community: 14, wisdom: 10, integrity: 10 }
+                },
+                {
+                    label: 'C',
+                    text: '"I am a child of God — and that is enough."',
+                    icon: '✝️',
+                    feedback: 'The deepest identity is the one given before any achievement. You stand on the solid rock.',
+                    deltas: { karma: 12, community: 8, wisdom: 10, integrity: 14 }
+                }
+            ]
+        }
+    ];
+
+    // ── Archetypes ───────────────────────────────────────────────────
+    const ARCHETYPES = [
+        {
+            name: 'The Guardian of Grace',
+            condition: s => s.integrity >= 80 && s.community >= 60,
+            desc: 'Your conscience is a lighthouse. You protect others with fierce gentleness, holding the community steady even when storms rage. You are the reason people feel safe.'
+        },
+        {
+            name: 'The Wise Seeker',
+            condition: s => s.wisdom >= 80 && s.karma >= 50,
+            desc: 'You carry the light of discernment — you pause before you act, and your counsel is sought when others are lost. The Seven Stars shine clearest through your eyes.'
+        },
+        {
+            name: 'The Community Weaver',
+            condition: s => s.community >= 80 && s.karma >= 60,
+            desc: 'Where others see division, you see a web of belonging waiting to be restored. Your greatest gift is not what you do alone, but what you help others do together.'
+        },
+        {
+            name: 'The Humble Pilgrim',
+            condition: s => s.karma >= 70 && s.wisdom >= 60 && s.integrity >= 60,
+            desc: 'Balanced in all things, you walk the narrow path with quiet faithfulness. You do not seek recognition — yet your footprints guide those who follow. Your journey continues.'
+        },
+        {
+            name: 'The Conscience Forger',
+            condition: s => s.integrity >= 70 && s.karma >= 60,
+            desc: 'You have been tested in the fire and chose integrity each time the cost was real. The matrix of your conscience is strong steel — it bends under pressure but never breaks.'
+        },
+        {
+            name: 'The Faithful Steward',
+            condition: () => true,   // fallback
+            desc: 'You have walked the Nine Roads with honesty and care. The full pattern of your conscience is still emerging — but its foundation is faithful. Keep walking.'
+        }
+    ];
+
+    // ── Game state ────────────────────────────────────────────────────
+    let state = { karma: 0, community: 0, wisdom: 0, integrity: 0 };
+    let currentScenario = 0;
+    let pendingDelta = null;
+
+    // ── Helpers ──────────────────────────────────────────────────────
+    function clamp(v, min = -100, max = 100) {
+        return Math.max(min, Math.min(max, v));
+    }
+
+    function normalizeToPercent(v) {
+        // map [-100, 100] → [0, 100]
+        return ((clamp(v) + 100) / 200) * 100;
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        const el = document.getElementById(id);
+        if (el) { el.classList.add('active'); el.classList.add('animate-in'); }
+    }
+
+    function updateMatrix() {
+        ['karma', 'community', 'wisdom', 'integrity'].forEach(dim => {
+            const pct = normalizeToPercent(state[dim]);
+            const bar = document.getElementById('bar-' + dim);
+            const val = document.getElementById('val-' + dim);
+            if (bar) bar.style.width = pct + '%';
+            if (val) val.textContent = (state[dim] >= 0 ? '+' : '') + state[dim];
+        });
+    }
+
+    // ── AI Insight (Gemini) ──────────────────────────────────────────
+    async function fetchGeminiInsight(prompt) {
+        if (!GEMINI_API_KEY) return null;
+        try {
+            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { maxOutputTokens: 120, temperature: 0.85 }
+                })
+            });
+            if (!res.ok) return null;
+            const data = await res.json();
+            return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
+        } catch {
+            return null;
+        }
+    }
+
+    // ── Scenario rendering ───────────────────────────────────────────
+    function renderScenario(index) {
+        const s = SCENARIOS[index];
+        const area = document.getElementById('scenario-area');
+        area.innerHTML = `
+            <div class="scenario-card animate-in">
+                <span class="scenario-category">${s.category}</span>
+                <div class="scenario-header">
+                    <h2>${s.title}</h2>
+                    <span class="scenario-progress">Crossroad <span>${index + 1}</span> of ${SCENARIOS.length}</span>
+                </div>
+                <p>${s.story}</p>
+            </div>
+            <div class="choices" role="list">
+                ${s.choices.map((c, i) => `
+                    <button
+                        class="choice-btn animate-in"
+                        style="animation-delay:${i * 0.07}s"
+                        role="listitem"
+                        aria-label="Choice ${c.label}: ${c.text}"
+                        onclick="makeChoice(${index}, ${i})">
+                        <span class="choice-label">${c.icon} Option ${c.label}</span>
+                        <span class="choice-text">${c.text}</span>
+                    </button>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // ── Choice handling ───────────────────────────────────────────────
+    async function makeChoice(scenarioIndex, choiceIndex) {
+        const scenario = SCENARIOS[scenarioIndex];
+        const choice   = scenario.choices[choiceIndex];
+
+        // Lock buttons — prevent double-submit; mark disabled for screen readers
+        document.querySelectorAll('.choice-btn').forEach(btn => {
+            btn.disabled = true;
+            btn.setAttribute('aria-disabled', 'true');
+            btn.style.opacity = '0.5';
+        });
+
+        // Apply deltas
+        pendingDelta = choice.deltas;
+        Object.keys(choice.deltas).forEach(dim => {
+            state[dim] = clamp(state[dim] + choice.deltas[dim]);
+        });
+        updateMatrix();
+
+        // Build delta chips
+        const chips = Object.entries(choice.deltas)
+            .map(([dim, v]) => {
+                const cls = v > 0 ? 'delta-pos' : v < 0 ? 'delta-neg' : 'delta-neu';
+                const sign = v > 0 ? '+' : '';
+                const icons = { karma: '⚡', community: '🤝', wisdom: '🔮', integrity: '🛡️' };
+                return `<span class="delta-chip ${cls}">${icons[dim]} ${dim} ${sign}${v}</span>`;
+            })
+            .join('');
+
+        document.getElementById('feedback-icon').textContent  = choice.icon;
+        document.getElementById('feedback-title').textContent = scenario.title;
+        document.getElementById('feedback-text').textContent  = choice.feedback;
+        document.getElementById('feedback-deltas').innerHTML  = chips;
+
+        // AI insight (async, non-blocking)
+        const aiBlock = document.getElementById('ai-insight-block');
+        const aiText  = document.getElementById('ai-insight-text');
+        aiBlock.style.display = 'none';
+        if (GEMINI_API_KEY) {
+            const prompt = `In one short sentence (max 20 words), offer a reflective faith-based insight on this moral choice: "${choice.text}" — feedback: "${choice.feedback}"`;
+            const insight = await fetchGeminiInsight(prompt);
+            if (insight) {
+                aiText.textContent = insight;
+                aiBlock.style.display = 'block';
+            }
+        }
+
+        // Show overlay
+        document.getElementById('feedback-overlay').classList.add('show');
+        document.getElementById('continue-btn').focus();
+    }
+
+    function closeFeedback() {
+        document.getElementById('feedback-overlay').classList.remove('show');
+        currentScenario++;
+        if (currentScenario < SCENARIOS.length) {
+            renderScenario(currentScenario);
+        } else {
+            showCompletion();
+        }
+    }
+
+    // ── Completion ───────────────────────────────────────────────────
+    async function showCompletion() {
+        // Determine archetype
+        const archetype = ARCHETYPES.find(a => a.condition(state)) || ARCHETYPES[ARCHETYPES.length - 1];
+        document.getElementById('archetype-name').textContent = archetype.name;
+        document.getElementById('archetype-desc').textContent = archetype.desc;
+
+        // Final matrix cells
+        const dims = [
+            { key: 'karma',     icon: '⚡', label: 'Karma' },
+            { key: 'community', icon: '🤝', label: 'Community' },
+            { key: 'wisdom',    icon: '🔮', label: 'Wisdom' },
+            { key: 'integrity', icon: '🛡️', label: 'Integrity' }
+        ];
+        document.getElementById('completion-matrix').innerHTML = dims.map(d => `
+            <div class="completion-cell">
+                <div class="completion-cell-label">${d.icon} ${d.label}</div>
+                <div class="completion-cell-value">${state[d.key] >= 0 ? '+' : ''}${state[d.key]}</div>
+            </div>
+        `).join('');
+
+        showScreen('screen-completion');
+
+        // AI closing reflection
+        if (GEMINI_API_KEY) {
+            const prompt = `In 2 short sentences, give a warm, faith-based reflection for someone whose Matrix of Conscience archetype is "${archetype.name}": ${archetype.desc}`;
+            const insight = await fetchGeminiInsight(prompt);
+            if (insight) {
+                document.getElementById('ai-completion-text').textContent = insight;
+                document.getElementById('ai-completion-insight').style.display = 'block';
+            }
+        }
+    }
+
+    // ── Game control ─────────────────────────────────────────────────
+    function startGame() {
+        state = { karma: 0, community: 0, wisdom: 0, integrity: 0 };
+        currentScenario = 0;
+        updateMatrix();
+        renderScenario(0);
+        showScreen('screen-scenario');
+    }
+
+    function restartGame() {
+        showScreen('screen-intro');
+    }
+
+    // ── Mobile nav toggle ────────────────────────────────────────────
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav    = document.getElementById('main-nav');
+    menuToggle.addEventListener('click', () => {
+        const expanded = mainNav.classList.toggle('show');
+        menuToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+
+    // Close overlay on backdrop click
+    document.getElementById('feedback-overlay').addEventListener('click', function(e) {
+        if (e.target === this) closeFeedback();
+    });
+    </script>
+
+</body>
+</html>

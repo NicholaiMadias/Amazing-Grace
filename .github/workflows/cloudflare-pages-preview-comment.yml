@@ -1,0 +1,252 @@
+# Cloudflare Pages Preview Comment
+#
+# Posts (or updates) a single PR comment containing the Cloudflare Pages
+# preview URL for the branch.  Uses only the built-in GITHUB_TOKEN — no
+# extra secrets required.
+#
+# Anti-spam: the comment is keyed on the HTML marker below so that only
+# one comment is ever present per PR regardless of how many pushes occur.
+#   <!-- cloudflare-pages-preview-url -->
+
+name: Cloudflare Pages Preview Comment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  deployments: read
+  pull-requests: write
+
+# Cancel any in-progress run for the same PR to avoid duplicate comments.
+concurrency:
+  group: cloudflare-preview-comment-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Main job ────────────────────────────────────────────────────────────────
+  find_and_comment:
+    name: Find Cloudflare Preview & Post Comment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Poll Cloudflare Pages deployment and post PR comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { repo, owner } = context.repo;
+            const sha      = context.payload.pull_request.head.sha;
+            const prNumber = context.payload.pull_request.number;
+
+            // Marker used to identify and update the single managed comment (anti-spam).
+            const COMMENT_MARKER = '<!-- cloudflare-pages-preview-url -->';
+
+            // Polling config: up to 20 attempts × 15 s ≈ 5 min total timeout.
+            const MAX_ATTEMPTS    = 20;
+            const POLL_INTERVAL   = 15_000; // ms
+            const TIMEOUT_MINUTES = (MAX_ATTEMPTS * POLL_INTERVAL / 60_000).toFixed(1);
+
+            core.info(`🔍 Polling for Cloudflare Pages deployment`);
+            core.info(`   SHA:      ${sha}`);
+            core.info(`   PR:       #${prNumber}`);
+            core.info(`   Timeout:  ${TIMEOUT_MINUTES} min`);
+
+            // ── Heuristic: detect Cloudflare Pages GitHub Deployment records ──────
+            // Cloudflare Pages creates GitHub Deployment records whose `environment`
+            // field typically matches one of these patterns (case-insensitive):
+            //   • contains "cloudflare"   — explicit CF branding
+            //   • contains "pages"        — e.g. "Production (Pages)"
+            //   • equals "preview"        — CF Pages branch-preview environment
+            //   • description / task contains "cloudflare" or "pages.dev"
+            // The canonical preview URL lives in the status `environment_url`;
+            // `target_url` is used as a fallback.
+            function isCloudflarePages(dep) {
+              const env  = (dep.environment  || '').toLowerCase();
+              const desc = (dep.description  || '').toLowerCase();
+              const task = (dep.task         || '').toLowerCase();
+              return (
+                env.includes('cloudflare') ||
+                env.includes('pages')      ||
+                env === 'preview'          ||
+                desc.includes('cloudflare') ||
+                desc.includes('pages.dev')  ||
+                task.includes('cloudflare') ||
+                task.includes('pages.dev')
+              );
+            }
+
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+            // ── Poll loop ────────────────────────────────────────────────────────
+            let previewUrl = null;
+
+            for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+              core.info(`\n📡 Attempt ${attempt}/${MAX_ATTEMPTS} — querying deployments API…`);
+
+              // Paginate through all deployments for this SHA so we never miss
+              // a Cloudflare Pages record when there are more than 100 total.
+              const allDeployments = await github.paginate(github.rest.repos.listDeployments, {
+                owner,
+                repo,
+                sha,
+                per_page: 100,
+              });
+
+              core.info(`   Total deployments for SHA: ${allDeployments.length}`);
+
+              const cfDeployments = allDeployments.filter(isCloudflarePages);
+              core.info(`   Cloudflare Pages candidates: ${cfDeployments.length}`);
+
+              for (const dep of cfDeployments) {
+                core.info(`   → Deployment #${dep.id}  env="${dep.environment}"  task="${dep.task}"`);
+
+                // Paginate through statuses to handle the unlikely case of many
+                // status records.  Statuses are returned newest-first, so we will
+                // encounter any usable URL on the first page in the normal case.
+                const allStatuses = await github.paginate(github.rest.repos.listDeploymentStatuses, {
+                  owner,
+                  repo,
+                  deployment_id: dep.id,
+                  per_page: 100,
+                });
+
+                // Pick the first status (newest) that has a usable URL.
+                for (const status of allStatuses) {
+                  const url = status.environment_url || status.target_url;
+                  if (url && url.startsWith('https://')) {
+                    core.info(`   ✅ URL found  state="${status.state}"  url=${url}`);
+                    previewUrl = url;
+                    break;
+                  }
+                }
+                if (previewUrl) break;
+              }
+
+              if (previewUrl) break;
+
+              if (attempt < MAX_ATTEMPTS) {
+                core.info(`   ⏳ Waiting ${POLL_INTERVAL / 1000}s before next attempt…`);
+                await sleep(POLL_INTERVAL);
+              }
+            }
+
+            // ── Build comment body ────────────────────────────────────────────────
+            const shortSha  = sha.slice(0, 7);
+            const timestamp = new Date().toUTCString();
+            let body;
+
+            if (previewUrl) {
+              body = [
+                COMMENT_MARKER,
+                `## 🌐 Cloudflare Pages Preview`,
+                ``,
+                `| Field | Value |`,
+                `|---|---|`,
+                `| **Preview URL** | [${previewUrl}](${previewUrl}) |`,
+                `| **Commit** | \`${shortSha}\` |`,
+                `| **Updated** | ${timestamp} |`,
+                ``,
+                `> _This comment is automatically updated on each push._`,
+              ].join('\n');
+            } else {
+              body = [
+                COMMENT_MARKER,
+                `## 🌐 Cloudflare Pages Preview`,
+                ``,
+                `⚠️ No Cloudflare Pages preview deployment found for commit \`${shortSha}\` after ${MAX_ATTEMPTS} attempts (~${TIMEOUT_MINUTES} min).`,
+                ``,
+                `Possible reasons:`,
+                `- Cloudflare Pages deployment is still in progress`,
+                `- Deployment was not triggered for this branch/PR`,
+                `- Environment name does not match the expected pattern`,
+                ``,
+                `> _This comment is automatically updated on each push._`,
+              ].join('\n');
+            }
+
+            // ── Create or update single managed comment (anti-spam) ───────────────
+            // Paginate through all PR comments so we don't miss the existing marker
+            // comment when the PR has more than 100 comments.
+            const allComments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existing = allComments.find(c => c.body && c.body.includes(COMMENT_MARKER));
+
+            if (existing) {
+              core.info(`\n💬 Updating existing comment #${existing.id}`);
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              core.info(`\n💬 Creating new PR comment`);
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body,
+              });
+            }
+
+            core.info(`\n✅ Finished. Preview URL: ${previewUrl ?? '(not found)'}`);
+            if (previewUrl) core.setOutput('preview_url', previewUrl);
+
+  # ── Validation job ──────────────────────────────────────────────────────────
+  parallel_validation:
+    name: Validate Workflow YAML & Script Logic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install js-yaml
+        run: npm install --no-save --prefix /tmp/yaml-check js-yaml
+
+      - name: Validate workflow YAML syntax
+        run: |
+          node -e "
+            const yaml = require('/tmp/yaml-check/node_modules/js-yaml');
+            const fs   = require('fs');
+            const src  = fs.readFileSync('.github/workflows/cloudflare-pages-preview-comment.yml', 'utf8');
+            yaml.load(src);
+            console.log('✅ YAML syntax is valid');
+          "
+
+      - name: Dry-run check — verify script logic markers
+        run: |
+          node -e "
+            const fs  = require('fs');
+            const src = fs.readFileSync('.github/workflows/cloudflare-pages-preview-comment.yml', 'utf8');
+            const checks = [
+              ['<!-- cloudflare-pages-preview-url -->', 'comment marker present'],
+              ['listDeployments',                        'deployment polling call present'],
+              ['listDeploymentStatuses',                 'status polling call present'],
+              ['environment_url',                        'environment_url extraction present'],
+              ['target_url',                             'target_url fallback present'],
+              ['listComments',                           'comment list call present'],
+              ['updateComment',                          'comment update call present'],
+              ['createComment',                          'comment create call present'],
+              ['MAX_ATTEMPTS',                           'polling timeout guard present'],
+              ['isCloudflarePages',                      'CF Pages heuristic function present'],
+            ];
+            let ok = true;
+            for (const [needle, desc] of checks) {
+              if (src.includes(needle)) {
+                console.log('✅', desc);
+              } else {
+                console.error('❌ MISSING:', desc);
+                ok = false;
+              }
+            }
+            if (!ok) process.exit(1);
+            console.log('\n✅ All dry-run checks passed.');
+          "
