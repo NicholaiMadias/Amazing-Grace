@@ -55,15 +55,17 @@
             overflow-x: hidden;
         }
 
-        /* star-field background (CSS only) */
+        /* nebula starfield background */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background:
-                radial-gradient(ellipse at 20% 30%, rgba(30,144,255,0.08) 0%, transparent 55%),
-                radial-gradient(ellipse at 80% 70%, rgba(153,102,204,0.08) 0%, transparent 55%),
-                radial-gradient(ellipse at 50% 50%, var(--night-surface) 0%, var(--night) 100%);
+            background-color: #050810;
+            background-image:
+                linear-gradient(to bottom, rgba(5,8,16,0.72) 0%, rgba(5,8,16,0.50) 45%, rgba(5,8,16,0.72) 100%),
+                url('https://github.com/user-attachments/assets/8c80c4cf-4c99-408f-a155-31a291d7ff22');
+            background-size: cover;
+            background-position: center;
             z-index: -2;
             pointer-events: none;
         }
@@ -223,9 +225,9 @@
 
         /* ── Buttons ── */
         .btn-primary {
-            background: var(--star-sapphire);
+            background: var(--night-card);
             color: #fff;
-            border: 2px solid var(--star-sapphire);
+            border: 2px solid rgba(255,255,255,0.22);
             padding: 0.75rem 2rem;
             border-radius: var(--radius);
             font-weight: 800;
@@ -235,10 +237,9 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(30,144,255,0.4); }
-        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:hover { background: rgba(30,30,55,0.98); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
 
         .btn-outline {
             background: transparent;
@@ -274,7 +275,7 @@
             flex: 1;
             max-width: 200px;
             text-align: center;
-            background: var(--star-sapphire);
+            background: var(--night-card);
             color: #fff;
             font-weight: 800;
             font-size: 0.9rem;
@@ -285,6 +286,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.35rem;
+            border: 1px solid rgba(255,255,255,0.18);
         }
         .sticky-contact a.email-link {
             background: transparent;
