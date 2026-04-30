@@ -3,1389 +3,1014 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amazing Grace Home Living provides secure, all-inclusive housing in Tampa and Largo, FL. Affordable rooms with utilities, Wi-Fi, and full amenities included.">
-    <meta name="keywords" content="Tampa housing, Largo housing, affordable rooms, all-inclusive housing, Tampa rentals, Largo rentals, Florida housing">
-    <meta name="theme-color" content="#1e3a8a">
-
-    <!-- Open Graph / Social Media -->
+    <meta name="description" content="Affordable rooms for rent in Largo &amp; Tampa, Florida. Clean, safe, move-in ready with flexible residency options. Amazing Grace Home Living.">
+    <meta name="theme-color" content="#1A5276">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Amazing Grace Home Living - Affordable Housing in Tampa & Largo">
-    <meta property="og:description" content="Secure, all-inclusive housing with utilities, Wi-Fi, and full amenities. Rooms available in Tampa and Largo, FL.">
+    <meta property="og:title" content="Affordable Rooms for Rent — Largo &amp; Tampa | Amazing Grace Home Living">
+    <meta property="og:description" content="Clean, safe, and ready-to-move-in rooms with flexible residency options in Largo &amp; Tampa, FL.">
     <meta property="og:url" content="https://amazinggracehl.org">
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <link rel="manifest" href="./manifest.json">
+    <title>Amazing Grace Home Living — Rooms for Rent in Largo &amp; Tampa, FL</title>
 
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-
-    <title>Amazing Grace Home Living | Affordable Housing in Tampa & Largo, FL</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        /* ── Design tokens — logo-inspired palette (red heart, blue roof, cream house) ── */
+        :root {
+            --red:         #E63946;
+            --red-dark:    #C1121F;
+            --red-pale:    #FFF0F0;
+            --blue:        #1A5276;
+            --blue-mid:    #2874A6;
+            --blue-pale:   #EBF5FB;
+            --cream:       #FFF9F2;
+            --text:        #1C1C2E;
+            --text-muted:  #64748B;
+            --border:      rgba(0,0,0,0.09);
+            --shadow-sm:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md:   0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+            --shadow-lg:   0 12px 40px rgba(0,0,0,0.10);
+            --radius:      14px;
+            --radius-sm:   8px;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         @media (prefers-reduced-motion: no-preference) {
-            body {
-                scroll-behavior: smooth;
-            }
+            html { scroll-behavior: smooth; }
         }
 
-        /* Focus visible for accessibility */
-        *:focus-visible {
-            outline: 3px solid #3b82f6;
-            outline-offset: 2px;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Top Navigation Bar */
+        /* starburst-overlay — class kept for HTML compatibility, no visual effect on homepage */
+        .starburst-overlay { }
+
+        /* ── Focus ── */
+        *:focus-visible { outline: 3px solid var(--blue-mid); outline-offset: 3px; }
+
+        /* ── Header ── */
         .site-header {
-            background-color: #1e3a8a; /* Deep blue */
-            color: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            box-shadow: var(--shadow-sm);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.65rem;
             font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            letter-spacing: 1px;
             text-decoration: none;
-            color: white;
+            color: var(--blue);
+            letter-spacing: 0.01em;
         }
+        .logo img { height: 36px; width: auto; border-radius: 4px; }
 
-        .logo img {
-            height: 40px;
-            width: auto;
-            border-radius: 4px;
-        }
-
-        /* Responsive Tab Navigation */
-        .main-nav {
+        #main-nav {
             display: flex;
             gap: 0.5rem;
-            justify-content: center;
             align-items: center;
-            transition: all 0.3s ease;
         }
 
-        .btn {
-            background-color: #1e40af;
+        .nav-btn {
+            background: transparent;
             border: 1px solid transparent;
-            padding: 0.5rem 1.25rem;
+            padding: 0.45rem 1rem;
             border-radius: 6px;
             text-decoration: none;
-            color: #bfdbfe;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            cursor: pointer;
+            color: var(--text);
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            display: flex;
+            font-size: 0.85rem;
+            transition: background 0.2s, color 0.2s;
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.35rem;
         }
-
-        .btn:hover {
-            background-color: #2563eb;
-            color: white;
-        }
-
-        .btn[aria-selected="true"] {
-            background-color: white;
-            color: #1e3a8a;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .nav-btn:hover { background: var(--blue-pale); color: var(--blue); }
 
         .menu-toggle {
             display: none;
             background: none;
             border: none;
             font-size: 1.75rem;
-            color: white;
+            color: var(--blue);
             cursor: pointer;
+            padding: 0.25rem;
         }
 
-        @media (max-width: 768px) {
-            .main-nav {
+        @media (max-width: 700px) {
+            #main-nav {
                 display: none;
                 flex-direction: column;
                 position: absolute;
                 top: 100%;
-                left: 0;
-                right: 0;
-                background-color: #1e3a8a;
+                left: 0; right: 0;
+                background: #fff;
                 padding: 1rem;
-                z-index: 100;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                z-index: 200;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
                 gap: 0.5rem;
             }
-            .main-nav.show {
-                display: flex;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .btn {
-                width: 100%;
-                justify-content: flex-start;
-                padding: 0.75rem 1rem;
-            }
-            #tab-list {
-                flex-direction: column;
-                width: 100%;
-            }
+            #main-nav.show { display: flex; }
+            .menu-toggle { display: block; }
+            .nav-btn { width: 100%; justify-content: flex-start; padding: 0.75rem 1rem; }
         }
 
-        /* Main Content Area */
-        main {
-            flex-grow: 1;
-            padding: 2rem 1rem;
-            display: flex;
-            justify-content: center;
-        }
-
-        .tab-panel {
-            display: none; /* Hidden by default */
-            width: 100%;
-            max-width: 1000px;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .tab-panel.active {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Property Card Enhancements */
-        .property-card {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .property-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* --- GAME SPECIFIC STYLES (Scoped to Arcade Tab) --- */
-        .game-wrapper {
-            width: 100%;
-            max-width: 700px;
-            height: 75vh;
-            max-height: 800px;
-            background: #1a1a2e; /* Deep space theme */
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        /* ── Hero — deep blue gradient, pure CSS, no image overlays ── */
+        .hero {
+            padding: 5rem 1.5rem 4.5rem;
+            text-align: center;
+            background: linear-gradient(155deg, var(--blue) 0%, #122b47 100%);
             position: relative;
-            margin-top: 1rem;
+            overflow: hidden;
         }
-
-        .game-header {
-            background-color: #0f0f1e;
-            color: #FFD700;
-            padding: 1.25rem;
-            text-align: center;
-            font-size: 1.5rem;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 2px;
-            border-bottom: 2px solid #4e4e6a;
-        }
-
-        .game-content {
-            flex-grow: 1;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: center;
-            overflow-y: auto;
-            background: #1a1a2e;
-            color: white;
-        }
-
-        /* Deep space theme for Mystery of the Seven Stars game */
-        #game-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: #1a1a2e;
-            padding: 20px;
-            border-radius: 15px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-        }
-
-        #game-grid {
-            display: grid;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #4e4e6a;
-        }
-
-        .tile {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            object-fit: cover;
-        }
-
-        .tile:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px #FFD700;
-        }
-
-        .tile:active {
-            transform: scale(0.95);
-        }
-
-        /* Mobile responsive tweak for tiles */
-        @media (max-width: 600px) {
-            .tile {
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        .map-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            width: 100%;
-            margin-top: 2rem;
-        }
-        
-        .map-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 2px solid #4e4e6a;
-            border-radius: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            cursor: pointer;
-            color: white;
-        }
-
-        .map-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 10px #FFD700;
-            border-color: #FFD700;
-        }
-
-        .map-item.completed {
-            background-color: rgba(255, 215, 0, 0.2);
-            border-color: #FFD700;
-        }
-
-        .star-svg {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 0.5rem;
-            stroke: #FFD700;
-        }
-
-        .map-item.completed .star-svg polygon {
-            fill: #FFD700;
-        }
-
-        .option-button {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 0.75rem;
-            text-align: left;
-            border: 2px solid #4e4e6a;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: all 0.2s;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .option-button:hover:not(:disabled) {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-color: #FFD700;
-        }
-
-        .option-button.correct {
-            background-color: rgba(34, 197, 94, 0.3);
-            border-color: #22c55e;
-            color: #86efac;
-        }
-        .option-button.wrong {
-            background-color: rgba(239, 68, 68, 0.3);
-            border-color: #ef4444;
-            color: #fca5a5;
-        }
-
-        .game-btn {
-            padding: 0.75rem 1.5rem;
-            background-color: #FFD700;
-            color: #1a1a2e;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            transition: background-color 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .game-btn:hover {
-            background-color: #FFC700;
-        }
-        
-        .game-message-overlay {
+        /* Radial colour accents — CSS only, no game assets */
+        .hero::before {
+            content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
+            background:
+                radial-gradient(ellipse at 18% 55%, rgba(230,57,70,0.20) 0%, transparent 48%),
+                radial-gradient(ellipse at 82% 20%, rgba(255,255,255,0.06) 0%, transparent 42%);
+            pointer-events: none;
+        }
+        .hero-inner { position: relative; max-width: 820px; margin: 0 auto; }
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
-            z-index: 50;
-        }
-
-        .game-message-box {
-            background: #1a1a2e;
-            padding: 2rem;
-            border-radius: 1rem;
-            text-align: center;
-            max-width: 80%;
-            color: white;
-            border: 2px solid #FFD700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        /* --- MATCH MAKER GAME STYLES --- */
-        .match-card {
-            background: linear-gradient(135deg, rgba(10, 14, 30, 0.97), rgba(8, 10, 22, 0.95));
-            border: 1px solid #1d3042;
-            border-radius: 16px;
-            padding: 1rem;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            box-shadow: 0 12px 50px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(126, 255, 216, 0.05);
-        }
-        .match-card h2 {
-            text-align: center;
-            font-size: 1.15rem;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 999px;
+            padding: 0.35rem 1.1rem;
+            font-size: 0.78rem;
+            font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #7effd8;
-            margin-bottom: 0.6rem;
-        }
-        .match-shell {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-        }
-        @media (max-width: 860px) {
-            .match-shell { grid-template-columns: 1fr; }
-        }
-        .match-stats {
-            display: flex;
-            justify-content: space-around;
-            font-size: 0.85rem;
-            color: #a6b7c6;
-            margin-bottom: 0.65rem;
-        }
-        .match-stats > div { transition: all 0.3s ease; }
-        .match-stats > div.score-pop { animation: mmScorePop 0.5s ease; }
-        .match-stats span { color: #7effd8; font-weight: 700; }
-        .match-momentum {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.4rem;
-        }
-        .momentum-chip {
-            background: linear-gradient(135deg, #0e1a2b, #0c1b24);
-            border: 1px solid #12324b;
-            border-radius: 10px;
-            padding: 0.35rem 0.75rem;
-            font-size: 0.78rem;
-            color: #d9f5ff;
-            display: inline-flex;
-            gap: 0.3rem;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        .momentum-chip.active {
-            background: linear-gradient(135deg, #1a2e3b, #1c3544);
-            border-color: #7effd8;
-            box-shadow: 0 0 12px rgba(126, 255, 216, 0.3);
-            transform: scale(1.05);
-        }
-        .momentum-chip strong { color: #7effd8; transition: color 0.3s ease; }
-        .momentum-chip.active strong { color: #fff; text-shadow: 0 0 8px rgba(126, 255, 216, 0.6); }
-        .board-wrap {
-            background: linear-gradient(145deg, #0b0f1c, #0f1324);
-            border-radius: 14px;
-            border: 1px solid #18283a;
-            padding: 0.8rem;
-            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
-        }
-        .match-grid {
-            position: relative;
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.4rem;
-            padding: 0.8rem;
-            width: 100%;
-            max-width: 480px;
-            margin: 0 auto;
-            background: radial-gradient(circle at 40% 20%, rgba(126, 255, 216, 0.12), transparent 45%), #0b0f1c;
-            border-radius: 12px;
-            border: 1px solid #12324b;
-        }
-        .match-cell {
-            position: relative;
-            aspect-ratio: 1 / 1;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.35rem;
-            cursor: pointer;
-            background: linear-gradient(135deg, #0c1b24, #112436);
-            box-shadow: 0 0 6px rgba(0,0,0,0.6), 0 0 16px rgba(126, 255, 216, 0.05);
-            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-            user-select: none;
-            overflow: visible;
-            border: 1px solid rgba(126, 255, 216, 0.05);
-        }
-        .match-cell:hover { transform: scale(1.05); box-shadow: 0 0 18px rgba(126, 255, 216, 0.18); }
-        .match-cell:active { transform: scale(0.94); }
-        .match-cell.selected {
-            box-shadow: 0 0 0 3px #7effd8, 0 0 20px rgba(126, 255, 216, 0.6);
-            transform: scale(1.08);
-        }
-        .match-cell.matching {
-            animation: mmPop 0.28s ease;
-            filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.5));
-        }
-        .glyph {
-            position: relative;
-            z-index: 1;
-            pointer-events: none;
-            width: 80%;
-            height: 80%;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        .glyph.emoji { width: auto; height: auto; background: none; }
-        .special-chip {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            background: rgba(255, 255, 255, 0.12);
             color: #fff;
-            border-radius: 6px;
-            padding: 0.1rem 0.35rem;
-            font-size: 0.7rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
+            margin-bottom: 1.5rem;
         }
-        .gem-heart { background: linear-gradient(135deg, #1b0e18, #2a1322); border-color: rgba(255, 107, 157, 0.2); }
-        .gem-star  { background: linear-gradient(135deg, #201c0f, #2a2213); border-color: rgba(255, 215, 0, 0.2); }
-        .gem-cross { background: linear-gradient(135deg, #12141f, #1c2033); border-color: rgba(126, 166, 255, 0.2); }
-        .gem-flame { background: linear-gradient(135deg, #24130f, #35180f); border-color: rgba(255, 99, 71, 0.2); }
-        .gem-drop  { background: linear-gradient(135deg, #0f1b24, #0f2432); border-color: rgba(79, 195, 247, 0.2); }
-        .gem-wild  { background: linear-gradient(135deg, #1a1030, #10301a); border-color: rgba(126, 255, 216, 0.3); }
-        .special-row, .special-col, .special-bomb, .special-wild {
-            box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1);
-            border-color: rgba(126, 255, 216, 0.5);
-            animation: mmSpecialPulse 2s ease-in-out infinite;
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 5vw, 3.25rem);
+            font-weight: 700;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 1rem;
         }
-        .match-badge-banner {
-            text-align: center;
-            font-size: 0.92rem;
-            color: #7effd8;
-            background: #0d2a19;
-            border: 1px solid #00ff4160;
-            border-radius: 10px;
-            padding: 0.6rem 1rem;
-            margin-top: 0.6rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        .hero h1 span { color: #FFD166; }
+        .hero-sub {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: rgba(255,255,255,0.80);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
         }
-        .match-badge-banner.hidden { display: none; }
-        .match-restart-btn {
-            display: block;
-            margin: 0.8rem auto 0;
-            background: linear-gradient(135deg, #0c1c2a, #0f2536);
-            border: 1px solid #7effd8;
-            color: #7effd8;
-            padding: 0.45rem 1.4rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.88rem;
-            letter-spacing: 0.08em;
-            transition: transform 0.15s, box-shadow 0.2s, background 0.15s;
-            box-shadow: 0 8px 18px rgba(0, 255, 65, 0.12);
-        }
-        .match-restart-btn:hover { background: #113042; transform: translateY(-1px); }
-        .match-restart-btn:active { transform: translateY(1px); }
-        .store {
-            background: linear-gradient(135deg, #0c1324, #0f1a2f);
-            border: 1px solid #18283a;
-            border-radius: 12px;
-            padding: 0.75rem;
-            box-shadow: inset 0 0 0 1px rgba(126, 255, 216, 0.05);
-        }
-        .store-head {
+        .hero-cta-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.6rem;
-            color: #d9f5ff;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
         }
-        .store-head h3 {
+
+        /* ── Buttons ── */
+        .btn-primary {
+            background: var(--blue);
+            color: #fff;
+            border: 2px solid var(--blue);
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 800;
             font-size: 1rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #7effd8;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .store-currency {
-            background: rgba(126, 255, 216, 0.08);
-            border: 1px solid rgba(126, 255, 216, 0.3);
-            padding: 0.35rem 0.6rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,82,118,0.40); background: var(--blue-mid); border-color: var(--blue-mid); }
+        .btn-primary:active { transform: scale(0.97); }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.60);
+            padding: 0.75rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
         }
-        .store-items { display: grid; gap: 0.5rem; }
-        .store-item {
-            background: linear-gradient(135deg, #0f1f33, #0f2742);
-            color: #d9f5ff;
-            border: 1px solid rgba(126, 255, 216, 0.25);
-            border-radius: 10px;
+        .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: #fff; transform: translateY(-2px); }
+
+        /* ── Sticky contact bar (mobile) ── */
+        .sticky-contact {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            z-index: 300;
+            background: var(--blue);
+            border-top: 3px solid var(--blue-mid);
+            padding: 0.65rem 1rem;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
+        }
+        .sticky-contact a {
+            flex: 1;
+            max-width: 200px;
+            text-align: center;
+            background: var(--blue-mid);
+            color: #fff;
+            font-weight: 800;
+            font-size: 0.9rem;
             padding: 0.6rem 0.75rem;
-            text-align: left;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.2s ease;
-            width: 100%;
-        }
-        .store-item:hover { transform: translateY(-1px); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35); }
-        .store-item:active { transform: translateY(1px); }
-        .store-title { font-weight: 700; color: #7effd8; }
-        .store-meta { font-size: 0.82rem; color: #a6b7c6; margin-top: 0.1rem; }
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            animation: mmParticleFloat 0.8s ease-out forwards;
-            z-index: 100;
-        }
-        @keyframes mmPop {
-            0% { transform: scale(1); }
-            35% { transform: scale(1.12); }
-            100% { transform: scale(1); }
-        }
-        @keyframes mmSpecialPulse {
-            0%, 100% { box-shadow: 0 0 18px rgba(126, 255, 216, 0.25), inset 0 0 12px rgba(126, 255, 216, 0.1); }
-            50% { box-shadow: 0 0 25px rgba(126, 255, 216, 0.4), inset 0 0 18px rgba(126, 255, 216, 0.2); }
-        }
-        @keyframes mmParticleFloat {
-            0% { opacity: 1; transform: translate(0, 0) scale(1); }
-            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
-        }
-        @keyframes mmScorePop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); color: #7effd8; }
-            100% { transform: scale(1); }
-        }
-
-        /* ---- Arcade Switcher Buttons ---- */
-        .arcade-switch-btn {
-            background-color: #1e40af;
-            border: 2px solid transparent;
-            padding: 0.5rem 1.5rem;
-            border-radius: 6px;
-            color: #bfdbfe;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-        }
-        .arcade-switch-btn:hover { background-color: #2563eb; color: white; }
-        .arcade-switch-btn[aria-pressed="true"] {
-            background-color: white;
-            color: #1e3a8a;
-            border-color: #1e3a8a;
-        }
-
-        /* ---- Match Maker Grid ---- */
-        .mm-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            max-width: 420px;
-            width: 100%;
-            padding: 8px;
-            background: #1e293b;
-            border-radius: 12px;
-        }
-        .gem-cell {
-            aspect-ratio: 1;
-            font-size: 1.35rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: #334155;
-            transition: transform 0.1s, background 0.1s, outline 0.1s;
+            border-radius: 10px;
+            text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            line-height: 1;
+            gap: 0.35rem;
         }
-        .gem-cell:hover  { background: #475569; transform: scale(1.05); }
-        .gem-cell.selected {
-            background: #f59e0b;
-            transform: scale(1.1);
-            outline: 2px solid #fbbf24;
-            outline-offset: 1px;
+        .sticky-contact a.email-link {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.55);
+            color: #fff;
         }
-        .gem-cell.matched { animation: gemPop 0.3s ease; background: #22c55e; }
-        @keyframes gemPop {
-            0%   { transform: scale(1); }
-            50%  { transform: scale(1.25); }
-            100% { transform: scale(1); }
+        @media (max-width: 700px) {
+            .sticky-contact { display: flex; }
+            body { padding-bottom: 72px; }
         }
 
-        /* ---- Match Maker HUD ---- */
-        .mm-hud { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 0.75rem; }
-        .mm-stat {
-            background: white;
-            border-radius: 8px;
-            padding: 0.4rem 0.9rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            min-width: 72px;
-            text-align: center;
-        }
-        .mm-stat-label { font-size: 0.65rem; text-transform: uppercase; color: #6b7280; font-weight: 700; letter-spacing: 0.05em; }
-        .mm-stat-value { font-size: 1.2rem; font-weight: 700; color: #1e3a8a; }
+        /* ── Section layout ── */
+        .section { padding: 4rem 1.5rem; background: #fff; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-alt { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-        /* ---- Conscience Bars ---- */
-        .mm-conscience {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            max-width: 420px;
-            width: 100%;
+        .section-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.35rem, 3vw, 1.9rem);
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
         }
-        .mm-bar-row   { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .mm-bar-label { font-size: 0.7rem; font-weight: 600; color: #374151; width: 56px; flex-shrink: 0; }
-        .mm-bar-track { flex: 1; background: #e5e7eb; border-radius: 999px; height: 8px; overflow: hidden; }
-        .mm-bar-fill  { height: 100%; border-radius: 999px; transition: width 0.4s ease; width: 0%; }
-        .mm-bar-pct   { font-size: 0.7rem; color: #6b7280; width: 26px; text-align: right; flex-shrink: 0; }
+        .section-sub {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            max-width: 640px;
+        }
 
-        /* ---- Ministry navigation buttons ---- */
-        .ministry-nav-btn {
+        /* ── Contact section ── */
+        .contact-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+        .contact-card {
+            flex: 1;
+            min-width: 240px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .contact-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,82,118,0.12); }
+        .contact-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--blue-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .contact-value { font-size: 1.15rem; font-weight: 700; color: var(--text); }
+
+        /* ── Listings / Gallery ── */
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .listing-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+        .listing-card:hover,
+        .listing-card:focus-visible {
+            border-color: var(--blue);
+            transform: translateY(-5px);
+            box-shadow: 0 14px 40px rgba(26,82,118,0.12);
+        }
+        .listing-card.focused { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,82,118,0.18); }
+
+        .listing-img-wrap {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            text-decoration: none;
-            color: #1e3a8a;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            min-height: 140px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
         }
-        .ministry-nav-btn:hover, .ministry-nav-btn:focus-visible {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(30,58,138,0.15);
-            border-color: #2563eb;
-            text-decoration: none;
+        .listing-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.3s;
         }
+        .listing-card:hover .listing-img-wrap img,
+        .listing-card:focus-visible .listing-img-wrap img { transform: scale(1.04); }
+
+        .listing-price-badge {
+            position: absolute;
+            top: 0.75rem; right: 0.75rem;
+            background: var(--blue);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .listing-body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+        .listing-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--text);
+            line-height: 1.35;
+        }
+        .listing-location { font-size: 0.83rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.3rem; }
+
+        .amenity-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .amenity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--blue-pale);
+            border: 1px solid rgba(26,82,118,0.15);
+            border-radius: 999px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--blue);
+            white-space: nowrap;
+        }
+        .amenity-badge img { width: 16px; height: 16px; }
+
+        .listing-actions { margin-top: auto; display: flex; gap: 0.6rem; }
+        .btn-sm {
+            flex: 1;
+            padding: 0.55rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .btn-sm-gold { background: var(--blue); color: #fff; }
+        .btn-sm-gold:hover { background: var(--blue-mid); transform: scale(1.03); box-shadow: var(--shadow-sm); }
+        .btn-sm-outline {
+            background: transparent;
+            border: 1.5px solid var(--blue);
+            color: var(--blue);
+        }
+        .btn-sm-outline:hover { background: var(--blue-pale); transform: scale(1.03); }
+
+        /* ── Keyboard hint ── */
+        .kbd-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .kbd {
+            background: #F0F4F8;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 4px;
+            padding: 0.1rem 0.45rem;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: var(--blue);
+        }
+
+        /* ── Pricing section ── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+        }
+        .pricing-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pricing-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .pricing-card.featured {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(26,82,118,0.08), var(--shadow-sm);
+        }
+        .pricing-price {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--blue);
+            line-height: 1;
+            margin: 0.75rem 0 0.25rem;
+        }
+        .pricing-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+        .pricing-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        .logistics-box {
+            background: var(--blue-pale);
+            border: 1px solid rgba(26,82,118,0.18);
+            border-radius: var(--radius);
+            padding: 1.75rem 2rem;
+            margin-top: 2rem;
+        }
+        .logistics-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--blue);
+            margin-bottom: 0.75rem;
+        }
+        .logistics-box p { color: #4A5568; font-size: 0.9rem; line-height: 1.7; }
+        .logistics-box p strong { color: var(--blue); }
+
+        /* ── Apply form ── */
+        .apply-form {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            max-width: 680px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+        .form-group label { font-size: 0.8rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.07em; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 0.65rem 0.9rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(26,82,118,0.10); }
+        .form-group textarea { resize: vertical; min-height: 90px; }
+        .form-group select option { background: #fff; color: var(--text); }
+
+        .form-submit {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* ── Supernova success overlay ── */
+        #supernova-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(10,0,20,0.90);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+            padding: 2rem;
+        }
+        #supernova-overlay.active { display: flex; }
+        .supernova-anim {
+            width: 140px;
+            height: 140px;
+            animation: novaExpand 0.7s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes novaExpand {
+            from { transform: scale(0.2) rotate(-30deg); opacity: 0; }
+            to   { transform: scale(1)   rotate(0deg);   opacity: 1; }
+        }
+        .supernova-ring {
+            animation: novaRing 1.4s ease-out 0.4s both;
+            position: absolute;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--blue-mid);
+        }
+        @keyframes novaRing {
+            from { transform: scale(0.5); opacity: 0.8; }
+            to   { transform: scale(2.5); opacity: 0; }
+        }
+        #supernova-overlay h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #FFD166;
+        }
+        #supernova-overlay p { color: rgba(255,255,255,0.75); max-width: 400px; }
+
+        /* ── Footer ── */
+        .site-footer {
+            background: var(--blue);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1rem 0; }
+        .footer-links a { color: rgba(255,255,255,0.70); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: #fff; }
+        .footer-copy { color: rgba(255,255,255,0.45); font-size: 0.78rem; margin-top: 1rem; }
+        .footer-copy a { color: rgba(255,255,255,0.65); text-decoration: none; }
+        .footer-copy a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-    <!-- Header & Responsive Tab Navigation -->
-    <header class="site-header">
-        <a href="/" class="logo" aria-label="Amazing Grace Home Living - Home">
-            <!-- SVG logo that always loads -->
-            <img src="assets/logo.svg" alt="Amazing Grace Home Living Logo">
-            <span>Amazing Grace Home Living</span>
-        </a>
+<div id="page-content">
+<!-- ═══════════════════════════ HEADER ════════════════════════════ -->
+<header class="site-header">
+    <a href="/" class="logo" aria-label="Amazing Grace Home Living — Home">
+        <img src="/assets/logo.png" alt="Amazing Grace Logo">
+        Amazing Grace
+    </a>
+    <nav id="main-nav" aria-label="Main navigation">
+        <a href="/" class="nav-btn">🏠 Home</a>
+        <a href="#listings" class="nav-btn">🏘️ Listings</a>
+        <a href="#pricing" class="nav-btn">💰 Pricing</a>
+        <a href="#apply" class="nav-btn">✅ Apply</a>
+        <a href="/arcade" class="nav-btn">🎮 Arcade</a>
+        <a href="/ministry" class="nav-btn">🕊️ Ministry</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">☰</button>
+</header>
 
-        <nav id="main-nav" role="navigation" class="main-nav" aria-label="Main navigation">
-            <div role="tablist" id="tab-list" aria-label="Page sections" style="display:flex">
-                <button id="tab-btn-home" role="tab" aria-selected="true" data-target="tab-home" class="btn" aria-controls="tab-home">
-                    🏠 Home
-                </button>
-                <button id="tab-btn-arcade" role="tab" aria-selected="false" data-target="tab-arcade" class="btn" aria-controls="tab-arcade">
-                    🎮 Arcade
-                </button>
-                <button id="tab-btn-ministry" role="tab" aria-selected="false" data-target="tab-ministry" class="btn" aria-controls="tab-ministry">
-                    🕊️ Ministry
-                </button>
-                <button id="tab-btn-contact" role="tab" aria-selected="false" data-target="tab-contact" class="btn" aria-controls="tab-contact">
-                    ✉️ Contact
-                </button>
-            </div>
-            <a href="/ministries/" class="btn" style="text-decoration:none;background-color:#7c3aed;" aria-label="Seven Stars — Narrative Journey">
-                ✨ Seven Stars
+<!-- ═══════════════════════════ HERO ══════════════════════════════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">
+            📍 Largo &amp; Tampa, Florida
+        </div>
+        <h1>Affordable Rooms for Rent in <span>Largo &amp; Tampa, Florida.</span></h1>
+        <p class="hero-sub">Clean, safe, and ready-to-move-in rooms with flexible residency options.</p>
+        <div class="hero-cta-row">
+            <a href="tel:7274202873" class="btn-primary">📞 Call/Text: (727) 420-2873</a>
+            <a href="#apply" class="btn-outline">✅ Check Availability</a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ CONTACT SECTION ══════════════════════ -->
+<section class="section starburst-overlay" id="contact">
+    <div class="section-inner">
+        <h2 class="section-heading">📡 Contact Us Directly</h2>
+        <p class="section-sub">Reach us anytime — we respond fast.</p>
+        <div class="contact-cards">
+            <a href="tel:7274202873" class="contact-card" aria-label="Call or text (727) 420-2873">
+                <div class="contact-icon">📞</div>
+                <div>
+                    <div class="contact-label">Call / Text</div>
+                    <div class="contact-value">(727) 420-2873</div>
+                </div>
             </a>
-        </nav>
-
-        <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="main-nav" aria-expanded="false">
-            ☰
-        </button>
-    </header>
-
-    <!-- Main Content Area -->
-    <main>
-        
-        <!-- ================= HOME TAB ================= -->
-        <div id="tab-home" role="tabpanel" aria-labelledby="tab-btn-home" tabindex="0" class="tab-panel active w-full pt-6">
-            <div class="text-center mb-10">
-                <h1 class="text-3xl md:text-5xl font-bold text-blue-900 mb-4 font-playfair-display px-4">
-                    Amazing Grace
-                </h1>
-                <p class="text-xl text-gray-600 italic">where stability begins, and new chapters start</p>
-            </div>
-
-            <section id="housing" aria-labelledby="properties-heading">
-                <div id="properties"></div>
-                <h2 id="properties-heading" class="text-2xl font-bold text-blue-900 text-center mb-2">Available Properties</h2>
-                <p class="text-center text-gray-500 mb-6">Providing secure housing and bridging the digital divide.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-
-                    <!-- Tampa Listing -->
-                    <div class="property-card flex flex-col">
-                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Tampa Rooms for Rent</h2>
-                        <div class="mb-4">
-                            <p class="font-bold text-lg text-blue-800">926 E Poinsettia Ave, Tampa, FL</p>
-                            <p class="text-green-700 font-bold text-xl mt-2 mb-2">$850/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
-                            <p class="text-gray-600 text-sm mt-2">Includes utilities, trash pickup, laundry, and a large fenced yard.</p>
-                            <p class="text-gray-600 text-sm mt-2 italic">Located near Busch Gardens, the zoo, USF, and 15 minutes from Tampa Hospital.</p>
-                        </div>
-                        <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                            <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
-                            <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                                <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                                <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                                <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                                <li class="flex items-center gap-1">✔️ Parking Available</li>
-                            </ul>
-                            <a href="/galleries/926-poinsettia" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                                📸 View Photos (Tampa)
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Largo 1142 Listing -->
-                    <div class="property-card flex flex-col">
-                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
-                        <div class="mb-4">
-                            <p class="font-bold text-lg text-blue-800">1142 7th St NW, Largo, FL</p>
-                            <p class="text-green-700 font-bold text-xl mt-2 mb-2">$900/$1,000/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
-                        </div>
-                        <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                            <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
-                            <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                                <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                                <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                                <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                                <li class="flex items-center gap-1">✔️ Parking Available</li>
-                            </ul>
-                            <a href="/galleries/1142-7th-street" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                                📸 View Photos (Largo 1142)
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Largo 1144 Listing -->
-                    <div class="property-card flex flex-col">
-                        <h2 class="text-2xl font-bold text-gray-800 border-b pb-3 mb-4">Largo Rooms for Rent</h2>
-                        <div class="mb-4">
-                            <p class="font-bold text-lg text-blue-800">1144 7th St NW, Largo, FL</p>
-                            <p class="text-green-700 font-bold text-xl mt-2 mb-2">$900/month <span class="text-sm font-medium text-gray-500">(All Inclusive)</span></p>
-                        </div>
-                        <div class="mt-auto bg-blue-50 p-4 rounded-lg">
-                            <h3 class="font-bold text-gray-800 mb-2">Included:</h3>
-                            <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700 font-medium mb-4">
-                                <li class="flex items-center gap-1">✔️ Washer/Dryer</li>
-                                <li class="flex items-center gap-1">✔️ Full Kitchen</li>
-                                <li class="flex items-center gap-1">✔️ Wi‑Fi & Utilities</li>
-                                <li class="flex items-center gap-1">✔️ Parking Available</li>
-                            </ul>
-                            <a href="/galleries/1144-7th-street" class="inline-flex items-center justify-center w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">
-                                📸 View Photos (Largo 1144)
-                            </a>
-                        </div>
-                    </div>
-
+            <a href="mailto:gulfnexus@gmail.com" class="contact-card" aria-label="Email gulfnexus@gmail.com">
+                <div class="contact-icon">✉️</div>
+                <div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">gulfnexus@gmail.com</div>
                 </div>
-            </section>
-        </div><!-- /#tab-home -->
+            </a>
+        </div>
+    </div>
+</section>
 
-        <!-- ================= NEXUS ARCADE TAB ================= -->
-        <div id="tab-arcade" role="tabpanel" aria-labelledby="tab-btn-arcade" tabindex="0" hidden class="tab-panel w-full pt-6">
-            <div class="w-full text-center mb-4">
-                <h2 class="text-3xl font-bold text-blue-900 font-playfair-display">Nexus Arcade</h2>
-                <p class="text-gray-600 mt-2">Play, learn, and grow through interactive stories.</p>
-            </div>
+<!-- ══════════════════════ LISTINGS GALLERY ══════════════════════ -->
+<section class="section section-alt starburst-overlay" id="listings">
+    <div class="section-inner">
+        <h2 class="section-heading">🏘️ Available Rooms</h2>
+        <p class="section-sub">Rooms available in Largo and Tampa. Use Arrow keys + Space/Enter to navigate.</p>
+        <p class="kbd-hint" aria-hidden="true">
+            Navigate: <kbd class="kbd">←</kbd><kbd class="kbd">→</kbd>
+            &nbsp;Select: <kbd class="kbd">Space</kbd> / <kbd class="kbd">Enter</kbd>
+        </p>
+        <div class="listings-grid" id="listings-grid" role="list" aria-label="Available rooms">
 
-            <!-- Arcade Game Switcher -->
-            <div class="flex justify-center gap-3 mb-6">
-                <button id="arcade-btn-sevenstars" class="arcade-switch-btn" aria-pressed="true">⭐ Seven Stars</button>
-                <button id="arcade-btn-matchmaker" class="arcade-switch-btn" aria-pressed="false">🔮 Match Maker</button>
-            </div>
-
-            <!-- Seven Stars Wrapper -->
-            <div id="sevenstars-wrapper" class="w-full">
-                <div class="game-wrapper relative mx-auto">
-                    <div class="game-header">The Mystery of the Seven Stars</div>
-                    <div id="game-screen" class="game-content">
-                        <!-- Game dynamically rendered here -->
+            <!-- Card 1 — 1144 7th St NW, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="1144 7th St NW, Largo — $1,000/mo" data-href="/galleries/1144-7th-street/">
+                <div class="listing-img-wrap">
+                    <img src="/assets/images/property-1144-7th.svg" alt="1144 7th St NW, Largo — a two-story home with gold roof">
+                    <div class="listing-price-badge">$1,000/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">1144 7th St NW, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Wi-Fi</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Shared Kitchen</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Furnished</span>
                     </div>
-
-                    <!-- Custom Game Alert Box -->
-                    <div id="game-alert-overlay" class="game-message-overlay">
-                        <div class="game-message-box shadow-xl">
-                            <p id="game-alert-text" class="text-lg font-semibold mb-4"></p>
-                            <button id="game-alert-close" class="game-btn">Continue</button>
-                        </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/1144-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
                     </div>
                 </div>
+            </article>
+
+            <!-- Card 2 — 1142 7th St NW, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="1142 7th St NW, Largo — $1,000/mo" data-href="/galleries/1142-7th-street/">
+                <div class="listing-img-wrap">
+                    <img src="/assets/images/property-1142-7th.svg" alt="1142 7th St NW, Largo — a house with garage and gold roof">
+                    <div class="listing-price-badge">$1,000/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">1142 7th St NW, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Cable TV</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Parking</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">Laundry</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/1142-7th-street/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3 — 926 Poinsettia, Largo -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="926 Poinsettia Ave, Largo — $850/mo" data-href="/galleries/926-poinsettia/">
+                <div class="listing-img-wrap">
+                    <img src="/assets/images/property-926-poinsettia.svg" alt="926 Poinsettia Ave, Largo — a ranch-style home with palm trees">
+                    <div class="listing-price-badge">$850/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">926 Poinsettia Ave, Largo</h3>
+                    <p class="listing-location">📍 Largo, FL 33770</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Utilities Paid</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Quiet Area</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/926-poinsettia/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 4 — Tampa Property -->
+            <article class="listing-card" tabindex="0" role="listitem" aria-label="Tampa Property — $975/mo" data-href="/galleries/tampa-property/">
+                <div class="listing-img-wrap">
+                    <img src="/assets/images/property-tampa.svg" alt="Tampa Property — a modern apartment building in Tampa, FL">
+                    <div class="listing-price-badge">$975/mo</div>
+                </div>
+                <div class="listing-body">
+                    <h3 class="listing-title">Tampa Property</h3>
+                    <p class="listing-location">📍 Tampa, FL</p>
+                    <div class="amenity-badges" aria-label="Amenities">
+                        <span class="amenity-badge"><img src="/assets/star_crystal_gold.svg" alt="">All-Inclusive</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_blue.svg" alt="">Near Transit</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_red.svg" alt="">Move-In Ready</span>
+                        <span class="amenity-badge"><img src="/assets/star_crystal_purple.svg" alt="">Wi-Fi</span>
+                    </div>
+                    <div class="listing-actions">
+                        <a href="/galleries/tampa-property/" class="btn-sm btn-sm-gold">📸 View Photos</a>
+                        <a href="#apply" class="btn-sm btn-sm-outline">✅ Apply Now</a>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- ═════════════════════ PRICING & LOGISTICS ════════════════════ -->
+<section class="section starburst-overlay" id="pricing">
+    <div class="section-inner">
+        <h2 class="section-heading">💰 Pricing &amp; Logistics</h2>
+        <p class="section-sub">Transparent, all-inclusive pricing with no hidden fees.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div style="font-size:2rem">🏠</div>
+                <div class="pricing-price">$850</div>
+                <div class="pricing-label">/ month · Standard Room</div>
+                <p class="pricing-note">Shared kitchen, utilities included. Available at Largo properties.</p>
             </div>
+            <div class="pricing-card featured">
+                <div style="font-size:2rem">🏠</div>
+                <div class="pricing-price">$1,000</div>
+                <div class="pricing-label">/ month · Milestone Rate (1144)</div>
+                <p class="pricing-note">Affordability milestone unit at 1144 7th St NW. See logistics note below.</p>
+            </div>
+            <div class="pricing-card">
+                <div style="font-size:2rem">🌆</div>
+                <div class="pricing-price">$975</div>
+                <div class="pricing-label">/ month · Tampa Room</div>
+                <p class="pricing-note">Move-in ready room near public transit in Tampa. All-inclusive.</p>
+            </div>
+        </div>
 
-            <!-- Match Maker Wrapper (hidden until selected) -->
-            <div id="matchmaker-wrapper" class="w-full flex flex-col items-center gap-4" style="display:none">
+        <div class="logistics-box">
+            <h3>⚙️ 1144 Capacity &amp; Affordability Note</h3>
+            <p>
+                We are <strong>currently optimizing unit capacity to 1144</strong> to maintain a
+                <strong>$1,000/mo affordability milestone</strong> for our residents.
+                The 1144 pricing adjustment reflects our ongoing commitment to keeping housing accessible
+                in the Largo area. As we reach full operational capacity at this address, residents benefit
+                from reduced overhead shared across the unit — locking in the $1,000/mo rate as a long-term
+                affordability baseline. All utilities, Wi-Fi, and common-area maintenance are included.
+            </p>
+        </div>
 
-                <!-- HUD -->
-                <div class="mm-hud">
-                    <div class="mm-stat">
-                        <div class="mm-stat-label">Score</div>
-                        <div id="match-score" class="mm-stat-value">0</div>
-                    </div>
-                    <div class="mm-stat">
-                        <div class="mm-stat-label">Level</div>
-                        <div id="match-level" class="mm-stat-value">1</div>
-                    </div>
-                    <div class="mm-stat">
-                        <div class="mm-stat-label">Moves</div>
-                        <div id="match-moves" class="mm-stat-value">20</div>
-                    </div>
+        <div class="logistics-box" style="margin-top:1rem">
+            <h3>📋 Move-In Requirements</h3>
+            <p>
+                <strong>First month + security deposit</strong> required at move-in.
+                Flexible payment options available. No long-term lease required —
+                month-to-month residency available. <strong>Background check</strong> may be requested.
+                Call <strong>(727) 420-2873</strong> or email <strong>gulfnexus@gmail.com</strong> to
+                schedule a viewing.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════ APPLY NOW FORM ════════════════════════ -->
+<section class="section section-alt starburst-overlay" id="apply">
+    <div class="section-inner">
+        <h2 class="section-heading">✅ Apply Now</h2>
+        <p class="section-sub">Submit your interest and we'll get back to you within 24 hours.</p>
+        <form class="apply-form" id="apply-form" novalidate aria-label="Room application form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="f-name">Full Name *</label>
+                    <input type="text" id="f-name" name="name" placeholder="Jane Smith" required autocomplete="name">
                 </div>
-
-                <div id="match-msg" class="text-sm text-blue-600 font-medium text-center min-h-[1.4em]"></div>
-
-                <!-- Badge Banner -->
-                <div id="match-badge-banner" class="hidden text-center bg-yellow-400 text-black font-bold py-2 px-4 rounded max-w-sm w-full"></div>
-
-                <!-- 7×7 Gem Grid -->
-                <div id="match-grid" class="mm-grid" role="grid" aria-label="Match Maker game board"></div>
-
-                <!-- Conscience Meter -->
-                <div class="mm-conscience">
-                    <h3 class="text-xs font-bold text-gray-700 mb-2 text-center uppercase tracking-wide">Conscience Meter</h3>
-                    <div class="mm-bar-row">
-                        <span class="mm-bar-label">Empathy</span>
-                        <div class="mm-bar-track"><div id="mc-empathy-bar" class="mm-bar-fill bg-pink-400"></div></div>
-                        <span id="mc-empathy" class="mm-bar-pct">0</span>
-                    </div>
-                    <div class="mm-bar-row">
-                        <span class="mm-bar-label">Justice</span>
-                        <div class="mm-bar-track"><div id="mc-justice-bar" class="mm-bar-fill bg-blue-400"></div></div>
-                        <span id="mc-justice" class="mm-bar-pct">0</span>
-                    </div>
-                    <div class="mm-bar-row">
-                        <span class="mm-bar-label">Wisdom</span>
-                        <div class="mm-bar-track"><div id="mc-wisdom-bar" class="mm-bar-fill bg-purple-400"></div></div>
-                        <span id="mc-wisdom" class="mm-bar-pct">0</span>
-                    </div>
-                    <div class="mm-bar-row">
-                        <span class="mm-bar-label">Growth</span>
-                        <div class="mm-bar-track"><div id="mc-growth-bar" class="mm-bar-fill bg-green-400"></div></div>
-                        <span id="mc-growth" class="mm-bar-pct">0</span>
-                    </div>
+                <div class="form-group">
+                    <label for="f-phone">Phone / Text *</label>
+                    <input type="tel" id="f-phone" name="phone" placeholder="(727) 000-0000" required autocomplete="tel">
                 </div>
-
-                <!-- Save Slot Selector -->
-                <div class="text-center">
-                    <label for="save-slot" class="text-sm text-gray-600 font-medium mr-2">Save Slot:</label>
-                    <select id="save-slot" class="border border-gray-300 rounded px-2 py-1 text-sm">
-                        <option value="slot1">Slot 1</option>
-                        <option value="slot2">Slot 2</option>
-                        <option value="slot3">Slot 3</option>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="f-email">Email Address</label>
+                    <input type="email" id="f-email" name="email" placeholder="you@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="f-property">Property of Interest</label>
+                    <select id="f-property" name="property">
+                        <option value="">— Select a property —</option>
+                        <option value="1144-largo">1144 7th St NW, Largo ($1,000/mo)</option>
+                        <option value="1142-largo">1142 7th St NW, Largo ($1,000/mo)</option>
+                        <option value="926-largo">926 Poinsettia Ave, Largo ($850/mo)</option>
+                        <option value="tampa">Tampa Property ($975/mo)</option>
+                        <option value="any">Any available room</option>
                     </select>
                 </div>
-
-            </div><!-- /#matchmaker-wrapper -->
-
-        </div><!-- /#tab-arcade -->
-
-        <!-- ================= MINISTRY TAB ================= -->
-        <div id="tab-ministry" role="tabpanel" aria-labelledby="tab-btn-ministry" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
-            <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Seven-Star Ministry</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-                Explore our faith-based resources, the Voice of Jesus teachings, and community outreach programs.
-            </p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                <a href="/stories" class="ministry-nav-btn" aria-label="Read Ministry Stories">
-                    <span style="font-size:2rem">📖</span>
-                    <span class="font-bold text-xl">Stories</span>
-                    <span class="text-sm text-gray-500">Testimonies of faith and transformation</span>
-                </a>
-                <a href="/support" class="ministry-nav-btn" aria-label="Mission Support">
-                    <span style="font-size:2rem">🤝</span>
-                    <span class="font-bold text-xl">Mission Support</span>
-                    <span class="text-sm text-gray-500">Partner with our ministry</span>
-                </a>
-                <a href="/arcade" class="ministry-nav-btn" aria-label="Play Faith-Based Games">
-                    <span style="font-size:2rem">🎮</span>
-                    <span class="font-bold text-xl">Games</span>
-                    <span class="text-sm text-gray-500">Interactive faith-based learning</span>
-                </a>
-                <a href="/galleries/ministry" class="ministry-nav-btn" aria-label="Ministry Gallery">
-                    <span style="font-size:2rem">🖼️</span>
-                    <span class="font-bold text-xl">Gallery</span>
-                    <span class="text-sm text-gray-500">Photos from our outreach</span>
-                </a>
             </div>
+            <div class="form-group" style="margin-bottom:0">
+                <label for="f-message">Message (optional)</label>
+                <textarea id="f-message" name="message" placeholder="Move-in date, any questions..."></textarea>
+            </div>
+            <div class="form-submit">
+                <button type="submit" class="btn-primary" id="submit-btn">
+                    Submit Application
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- ═══════════════════ SUPERNOVA SUCCESS OVERLAY ═════════════════ -->
+<div id="supernova-overlay" role="dialog" aria-modal="true" aria-labelledby="nova-title" aria-describedby="nova-desc">
+    <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+        <div class="supernova-ring" aria-hidden="true"></div>
+        <img src="/assets/supernova_explosion.svg" alt="Success!" class="supernova-anim">
+    </div>
+    <h2 id="nova-title">Application Sent! ✨</h2>
+    <p id="nova-desc">Thank you! We'll reach out within 24 hours.<br>Questions? Call <strong>(727) 420-2873</strong> or email <strong>gulfnexus@gmail.com</strong>.</p>
+    <button class="btn-primary" id="nova-close" style="margin-top:1rem">Close</button>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ════════════════════════════ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div class="footer-logo">❤️ Amazing Grace Home Living</div>
+        <div class="footer-links">
+            <a href="#listings">Listings</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#apply">Apply Now</a>
+            <a href="tel:7274202873">📞 (727) 420-2873</a>
+            <a href="mailto:gulfnexus@gmail.com">✉️ gulfnexus@gmail.com</a>
+            <a href="/arcade">🎮 Arcade</a>
+            <a href="/ministry">🕊️ Ministry</a>
         </div>
+        <p class="footer-copy">
+            &copy; 2026 Amazing Grace Home Living &mdash;
+            <a href="https://amazinggracehl.org">amazinggracehl.org</a> &mdash;
+            Serving Largo &amp; Tampa, FL
+        </p>
+    </div>
+</footer>
 
-        <!-- ================= CONTACT TAB ================= -->
-        <div id="tab-contact" role="tabpanel" aria-labelledby="tab-btn-contact" tabindex="0" hidden class="tab-panel text-center pt-10 px-4">
-            <h1 class="text-4xl font-bold text-blue-900 mb-4 font-playfair-display">Get in Touch</h1>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
-                Interested in a room, or have questions about our properties? Reach out to us.
-            </p>
+<!-- ══════════════ STICKY MOBILE CONTACT BAR ══════════════════════ -->
+<div class="sticky-contact" aria-label="Quick contact" role="complementary">
+    <a href="tel:7274202873" aria-label="Call or text (727) 420-2873">📞 (727) 420-2873</a>
+    <a href="mailto:gulfnexus@gmail.com" class="email-link" aria-label="Email gulfnexus@gmail.com">✉️ Email Us</a>
+</div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
-                <!-- Contact Information -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
-                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Contact Information</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-bold text-gray-800 mb-1">Property Manager</h3>
-                            <p class="text-gray-600">Sheila - Amazing Grace Home Living</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-800 mb-1">Email</h3>
-                            <a href="mailto:gulfnexus@gmail.com" class="text-blue-600 hover:text-blue-800 underline">gulfnexus@gmail.com</a>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-gray-800 mb-1">Locations</h3>
-                            <p class="text-gray-600">Tampa & Largo, Florida</p>
-                        </div>
-                        <div class="pt-4 border-t">
-                            <a href="mailto:gulfnexus@gmail.com?subject=Housing%20Inquiry%20-%20Amazing%20Grace" class="inline-block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition text-center">
-                                📧 Email Us Directly
-                            </a>
-                        </div>
-                    </div>
-                </div>
+</div><!-- /#page-content -->
 
-                <!-- Quick Contact Form -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-left">
-                    <h2 class="text-2xl font-bold text-blue-900 mb-4">Quick Message</h2>
-                    <form id="contact-form" action="mailto:gulfnexus@gmail.com" method="post" enctype="text/plain" class="flex flex-col gap-4">
-                        <input type="hidden" name="subject" value="Housing Inquiry - Amazing Grace">
-                        <div>
-                            <label for="contact-name" class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
-                            <input type="text" id="contact-name" name="name" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Your Name">
-                        </div>
-                        <div>
-                            <label for="contact-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
-                            <input type="email" id="contact-email" name="email" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="you@example.com">
-                        </div>
-                        <div>
-                            <label for="contact-message" class="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
-                            <textarea id="contact-message" name="message" required class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="I'm interested in..."></textarea>
-                        </div>
-                        <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition mt-2">
-                            Send Message
-                        </button>
-                        <p class="text-xs text-gray-500 text-center">This will open your email client</p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-300 px-4 py-8 text-center mt-auto">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
-                <div>
-                    <h3 class="text-white font-bold mb-4">Amazing Grace Home Living</h3>
-                    <p class="text-sm leading-relaxed">Providing secure, affordable, all-inclusive housing in Tampa and Largo, Florida.</p>
-                </div>
-                <div>
-                    <h3 class="text-white font-bold mb-4">Contact</h3>
-                    <p class="text-sm">Email: <a href="mailto:gulfnexus@gmail.com" class="text-blue-400 hover:underline">gulfnexus@gmail.com</a></p>
-                    <p class="text-sm mt-2">Locations: Tampa & Largo, FL</p>
-                </div>
-                <div>
-                    <h3 class="text-white font-bold mb-4">Our Mission</h3>
-                    <p class="text-sm leading-relaxed">Bridging housing needs with faith-based support through the Voice of Jesus Ministry and Seven Stars Arcade.</p>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 pt-6">
-                <p class="text-sm">&copy; 2026 Amazing Grace Home Living. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // ==========================================
-        // 1. MOBILE MENU TOGGLE & TAB SWITCHING LOGIC
-        // ==========================================
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('.main-nav');
-        const tablist = document.getElementById('tab-list');
-        const tabs = document.querySelectorAll('[role="tab"]');
-        const panels = document.querySelectorAll('[role="tabpanel"]');
-
-        // Toggle mobile menu visibility
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = nav.classList.toggle('show');
-            menuToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+<script>
+    /* ── Mobile nav toggle ── */
+    (function () {
+        var toggle = document.querySelector('.menu-toggle');
+        var nav    = document.getElementById('main-nav');
+        if (!toggle || !nav) return;
+        toggle.addEventListener('click', function () {
+            var expanded = nav.classList.toggle('show');
+            toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
         });
-
-        tablist.addEventListener('click', (e) => {
-            // Find the button even if user clicks emoji/text inside it
-            const tab = e.target.closest('button[role="tab"]');
-            if (!tab) return;
-
-            e.preventDefault();
-            activateTab(tab);
-        });
-
-        // Keyboard navigation for tabs
-        tablist.addEventListener('keydown', (e) => {
-            const currentTab = document.querySelector('[role="tab"][aria-selected="true"]');
-            const tabArray = Array.from(tabs);
-            const currentIndex = tabArray.indexOf(currentTab);
-            let nextIndex = currentIndex;
-
-            switch(e.key) {
-                case 'ArrowRight':
-                    nextIndex = (currentIndex + 1) % tabArray.length;
-                    e.preventDefault();
-                    break;
-                case 'ArrowLeft':
-                    nextIndex = (currentIndex - 1 + tabArray.length) % tabArray.length;
-                    e.preventDefault();
-                    break;
-                case 'Home':
-                    nextIndex = 0;
-                    e.preventDefault();
-                    break;
-                case 'End':
-                    nextIndex = tabArray.length - 1;
-                    e.preventDefault();
-                    break;
-            }
-
-            if (nextIndex !== currentIndex) {
-                activateTab(tabArray[nextIndex]);
-                tabArray[nextIndex].focus();
-            }
-        });
-
-        function activateTab(tab) {
-            // Deactivate all tabs and hide all panels
-            tabs.forEach(t => {
-                t.setAttribute('aria-selected', 'false');
-                t.setAttribute('tabindex', '-1');
-            });
-            panels.forEach(p => {
-                p.classList.remove('active');
-                p.hidden = true;
-            });
-
-            // Activate clicked tab and show corresponding panel
-            tab.setAttribute('aria-selected', 'true');
-            tab.setAttribute('tabindex', '0');
-            const targetId = tab.getAttribute('data-target');
-            const panel = document.getElementById(targetId);
-            panel.classList.add('active');
-            panel.hidden = false;
-
-            // Automatically close the mobile menu if clicked on a small screen
-            if (window.innerWidth <= 768) {
+        document.addEventListener('click', function (e) {
+            if (nav.classList.contains('show') && !nav.contains(e.target) && e.target !== toggle) {
                 nav.classList.remove('show');
-                menuToggle.setAttribute('aria-expanded', 'false');
-            }
-        }
-
-        // Set correct tabindex on initial load (only active tab is in tab order)
-        tabs.forEach(t => {
-            if (t.getAttribute('aria-selected') !== 'true') {
-                t.setAttribute('tabindex', '-1');
+                toggle.setAttribute('aria-expanded', 'false');
             }
         });
+    })();
 
+    /* ── Keyboard/Spacebar gallery navigation ── */
+    (function () {
+        var grid  = document.getElementById('listings-grid');
+        var cards = Array.from(grid.querySelectorAll('.listing-card'));
+        if (!cards.length) return;
 
-        // ==========================================
-        // 2. NEXUS ARCADE GAME LOGIC (Seven Stars)
-        // ==========================================
-        const churches = [
-            {
-                name: "Ephesus",
-                message: "The church in Ephesus was known for its hard work and perseverance. However, Jesus warned them that they had abandoned their 'first love.'",
-                question: "What did Jesus say the church in Ephesus had forsaken?",
-                options: ["Their wealth", "Their first love", "Their good deeds", "Their leader"],
-                answer: "Their first love",
-            },
-            {
-                name: "Smyrna",
-                message: "The church in Smyrna faced tribulation and poverty, but Jesus commended their faithfulness. He had no words of rebuke for them and encouraged them to be faithful, even to death.",
-                question: "What was the church in Smyrna's main challenge?",
-                options: ["False prophets", "Lukewarm faith", "Persecution and poverty", "Spiritual pride"],
-                answer: "Persecution and poverty",
-            },
-            {
-                name: "Pergamum",
-                message: "Pergamum was where 'Satan's throne' was, and the church was praised for holding fast to Jesus' name despite living in a very worldly city. But some tolerated false teachings.",
-                question: "What was the main problem for the church in Pergamum?",
-                options: ["They were too busy", "They were persecuted", "They compromised with false teachings", "They were arrogant"],
-                answer: "They compromised with false teachings",
-            },
-            {
-                name: "Thyatira",
-                message: "This church was praised for its love, faith, and service, and its good works were increasing. But they were rebuked for tolerating a false prophetess who led people into immorality.",
-                question: "What did Jesus rebuke the church in Thyatira for?",
-                options: ["Leaving their first love", "Being spiritually dead", "Tolerating a false prophetess", "Being poor"],
-                answer: "Tolerating a false prophetess",
-            },
-            {
-                name: "Sardis",
-                message: "The church in Sardis had a reputation for being alive, but Jesus said they were 'dead.' He urged them to wake up and strengthen what remained.",
-                question: "What was the condition of the church in Sardis?",
-                options: ["Faithful and enduring", "Spiritually dead", "Rich and prosperous", "Facing persecution"],
-                answer: "Spiritually dead",
-            },
-            {
-                name: "Philadelphia",
-                message: "The church in Philadelphia was commended for having little strength but keeping Jesus' word and not denying His name. He promised them an 'open door' and protection.",
-                question: "What did Jesus praise the church in Philadelphia for?",
-                options: ["Being rich and prosperous", "Having a strong leader", "Keeping His word and not denying His name", "Their many good works"],
-                answer: "Keeping His word and not denying His name",
-            },
-            {
-                name: "Laodicea",
-                message: "This church was wealthy and self-sufficient, but Jesus called them 'lukewarm.' He wanted them to be either hot or cold, not complacent in their faith.",
-                question: "What was the main problem with the church in Laodicea?",
-                options: ["They were facing persecution", "They were compromising with false teachings", "They were lukewarm and complacent", "They were poor and starving"],
-                answer: "They were lukewarm and complacent",
-            },
-        ];
+        cards.forEach(function (card, idx) {
+            card.addEventListener('keydown', function (e) {
+                var next;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    next = cards[(idx + 1) % cards.length];
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    next = cards[(idx - 1 + cards.length) % cards.length];
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    var href = card.dataset.href;
+                    if (href) window.location.href = href;
+                }
+                if (next) next.focus();
+            });
+        });
+    })();
 
-        const gameScreen = document.getElementById('game-screen');
-        const overlay = document.getElementById('game-alert-overlay');
-        const alertText = document.getElementById('game-alert-text');
-        const alertCloseBtn = document.getElementById('game-alert-close');
-        let completedStars = JSON.parse(localStorage.getItem('aghl_sevenStarsCompleted')) || [];
+    /* ── Apply form — supernova success (with focus trap + inert background) ── */
+    (function () {
+        var form        = document.getElementById('apply-form');
+        var overlay     = document.getElementById('supernova-overlay');
+        var close       = document.getElementById('nova-close');
+        var submitBtn   = document.getElementById('submit-btn');
+        var pageContent = document.getElementById('page-content');
 
-        function showGameAlert(text, callback) {
-            alertText.textContent = text;
-            overlay.style.display = 'flex';
-            alertCloseBtn.onclick = () => {
-                overlay.style.display = 'none';
-                if (callback) callback();
-            };
-        }
+        if (!form || !overlay || !close || !pageContent) return;
 
-        function renderTitleScreen() {
-            gameScreen.innerHTML = `
-                <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 font-playfair-display">Find the Seven Stars</h1>
-                    <p class="text-gray-600 mb-8">Embark on a spiritual journey to the seven churches of Asia Minor. Read their messages and test your knowledge to collect the stars.</p>
-                    <button id="start-journey-btn" class="game-btn text-lg px-8 py-3 shadow-lg">Start Journey</button>
-                </div>
-            `;
-            document.getElementById('start-journey-btn').addEventListener('click', renderMapScreen);
-        }
+        var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-        function renderMapScreen() {
-            gameScreen.innerHTML = `
-                <p class="text-lg text-gray-700 font-semibold mt-4">Select a destination to explore:</p>
-                <div class="map-grid pb-6">
-                    ${churches.map((church, index) => `
-                        <div class="map-item ${completedStars.includes(church.name) ? 'completed' : ''}" data-index="${index}">
-                            <svg class="star-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
-                            <span class="font-bold text-gray-800">${church.name}</span>
-                            <span class="text-xs mt-1 ${completedStars.includes(church.name) ? 'text-green-600 font-semibold' : 'text-gray-400'}">
-                                ${completedStars.includes(church.name) ? 'Collected' : 'Unexplored'}
-                            </span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            document.querySelectorAll('.map-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const index = parseInt(e.currentTarget.dataset.index);
-                    renderChurchScreen(index);
-                });
+        function getFocusable() {
+            return Array.from(overlay.querySelectorAll(FOCUSABLE)).filter(function (el) {
+                return !el.closest('[hidden]') && el.offsetParent !== null;
             });
         }
 
-        function renderChurchScreen(index) {
-            const church = churches[index];
-            const isCompleted = completedStars.includes(church.name);
-
-            gameScreen.innerHTML = `
-                <div class="w-full max-w-lg bg-gray-50 rounded-xl p-6 shadow-sm border border-gray-100 text-left mt-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold text-gray-800 font-playfair-display">${church.name}</h2>
-                        ${isCompleted ? '<span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">Star Collected</span>' : ''}
-                    </div>
-                    <p class="text-gray-700 leading-relaxed mb-6 bg-white p-4 rounded-lg border border-gray-200">
-                        "${church.message}"
-                    </p>
-
-                    <div id="quiz-container"></div>
-
-                    <button id="back-map-btn" class="mt-6 text-sm font-semibold text-gray-500 hover:text-gray-800 flex items-center">
-                        \u2190 Return to Map
-                    </button>
-                </div>
-            `;
-
-            document.getElementById('back-map-btn').addEventListener('click', renderMapScreen);
-            renderQuiz(index);
+        function openOverlay() {
+            overlay.classList.add('active');
+            pageContent.setAttribute('inert', '');
+            pageContent.setAttribute('aria-hidden', 'true');
+            close.focus();
         }
 
-        function renderQuiz(index) {
-            const church = churches[index];
-            const container = document.getElementById('quiz-container');
-            if (!container) return;
-            container.innerHTML = `
-                <div class="mt-4 border-t pt-4">
-                    <p class="font-semibold text-gray-800 mb-3">${church.question}</p>
-                    <div class="flex flex-col gap-2">
-                        ${church.options.map(opt => `
-                            <button class="quiz-option w-full text-left px-4 py-2 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition text-sm font-medium text-gray-700" data-option="${opt}">
-                                ${opt}
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            container.querySelectorAll('.quiz-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const chosen = btn.dataset.option;
-                    if (chosen === church.answer) {
-                        if (!completedStars.includes(church.name)) {
-                            completedStars.push(church.name);
-                            localStorage.setItem('aghl_sevenStarsCompleted', JSON.stringify(completedStars));
-                        }
-                        showGameAlert('\u2B50 Correct! You collected the star for ' + church.name + '!', renderMapScreen);
-                    } else {
-                        showGameAlert('Not quite \u2014 try again!');
-                    }
-                });
-            });
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            pageContent.removeAttribute('inert');
+            pageContent.removeAttribute('aria-hidden');
+            if (submitBtn) submitBtn.focus();
         }
 
-        // ==========================================
-        // 3. ARCADE GAME SWITCHER
-        // ==========================================
-        (function () {
-            const btnSevenStars   = document.getElementById('arcade-btn-sevenstars');
-            const btnMatchMaker   = document.getElementById('arcade-btn-matchmaker');
-            const wrapperSeven    = document.getElementById('sevenstars-wrapper');
-            const wrapperMatch    = document.getElementById('matchmaker-wrapper');
-            let matchMakerInitialized = false;
-
-            function setActive(btn) {
-                [btnSevenStars, btnMatchMaker].forEach(b => b.setAttribute('aria-pressed', 'false'));
-                btn.setAttribute('aria-pressed', 'true');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var name  = form.querySelector('#f-name').value.trim();
+            var phone = form.querySelector('#f-phone').value.trim();
+            if (!name || !phone) {
+                alert('Please fill in your name and phone number.');
+                return;
             }
+            openOverlay();
+            form.reset();
+        });
 
-            function showSevenStars() {
-                wrapperSeven.style.display = '';
-                wrapperMatch.style.display = 'none';
-                setActive(btnSevenStars);
+        close.addEventListener('click', closeOverlay);
+
+        overlay.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeOverlay();
+                return;
             }
-
-            async function showMatchMaker() {
-                wrapperSeven.style.display = 'none';
-                wrapperMatch.style.display = '';
-                setActive(btnMatchMaker);
-
-                if (!matchMakerInitialized) {
-                    try {
-                        const { initMatchMaker } = await import('./match-maker-ui.js');
-                        initMatchMaker(null, null);
-                        matchMakerInitialized = true;
-                    } catch (err) {
-                        console.error('Match Maker failed to load:', err);
-                        wrapperMatch.innerHTML = `
-                            <div class="text-center p-8">
-                                <p class="text-gray-600 text-lg font-medium">\u26a0\ufe0f Match Maker could not be loaded.</p>
-                                <p class="text-sm text-gray-400 mt-2">Please refresh the page or <a href="/arcade" class="text-blue-500 underline">visit the Arcade</a> to play.</p>
-                            </div>`;
-                    }
+            if (e.key === 'Tab') {
+                var focusable = getFocusable();
+                if (!focusable.length) { e.preventDefault(); return; }
+                var first = focusable[0];
+                var last  = focusable[focusable.length - 1];
+                if (e.shiftKey) {
+                    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+                } else {
+                    if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
                 }
             }
-
-            btnSevenStars.addEventListener('click', showSevenStars);
-            btnMatchMaker.addEventListener('click', showMatchMaker);
-        })();
-
-        // ---------------------------
-        // Service Worker Registration
-        // ---------------------------
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    await navigator.serviceWorker.register(new URL('sw.js', location.href));
-                } catch (err) {
-                    console.log('Service worker registration failed', err);
-                }
-            });
-        }
-
-    </script>
+        });
+    })();
+</script>
 </body>
 </html>

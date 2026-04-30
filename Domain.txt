@@ -15,3 +15,7 @@ DNS Requirements (amazinggracehl.org):
 Arcade Subdomain (arcade.amazinggracehl.org):
   CNAME arcade → nicholaimadias.github.io
   (Points to the Seven Stars arcade hosted on GitHub Pages)
+
+PR Preview URLs (Cloudflare Pages):
+  Auto-posted to pull requests via cloudflare-pages-preview-comment.yml
+  Example: https://<hash>.amazing-grace.pages.dev

@@ -9,6 +9,8 @@ export default defineConfig({
       input: {
         main:                    resolve(__dirname, "index.html"),
         arcade:                  resolve(__dirname, "arcade/index.html"),
+        arcadeMatrix:            resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
+        arcadeCertificates:      resolve(__dirname, "arcade/certificates/index.html"),
         ministry:                resolve(__dirname, "ministry/index.html"),
         ministries:              resolve(__dirname, "ministries/index.html"),
         stories:                 resolve(__dirname, "stories/index.html"),
@@ -19,7 +21,6 @@ export default defineConfig({
         galleryTampa:            resolve(__dirname, "galleries/tampa-property/index.html"),
         galleryMinistry:         resolve(__dirname, "galleries/ministry/index.html"),
         galleryMinistryOutreach: resolve(__dirname, "galleries/ministry-outreach/index.html"),
-        listings:                resolve(__dirname, "listings/index.html"),
         contact:                 resolve(__dirname, "contact/index.html"),
       }
     }

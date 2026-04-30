@@ -320,6 +320,10 @@ function afterScoring() {
 
   onLevelComplete(completedLevel, score, null, null);
 
+  document.dispatchEvent(new CustomEvent('matchmaker-level-complete', {
+    detail: { score, level: completedLevel }
+  }));
+
   if (completedLevel === MAX_LEVEL) {
     document.dispatchEvent(new CustomEvent('matchmakerComplete', {
       detail: { score, level: completedLevel }
