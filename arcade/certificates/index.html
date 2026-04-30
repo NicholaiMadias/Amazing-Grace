@@ -27,8 +27,9 @@
     }
     .orbitron { font-family: 'Orbitron', sans-serif; }
 
-    /* Focus ring */
-    *:focus-visible { outline: 3px solid var(--neon-blue); outline-offset: 2px; }
+    /* Focus ring — scoped to interactive elements */
+    a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--neon-blue); outline-offset: 2px; }
+    .cert-card:focus-visible { outline: 3px solid var(--neon-blue); outline-offset: 2px; }
 
     /* Page header */
     .page-header {
@@ -166,7 +167,7 @@
         card.innerHTML =
           '<div class="cert-icon-wrap" aria-hidden="true">🏆</div>' +
           '<div class="cert-meta">' +
-            '<div class="cert-game">' + esc(cert.game || 'Unknown Game') + '</div>' +
+            '<div class="cert-game" title="' + esc(cert.game || 'Unknown Game') + '">' + esc(cert.game || 'Unknown Game') + '</div>' +
             '<div class="cert-player">Player: <span>' + esc(cert.player || 'Player') + '</span></div>' +
             '<div class="cert-detail">Completed: ' + esc(cert.date || '—') +
               (cert.score != null ? ' &nbsp;·&nbsp; Score: ' + esc(String(cert.score)) : '') +
