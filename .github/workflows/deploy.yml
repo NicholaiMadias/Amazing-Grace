@@ -4,6 +4,11 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+    inputs:
+      comment:
+        description: "Optional deployment note (shown in the job summary)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -29,6 +34,15 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Log deployment comment
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.comment != '' }}
+        env:
+          DEPLOY_COMMENT: ${{ inputs.comment }}
+        run: |
+          printf '%s\n' "## 📝 Deployment Note" >> "$GITHUB_STEP_SUMMARY"
+          printf '\n' >> "$GITHUB_STEP_SUMMARY"
+          printf '%s\n' "$DEPLOY_COMMENT" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build
         run: npm run build
