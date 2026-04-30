@@ -1,118 +1,70 @@
-Absolutely. Below is a complete delivery of all four enhancements plus a clear deployment checklist in Markdown you can drop directly into your repo or ops docs.
+# Amazing Grace Home Living — Site Governance
+
+**Production domain:** amazinggracehl.org
+**Repo:** NicholaiMadias/Amazing-Grace
+**Pages:** https://nicholaimadias.github.io/Amazing-Grace/
 
 ---
 
-✅ All Four Enhancements (Production‑Ready)
-You now have a Tri‑Domain Governance System:
-🎮 Arcade — nicholai.org
-🏠 Listings — amazinggracehomeliving.com
-✝️ Ministry — voiceofjesusministry.org
-Governed, visualized, automated, and gamified.
+## Site Sections
+
+- 🏠 **Listings** — `amazinggracehl.org/`
+- 🎮 **Arcade** — `amazinggracehl.org/arcade/`
+- ✝️ **Ministry** — `amazinggracehl.org/ministry/`
 
 ---
 
-1️⃣ 🔐 Signed Ministry Content Validation
-Purpose: Ensure ministry content and agent instructions are authentic, untampered, and trusted.
-Implementation
-Generate a signing key (GPG or Ed25519).
-Sign all ministry artifacts:
-Agent.Instructions.pdf
-Sermon / doctrine updates
-Governance rules
-Example (CI step)
-gpg --detach-sign --armor Agent.Instructions.pdf
-Verification (Railway / Apps Script)
-Reject unsigned or invalid signatures
-Log verification results to Events sheet
-✅ Result: Content integrity + trust chain
+## ✅ Governance Enhancements
+
+### 1️⃣ 🔐 Signed Content Validation
+Ensure site content and agent instructions are authentic and untampered.
+- Sign ministry artifacts (sermon updates, governance rules) with GPG or Ed25519.
+- CI step example: `gpg --detach-sign --armor Agent.Instructions.pdf`
+- Reject unsigned or invalid signatures; log results.
+
+### 2️⃣ 📣 Uptime & Outreach Alerts
+Treat site downtime as a mission disruption.
+- Outages for `amazinggracehl.org` trigger email and dashboard alerts.
+- Example payload:
+  ```json
+  {
+    "domain": "amazinggracehl.org",
+    "severity": "critical",
+    "category": "outreach",
+    "status": "down"
+  }
+  ```
+
+### 3️⃣ 🌐 Public Site Health Badge
+Provide public transparency via a status badge.
+- ✅ Green: Site UP
+- ❌ Red: Site DOWN
+- 🟡 Yellow: Degraded
+- Badge URL: `https://amazinggracehl.org/health/badge.svg` *(planned future enhancement)*
+
+### 4️⃣ 🧠 AI‑Generated Incident Summaries
+Turn incidents into learning artifacts.
+- On outage: collect logs → AI generates root cause, timeline, and remediation steps.
+- Store summaries in an audit log or `/reports/` folder.
 
 ---
 
-2️⃣ 📣 Ministry‑Specific Uptime & Outreach Alerts
-Purpose: Treat ministry downtime as a mission disruption, not just an ops issue.
-Alert Routing
-Ministry outages trigger:
-Email
-Governance dashboard alert
-Higher severity flag than other domains
-Example Payload
-{
-  "domain": "voiceofjesusministry.org",
-  "severity": "critical",
-  "category": "outreach",
-  "status": "down"
-}
-✅ Result: Immediate visibility + faster response
+## ✅ Deployment Checklist
 
----
+### Phase 1 — Domain & DNS
+- [ ] `amazinggracehl.org` resolves and returns HTTPS 200
+- [ ] `www.amazinggracehl.org` redirects to apex
+- [ ] GitHub Pages CNAME file contains `amazinggracehl.org`
 
-3️⃣ 🎮 Public “Ministry Health” Badge
-Purpose: Public transparency and accountability.
-Badge Logic
-✅ Green: Ministry UP
-❌ Red: Ministry DOWN
-🟡 Yellow: Degraded
-Example Badge URL
-https://your-governance-app/health/voiceofjesusministry.org/badge.svg
-Usage
-README
-Website footer
-Partner portals
-✅ Result: Trust signal for visitors and collaborators
+### Phase 2 — Secrets & Credentials
+- [ ] (Optional) `GEMINI_API_KEY` configured in repo secrets
 
----
+### Phase 3 — GitHub Actions
+- [ ] `deploy.yml` triggers on push to `main`
+- [ ] `cloudflare-pages-preview-comment.yml` posts preview URLs to PRs
+- [ ] `domain-monitor.yml` scheduled check passes for `amazinggracehl.org`
 
-4️⃣ 🧠 AI‑Generated Ministry Incident Summaries
-Purpose: Turn incidents into learning and governance artifacts.
-Flow
-Outage detected
-Logs + events collected
-AI generates:
-Root cause summary
-Timeline
-Recommended fixes
-Stored in:
-Events sheet
-Optional /reports/ folder
-Example Output
-“On April 17, the Ministry domain experienced a 12‑minute outage due to DNS propagation delay. No data loss occurred. Corrective action: DNS TTL adjustment.”
-✅ Result: Wisdom captured, not lost
-
----
-
-✅ Deployment Checklist (Markdown)
-You can paste this directly into DEPLOYMENT.md.
-# ✅ Deployment Checklist — Tri‑Domain Health & Agent Sync
-
-## Phase 1 — Domains & DNS
-- [ ] nicholai.org resolves and returns HTTPS 200
-- [ ] amazinggracehomeliving.com resolves and returns HTTPS 200
-- [ ] voiceofjesusministry.org resolves and returns HTTPS 200
-
-## Phase 2 — Secrets & Credentials
-- [ ] GOVERNANCE_TOKEN set in GitHub Actions
-- [ ] GOVERNANCE_TOKEN set in Google Apps Script properties
-- [ ] (Optional) GEMINI_API_KEY configured
-
-## Phase 3 — Governance Backend (Railway)
-- [ ] Railway app deployed and reachable
-- [ ] POST /update-agent-logic working
-- [ ] POST /alert working
-- [ ] Logging enabled
-
-## Phase 4 — Google Apps Script
-- [ ] Google Sheet created with tabs:
-  - Domains
-  - Agents
-  - Events
-  - World_State
-- [ ] Apps Script deployed as Web App
-- [ ] Web App URL recorded
-
-## Phase 5 — Data Flow
-- [ ] GitHub Actions sending health data
-- [ ] Railway sending webhook updates
-- [ ] Apps Script receiving POST requests
-- [ ] Domains sheet updating in real time
-
-##
+### Phase 4 — Data Flow
+- [ ] GitHub Actions build succeeds (`npm run build`)
+- [ ] Dist artifacts deployed to GitHub Pages
+- [ ] Cloudflare Pages preview URLs posted automatically on PRs
