@@ -150,6 +150,18 @@
         }
         .breadcrumb a { color: var(--blue); text-decoration: none; }
         .breadcrumb a:hover { text-decoration: underline; }
+
+        .story-code {
+            background: #1e1b4b; color: #e0e7ff;
+            border-radius: 10px; padding: 1.25rem 1.5rem;
+            margin: 1.25rem 0; overflow-x: auto;
+            font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.65;
+        }
+        .story-code .code-label {
+            display: block; font-size: 0.7rem; font-weight: 700;
+            color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +191,7 @@
             <a href="#story1">A New Beginning</a>
             <a href="#story2">Strength in Community</a>
             <a href="#story3">The Open Door</a>
+            <a href="#story4">Our Covenant of New Beginnings</a>
         </nav>
 
         <div class="breadcrumb" aria-label="Breadcrumb">
@@ -242,6 +255,81 @@
                         </blockquote>
                         <p>
                             From Tampa to Largo, we continue to expand our ministry — guided by the belief that stability is not a luxury, but a foundation for transformation.
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Story 4 -->
+            <article id="story4" class="story-card" aria-labelledby="story4-title" style="border-left-color:#7c3aed">
+                <div class="story-body">
+                    <span class="story-category" style="background:#ede9fe;color:#6d28d9">Covenant</span>
+                    <h2 id="story4-title" class="story-title">Our Covenant of New Beginnings</h2>
+                    <p class="story-meta">Matrix of Consciousness &mdash; Amazing Grace Home Living</p>
+                    <div class="story-excerpt">
+                        <p>
+                            Every new beginning is a covenant — a sacred promise between the individual and the community that surrounds them. At Amazing Grace Home Living, we believe transformation is not accidental. It is chosen, recorded, and celebrated, one decision at a time.
+                        </p>
+                        <blockquote class="story-quote">
+                            "The choices we make in the dark become the light that guides others. Every move toward integrity is a move toward the life we were created to live."
+                        </blockquote>
+                        <p>
+                            To honor this truth, we built the <strong>Matrix of Consciousness</strong> — a living system that tracks each player's journey through choices that carry real spiritual weight. A "System Break" grows your Awareness. An "Architect Move" deepens your Integrity. Every action is logged, measured, and reflected back as evidence of growth.
+                        </p>
+                        <p>
+                            Below is the engine that powers this covenant — a progress tracker that records each decision and returns a real-time impact score, reminding every participant: <em>your choices matter, and they are never forgotten.</em>
+                        </p>
+                        <div class="story-code" role="region" aria-label="Matrix of Consciousness — Player Progress Engine source code">
+                            <span class="code-label">⚙️ Matrix of Consciousness — Player Progress Engine (Google Apps Script)</span>
+<pre>/**
+ * Matrix of Consciousness: Player Progress Engine
+ * Records player choices and calculates real-time Evolution stats.
+ */
+
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName("Player_Data");
+
+  // Create sheet if it doesn't exist
+  if (!sheet) {
+    sheet = ss.insertSheet("Player_Data");
+    sheet.appendRow(["Timestamp", "Player_ID", "Level",
+                     "Choice", "Awareness_Gain", "Integrity_Impact"]);
+  }
+
+  try {
+    var data = JSON.parse(e.postData.contents);
+
+    // Logic: Calculate impact based on choice
+    var awareness = (data.choice === "System Break") ? 10 : 0;
+    var integrity = (data.choice === "Architect Move") ? 5 : -2;
+
+    sheet.appendRow([
+      new Date(),
+      data.playerId,
+      data.level,
+      data.choice,
+      awareness,
+      integrity
+    ]);
+
+    return ContentService
+      .createTextOutput(
+        JSON.stringify({"result": "Success", "awareness": awareness})
+      )
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService
+      .createTextOutput(
+        JSON.stringify({"result": "Error", "message": error.message})
+      )
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+                        </div>
+                        <p>
+                            This is our covenant: that every step forward is witnessed, every breakthrough is recorded, and every life rebuilt through faith and intention becomes part of a story larger than itself.
                         </p>
                     </div>
                 </div>
