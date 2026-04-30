@@ -14,6 +14,13 @@
  *   requireRole(['admin', 'superAdmin', 'owner']);
  */
 
+// ── Firestore path template ─────────────────────────────────────────────
+/** Path to the user's private profile document in Firestore. */
+const PROFILE_PATH = (appId, uid) => `artifacts/${appId}/users/${uid}/profile`;
+
+/** Delay (ms) before reloading the page after successful admin elevation. */
+const ELEVATION_SUCCESS_DELAY_MS = 1400;
+
 // ── Firebase live-role state ──────────────────────────────────────────────
 let _firestoreRole  = null;  // null = not yet loaded from Firestore
 let _firestoreReady = false; // true once the first snapshot arrives
@@ -123,8 +130,8 @@ export async function initFirebaseAuth(onRoleChange) {
     const appId  = config.appId || 'amazinggracehl';
 
     // Sign in with a server-provided custom token when available, else anonymous.
-    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-      await signInWithCustomToken(auth, __initial_auth_token);
+    if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
+      await signInWithCustomToken(auth, window.__initial_auth_token);
     } else {
       await signInAnonymously(auth);
     }
@@ -139,10 +146,12 @@ export async function initFirebaseAuth(onRoleChange) {
         return;
       }
 
-      const profRef = doc(db, `artifacts/${appId}/users/${firebaseUser.uid}/profile`);
+      const profRef = doc(db, PROFILE_PATH(appId, firebaseUser.uid));
       _profileRef   = profRef;
 
       // Seed profile doc if it doesn't exist yet.
+      // New anonymous users get the minimum 'user' role — they are not granted
+      // any admin capability until a privileged actor updates their Firestore role.
       const snap = await getDoc(profRef);
       if (!snap.exists()) {
         await setDoc(profRef, { uid: firebaseUser.uid, role: 'user', createdAt: Date.now() });
@@ -171,6 +180,9 @@ export async function initFirebaseAuth(onRoleChange) {
  */
 export async function elevateToAdmin(enteredKey) {
   const masterKey = window.__ADMIN_MASTER_KEY;
+  // Note: constant-time comparison is not strictly necessary here because
+  // window.__ADMIN_MASTER_KEY is already client-visible to anyone who can open
+  // DevTools. The check prevents accidental misuse, not cryptographic attack.
   if (!masterKey || enteredKey !== masterKey) return false;
   if (!_profileRef) return false;
 
@@ -251,7 +263,7 @@ export function injectMasterKeyModal() {
     if (ok) {
       msg.style.color = '#50c878';
       msg.textContent = '✓ Role elevated to admin.';
-      setTimeout(() => { close(); window.location.reload(); }, 1400);
+      setTimeout(() => { close(); window.location.reload(); }, ELEVATION_SUCCESS_DELAY_MS);
     } else {
       msg.style.color = '#e0115f';
       msg.textContent = 'Invalid key or Firebase not configured.';
