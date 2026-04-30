@@ -53,7 +53,7 @@
         .starburst-overlay { }
 
         /* ── Focus ── */
-        *:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+        *:focus-visible { outline: 3px solid var(--blue-mid); outline-offset: 3px; }
 
         /* ── Header ── */
         .site-header {
@@ -77,7 +77,7 @@
             font-size: 1.15rem;
             font-weight: 700;
             text-decoration: none;
-            color: var(--red);
+            color: var(--blue);
             letter-spacing: 0.01em;
         }
         .logo img { height: 36px; width: auto; border-radius: 4px; }
@@ -102,7 +102,7 @@
             align-items: center;
             gap: 0.35rem;
         }
-        .nav-btn:hover { background: var(--red-pale); color: var(--red); }
+        .nav-btn:hover { background: var(--blue-pale); color: var(--blue); }
 
         .menu-toggle {
             display: none;
@@ -192,9 +192,9 @@
 
         /* ── Buttons ── */
         .btn-primary {
-            background: var(--red);
+            background: var(--blue);
             color: #fff;
-            border: 2px solid var(--red);
+            border: 2px solid var(--blue);
             padding: 0.75rem 2rem;
             border-radius: var(--radius);
             font-weight: 800;
@@ -206,7 +206,7 @@
             gap: 0.5rem;
             transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(230,57,70,0.40); background: var(--red-dark); border-color: var(--red-dark); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,82,118,0.40); background: var(--blue-mid); border-color: var(--blue-mid); }
         .btn-primary:active { transform: scale(0.97); }
 
         .btn-outline {
@@ -233,7 +233,7 @@
             bottom: 0; left: 0; right: 0;
             z-index: 300;
             background: var(--blue);
-            border-top: 3px solid var(--red);
+            border-top: 3px solid var(--blue-mid);
             padding: 0.65rem 1rem;
             justify-content: center;
             gap: 1rem;
@@ -243,7 +243,7 @@
             flex: 1;
             max-width: 200px;
             text-align: center;
-            background: var(--red);
+            background: var(--blue-mid);
             color: #fff;
             font-weight: 800;
             font-size: 0.9rem;
@@ -308,19 +308,19 @@
             transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
             box-shadow: var(--shadow-sm);
         }
-        .contact-card:hover { border-color: var(--red); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,57,70,0.12); }
+        .contact-card:hover { border-color: var(--blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,82,118,0.12); }
         .contact-icon {
             font-size: 2rem;
             flex-shrink: 0;
             width: 52px;
             height: 52px;
             border-radius: 50%;
-            background: var(--red-pale);
+            background: var(--blue-pale);
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+        .contact-label { font-size: 0.75rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
         .contact-value { font-size: 1.15rem; font-weight: 700; color: var(--text); }
 
         /* ── Listings / Gallery ── */
@@ -343,11 +343,11 @@
         }
         .listing-card:hover,
         .listing-card:focus-visible {
-            border-color: var(--red);
+            border-color: var(--blue);
             transform: translateY(-5px);
-            box-shadow: 0 14px 40px rgba(230,57,70,0.12);
+            box-shadow: 0 14px 40px rgba(26,82,118,0.12);
         }
-        .listing-card.focused { border-color: var(--red); box-shadow: 0 0 0 3px rgba(230,57,70,0.18); }
+        .listing-card.focused { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,82,118,0.18); }
 
         .listing-img-wrap {
             aspect-ratio: 16/9;
@@ -369,7 +369,7 @@
         .listing-price-badge {
             position: absolute;
             top: 0.75rem; right: 0.75rem;
-            background: var(--red);
+            background: var(--blue);
             color: #fff;
             font-family: 'Inter', sans-serif;
             font-weight: 800;
@@ -426,10 +426,10 @@
         .btn-sm-gold:hover { background: var(--blue-mid); transform: scale(1.03); box-shadow: var(--shadow-sm); }
         .btn-sm-outline {
             background: transparent;
-            border: 1.5px solid var(--red);
-            color: var(--red);
+            border: 1.5px solid var(--blue);
+            color: var(--blue);
         }
-        .btn-sm-outline:hover { background: var(--red-pale); transform: scale(1.03); }
+        .btn-sm-outline:hover { background: var(--blue-pale); transform: scale(1.03); }
 
         /* ── Keyboard hint ── */
         .kbd-hint {
@@ -467,14 +467,14 @@
         }
         .pricing-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
         .pricing-card.featured {
-            border-color: var(--red);
-            box-shadow: 0 0 0 3px rgba(230,57,70,0.08), var(--shadow-sm);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(26,82,118,0.08), var(--shadow-sm);
         }
         .pricing-price {
             font-family: 'Playfair Display', serif;
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--red);
+            color: var(--blue);
             line-height: 1;
             margin: 0.75rem 0 0.25rem;
         }
@@ -532,7 +532,7 @@
         }
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus { border-color: var(--red); outline: none; box-shadow: 0 0 0 3px rgba(230,57,70,0.10); }
+        .form-group textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(26,82,118,0.10); }
         .form-group textarea { resize: vertical; min-height: 90px; }
         .form-group select option { background: #fff; color: var(--text); }
 
@@ -570,7 +570,7 @@
             position: absolute;
             width: 200px; height: 200px;
             border-radius: 50%;
-            border: 3px solid var(--red);
+            border: 3px solid var(--blue-mid);
         }
         @keyframes novaRing {
             from { transform: scale(0.5); opacity: 0.8; }
