@@ -41,16 +41,13 @@ describe('createInitialGrid', () => {
     grid.flat().forEach(gem => expect(GEM_TYPES).toContain(gem));
   });
 
-  it('produces different grids across calls (randomness)', () => {
-    const a = createInitialGrid().flat().join(',');
-    const b = createInitialGrid().flat().join(',');
-    // Extremely unlikely to produce identical grids; guards against constant output
-    // Run a few attempts before declaring them always equal
-    let allSame = true;
-    for (let i = 0; i < 5; i++) {
-      if (createInitialGrid().flat().join(',') !== a) { allSame = false; break; }
+  it('uses all 5 gem types across repeated calls (distribution check)', () => {
+    const seen = new Set();
+    // Run enough grids to confidently observe all gem types
+    for (let i = 0; i < 20 && seen.size < GEM_TYPES.length; i++) {
+      createInitialGrid().flat().forEach(gem => seen.add(gem));
     }
-    expect(allSame).toBe(false);
+    expect(seen.size).toBe(GEM_TYPES.length);
   });
 });
 

@@ -63,10 +63,10 @@ describe('unlockStar', () => {
   it('does not create a toast element when the star is already unlocked', () => {
     vi.useFakeTimers();
     unlockStar('gold');
-    vi.runAllTimers(); // clear first toast
-    const beforeCount = document.body.children.length;
-    unlockStar('gold'); // already unlocked — no toast
-    expect(document.body.children.length).toBe(beforeCount);
+    vi.runAllTimers(); // clear first toast — body should now be empty
+    expect(document.body.children.length).toBe(0);
+    unlockStar('gold'); // already unlocked — no toast should be added
+    expect(document.body.children.length).toBe(0);
     vi.useRealTimers();
   });
 
