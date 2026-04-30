@@ -1,0 +1,51 @@
+{
+  // ============================
+  // GITKRAKEN-FRIENDLY GIT SETTINGS
+  // ============================
+  "git.autofetch": true,
+  "git.confirmSync": true,
+  "git.enableSmartCommit": true,
+  "git.suggestSmartCommit": false,
+  "git.pruneOnFetch": true,
+  "git.branchProtectionPrompt": "always",
+
+  // ============================
+  // DOCKER EXTENSION OPTIMIZATIONS
+  // ============================
+  "docker.pruneOnBuild": true,
+  "docker.explorerRefreshInterval": 2000,
+  "docker.attachShellCommand.linuxContainer": "/bin/bash",
+  "docker.showStartPage": false,
+
+  // ============================
+  // MOBILE-FRIENDLY WORKFLOW TWEAKS
+  // ============================
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "github.gitAuthentication": true,
+  "remoteHub.gitProtocol": "https",
+
+  // ============================
+  // FORMATTING & LINTING DEFAULTS
+  // ============================
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "prettier.printWidth": 100,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+
+  // ============================
+  // AMAZING-GRACE PROJECT SETTINGS
+  // ============================
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
