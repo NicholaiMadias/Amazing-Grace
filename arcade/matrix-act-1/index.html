@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Star Matrix — Act I: Awakening. Begin your moral journey through the nine crossroads.">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" href="/assets/logo.png">
+    <title>Matrix Act I: Awakening | Nexus Arcade — Amazing Grace</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap');
+        :root {
+            --bg:         #0f172a;
+            --surface:    #1e293b;
+            --border:     #334155;
+            --accent:     #a78bfa; /* violet */
+            --accent2:    #ffd700;
+            --text:       #e2e8f0;
+            --muted:      #94a3b8;
+            --glow:       rgba(167,139,250,0.25);
+            --radius:     16px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                linear-gradient(rgba(15,23,42,0.65) 0%, rgba(15,23,42,0.88) 100%),
+                url('https://github.com/user-attachments/assets/4f2cc6b0-ad39-4ade-bcc7-868d75e1ff5d') center / cover no-repeat;
+            z-index: -1;
+            pointer-events: none;
+        }
+        *:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+        /* ── Header ── */
+        .site-header {
+            background: rgba(15,23,42,0.9);
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 1.5rem;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-filter: blur(8px);
+        }
+        .logo {
+            display: flex; align-items: center; gap: 0.6rem;
+            font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            font-weight: 700; color: white; text-decoration: none;
+        }
+        .logo img { height: 32px; border-radius: 4px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--muted);
+            text-decoration: none; padding: 0.4rem 0.9rem;
+            border: 1px solid var(--border); border-radius: 8px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* ── Main ── */
+        main {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 3rem 1.25rem;
+            max-width: 680px; margin: 0 auto; width: 100%;
+        }
+
+        /* ── Act badge ── */
+        .act-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.9rem; border-radius: 999px;
+            background: rgba(167,139,250,0.12);
+            border: 1px solid rgba(167,139,250,0.35);
+            color: var(--accent); margin-bottom: 1.5rem;
+        }
+
+        /* ── Hero ── */
+        .hero-icon {
+            font-size: 4rem; margin-bottom: 1rem;
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--glow); }
+            50%       { text-shadow: 0 0 48px rgba(167,139,250,0.6); }
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 6vw, 2.75rem);
+            font-weight: 900; color: var(--accent);
+            text-align: center; margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        .subtitle {
+            font-size: 0.95rem; color: var(--muted);
+            text-align: center; margin-bottom: 2rem;
+            line-height: 1.6; max-width: 480px;
+        }
+
+        /* ── Dimension grid ── */
+        .dims {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0.75rem; width: 100%; margin-bottom: 2rem;
+        }
+        .dim-cell {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px; padding: 0.85rem 1rem;
+            font-size: 0.82rem;
+        }
+        .dim-label { font-weight: 700; margin-bottom: 0.2rem; }
+        .dim-desc  { color: var(--muted); font-size: 0.75rem; line-height: 1.4; }
+
+        /* ── CTA ── */
+        .cta-row {
+            display: flex; flex-wrap: wrap; gap: 0.75rem;
+            justify-content: center; width: 100%;
+        }
+        .btn-begin {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--accent); color: #1a1035;
+            font-weight: 700; font-size: 1rem;
+            padding: 0.85rem 2.25rem; min-height: 48px;
+            border-radius: 10px; border: none; cursor: pointer;
+            text-decoration: none;
+            transition: filter 0.2s, transform 0.15s;
+        }
+        .btn-begin:hover { filter: brightness(1.1); transform: scale(1.03); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.06); color: var(--muted);
+            font-weight: 700; font-size: 0.875rem;
+            padding: 0.75rem 1.5rem; min-height: 48px;
+            border-radius: 10px; border: 1px solid var(--border); cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .btn-secondary:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center; padding: 1.25rem;
+            font-size: 0.8rem; color: var(--muted);
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a href="/" class="logo">
+            <img src="/assets/logo.png" alt="Amazing Grace Home Living Logo">
+            <span>Amazing Grace</span>
+        </a>
+        <a href="/arcade/" class="back-link">← Back to Arcade</a>
+    </header>
+
+    <main>
+        <span class="act-badge">🌌 The Star Matrix · Act I</span>
+        <div class="hero-icon" aria-hidden="true">🧠</div>
+        <h1>Awakening</h1>
+        <p class="subtitle">
+            Nine crossroads await you. Each choice shapes four dimensions of conscience —
+            and together they reveal the pattern of who you truly are.
+        </p>
+
+        <div class="dims" role="list" aria-label="Conscience dimensions">
+            <div class="dim-cell" role="listitem">
+                <div class="dim-label" style="color:#fbbf24">⚡ Karma</div>
+                <div class="dim-desc">The weight of your actions and their ripple into the world.</div>
+            </div>
+            <div class="dim-cell" role="listitem">
+                <div class="dim-label" style="color:#34d399">🤝 Community</div>
+                <div class="dim-desc">Your generosity, solidarity, and care for others.</div>
+            </div>
+            <div class="dim-cell" role="listitem">
+                <div class="dim-label" style="color:#a78bfa">🔮 Wisdom</div>
+                <div class="dim-desc">The quality of your insight, patience, and discernment.</div>
+            </div>
+            <div class="dim-cell" role="listitem">
+                <div class="dim-label" style="color:#60a5fa">🛡️ Integrity</div>
+                <div class="dim-desc">Your commitment to honesty and trustworthiness.</div>
+            </div>
+        </div>
+
+        <div class="cta-row">
+            <a href="/arcade/matrix-of-conscience/" class="btn-begin">⚡ Begin Act I</a>
+            <a href="/arcade/" class="btn-secondary">🎮 Arcade Lobby</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Amazing Grace Home Living &mdash;
+            <a href="/">amazinggracehl.org</a>
+        </p>
+    </footer>
+</body>
+</html>

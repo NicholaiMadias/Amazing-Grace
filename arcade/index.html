@@ -223,6 +223,36 @@
         .game-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.4); border-color: var(--accent); }
         .game-card:hover::before { opacity: 1; }
 
+        /* ---- Game card thumbnail ---- */
+        .game-card-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+        }
+        .game-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .game-card:hover .game-card-img img { transform: scale(1.04); }
+
+        /* ---- Lore act label ---- */
+        .badge-act {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(167,139,250,0.12); color: #a78bfa;
+            border: 1px solid rgba(167,139,250,0.3);
+            align-self: flex-start;
+        }
+
         .game-card-icon { font-size: 2.5rem; }
         .game-card-title {
             font-family: 'Playfair Display', serif;
@@ -681,12 +711,22 @@
 
             <div class="game-grid">
 
+                <!-- Matrix of Conscience Card (Act I — first in lore order) -->
+                <div class="game-card card-matrix" role="button" tabindex="0" aria-label="Play Matrix of Conscience — Act I" onclick="location.href='/arcade/matrix-act-1/'" onkeydown="if(event.key==='Enter'||event.key===' ')location.href='/arcade/matrix-act-1/'">
+                    <div class="game-card-icon-wrap"><span class="game-card-icon">🧠</span></div>
+                    <div class="game-card-title">Matrix of Conscience</div>
+                    <div class="game-card-desc">Navigate nine moral crossroads from the Star Matrix journey. Your choices shape four conscience dimensions and reveal your Conscience Archetype.</div>
+                    <span class="badge-act">🌌 Act I</span>
+                    <span class="game-card-badge badge-violet">Moral Choice</span>
+                    <button class="play-btn play-btn-violet" tabindex="-1">▶ Play Now</button>
+                </div>
+
                 <!-- Seven Stars Card -->
                 <div class="game-card card-stars" role="button" tabindex="0" aria-label="Play The Mystery of the Seven Stars" onclick="launchGame('sevenstars')" onkeydown="if(event.key==='Enter'||event.key===' ')launchGame('sevenstars')">
                     <div class="game-card-img">
                         <img src="https://github.com/user-attachments/assets/03bc7c9d-acc4-4bed-a935-83ad9cd48881" alt="Mystery of the Seven Stars — game screenshot" loading="lazy">
                     </div>
-                    <div class="game-card-icon">⭐</div>
+                    <div class="game-card-icon-wrap"><span class="game-card-icon">⭐</span></div>
                     <div class="game-card-title">Mystery of the Seven Stars</div>
                     <div class="game-card-desc">Journey through the seven churches of Asia Minor. Read their stories and test your biblical knowledge to collect all seven stars.</div>
                     <span class="game-card-badge badge-gold">Knowledge Quest</span>
@@ -700,15 +740,6 @@
                     <div class="game-card-desc">Swap and match virtuous gems on a 7×7 board. Unlock special tiles, build combos, and grow your Conscience Meter.</div>
                     <span class="game-card-badge badge-teal">Gem Puzzle</span>
                     <button class="play-btn play-btn-teal" tabindex="-1">▶ Play Now</button>
-                </div>
-
-                <!-- Matrix of Conscience Card -->
-                <div class="game-card card-matrix" role="button" tabindex="0" aria-label="Play Matrix of Conscience" onclick="location.href='/arcade/matrix-of-conscience/'" onkeydown="if(event.key==='Enter'||event.key===' ')location.href='/arcade/matrix-of-conscience/'">
-                    <div class="game-card-icon-wrap"><span class="game-card-icon">🧠</span></div>
-                    <div class="game-card-title">Matrix of Conscience</div>
-                    <div class="game-card-desc">Navigate nine moral crossroads from the Star Matrix journey. Your choices shape four conscience dimensions and reveal your Conscience Archetype.</div>
-                    <span class="game-card-badge badge-violet">Moral Choice</span>
-                    <button class="play-btn play-btn-violet" tabindex="-1">▶ Play Now</button>
                 </div>
 
             </div>
@@ -884,6 +915,9 @@
                     <div id="mm-cert-btns" class="cert-btn-row" style="display:none;margin-bottom:1rem">
                         <button id="mm-dl-png" class="game-btn">⬇ Download PNG</button>
                         <button id="mm-print" class="game-btn" style="background:rgba(255,255,255,.08)">🖨 Print / Save PDF</button>
+                    </div>
+                    <div class="cert-btn-row" style="margin-bottom:.5rem">
+                        <a href="/arcade/matrix-act-1/" class="game-btn" style="background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#a78bfa;text-decoration:none">🧠 Next: Matrix of Conscience →</a>
                     </div>
                     <button id="mm-back-lobby" class="game-btn" style="background:none;border:1px solid var(--border);color:#94a3b8;margin-top:.5rem">↩ Back to Arcade</button>
                 </div>`;
@@ -1106,6 +1140,9 @@
                         <input id="cert-name-input" type="text" maxlength="60" placeholder="Your Name"
                             style="width:100%;max-width:320px;padding:.65rem 1rem;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#e2e8f0;font-size:1rem;margin-bottom:1rem;text-align:center" />
                         <button id="cert-generate-btn" class="game-btn" style="font-size:1rem;padding:.75rem 2rem">⬇ Download Certificate</button>
+                        <div style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center">
+                            <a href="/arcade/matrix-act-1/" style="display:inline-flex;align-items:center;gap:.35rem;padding:.6rem 1.25rem;border-radius:8px;background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#a78bfa;font-size:.85rem;font-weight:700;text-decoration:none">🧠 Next: Matrix of Conscience →</a>
+                        </div>
                         <button id="cert-back-btn" style="margin-top:.75rem;background:none;border:none;color:#64748b;cursor:pointer;font-size:.875rem;font-weight:600">← Back to Map</button>
                     </div>`;
                 document.getElementById('cert-generate-btn').addEventListener('click', ssGenerateCert);
@@ -1221,6 +1258,8 @@
             renderTitle();
         }
     </script>
+    <!-- Matrix animation/style constants -->
+    <script src="/arcade/scripts/matrix.js"></script>
 
 </body>
 </html>
