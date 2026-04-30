@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
+  plugins: [react()],
   build: {
     outDir: "dist",
     emptyOutDir: true,
@@ -9,8 +11,10 @@ export default defineConfig({
       input: {
         main:              resolve(__dirname, "index.html"),
         arcade:            resolve(__dirname, "arcade/index.html"),
-        arcadeMatrix:      resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
-        arcadeCertificates: resolve(__dirname, "arcade/certificates/index.html"),
+        arcadeCertificates:      resolve(__dirname, "arcade/certificates/index.html"),
+        arcadeStarMatrix:        resolve(__dirname, "arcade/star-matrix/index.html"),
+        arcadeMatrixOfConscience: resolve(__dirname, "arcade/matrix-of-conscience/index.html"),
+        arcadeMatrixAct1:        resolve(__dirname, "arcade/matrix-act-1/index.html"),
         ministry:          resolve(__dirname, "ministry/index.html"),
         ministries:        resolve(__dirname, "ministries/index.html"),
         stories:           resolve(__dirname, "stories/index.html"),

@@ -1,145 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225" width="400" height="225">
   <defs>
-    <linearGradient id="skyT" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7BB8D4"/>
-      <stop offset="100%" stop-color="#C8E8F8"/>
+    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="100%" stop-color="#1a3050"/>
     </linearGradient>
-    <linearGradient id="bldgT" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#D8D4C8"/>
-      <stop offset="100%" stop-color="#C2BC9A"/>
+    <linearGradient id="building4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a5a"/>
+      <stop offset="100%" stop-color="#1a2840"/>
     </linearGradient>
-    <linearGradient id="grassT" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#5EA85B"/>
-      <stop offset="100%" stop-color="#498046"/>
+    <linearGradient id="ground4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a28"/>
+      <stop offset="100%" stop-color="#161e14"/>
     </linearGradient>
-    <linearGradient id="sidewalk" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#B8B4A8"/>
-      <stop offset="100%" stop-color="#A8A49A"/>
-    </linearGradient>
+    <filter id="shadow4"><feDropShadow dx="2" dy="6" stdDeviation="4" flood-opacity="0.4"/></filter>
+    <filter id="glow4"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-
   <!-- Sky -->
-  <rect width="800" height="450" fill="url(#skyT)"/>
-
-  <!-- Sun / haze -->
-  <circle cx="620" cy="60" r="55" fill="rgba(255,230,100,0.20)"/>
-  <circle cx="620" cy="60" r="35" fill="rgba(255,230,100,0.28)"/>
-  <circle cx="620" cy="60" r="20" fill="#FFD84A" opacity="0.65"/>
-
-  <!-- Clouds -->
-  <ellipse cx="150" cy="75" rx="70" ry="24" fill="white" opacity="0.82"/>
-  <ellipse cx="195" cy="60" rx="52" ry="21" fill="white" opacity="0.82"/>
-  <ellipse cx="105" cy="66" rx="42" ry="18" fill="white" opacity="0.76"/>
-  <ellipse cx="480" cy="88" rx="58" ry="20" fill="white" opacity="0.70"/>
-  <ellipse cx="530" cy="74" rx="43" ry="17" fill="white" opacity="0.70"/>
-
-  <!-- Distant city skyline (Tampa feel) -->
-  <rect x="580" y="195" width="25" height="115" fill="#A0B8C8" opacity="0.55" rx="2"/>
-  <rect x="610" y="178" width="20" height="132" fill="#98B0C0" opacity="0.52" rx="2"/>
-  <rect x="635" y="188" width="18" height="122" fill="#A0B8C8" opacity="0.50" rx="2"/>
-  <rect x="658" y="172" width="22" height="138" fill="#90A8B8" opacity="0.55" rx="2"/>
-  <rect x="685" y="190" width="16" height="120" fill="#A0B8C8" opacity="0.48" rx="2"/>
-  <rect x="706" y="200" width="18" height="110" fill="#98B0C0" opacity="0.50" rx="2"/>
-  <rect x="730" y="184" width="20" height="126" fill="#90A8B8" opacity="0.52" rx="2"/>
-  <rect x="754" y="195" width="46" height="115" fill="#A0B8C8" opacity="0.48" rx="2"/>
-
-  <!-- Grass strip -->
-  <rect x="0" y="345" width="800" height="105" fill="url(#grassT)"/>
-
+  <rect width="400" height="225" fill="url(#sky4)"/>
+  <!-- City stars -->
+  <circle cx="40" cy="20" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <circle cx="95" cy="12" r="1" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="200" cy="18" r="1.5" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="310" cy="8" r="1" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="370" cy="22" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <!-- Background buildings (cityscape) -->
+  <rect x="0" y="90" width="60" height="75" fill="rgba(30,50,80,0.6)"/>
+  <rect x="10" y="70" width="35" height="20" fill="rgba(30,50,80,0.5)"/>
+  <rect x="330" y="80" width="70" height="85" fill="rgba(30,50,80,0.6)"/>
+  <rect x="345" y="60" width="40" height="22" fill="rgba(30,50,80,0.5)"/>
+  <!-- Ground -->
+  <rect x="0" y="165" width="400" height="60" fill="url(#ground4)"/>
   <!-- Sidewalk -->
-  <rect x="0" y="332" width="800" height="18" fill="url(#sidewalk)"/>
-  <!-- Sidewalk cracks -->
-  <line x1="0" y1="340" x2="800" y2="340" stroke="rgba(0,0,0,0.07)" stroke-width="1.5"/>
-  <line x1="200" y1="332" x2="200" y2="350" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-  <line x1="400" y1="332" x2="400" y2="350" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-  <line x1="600" y1="332" x2="600" y2="350" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
-
-  <!-- Small palm tree (left) -->
-  <path d="M118 345 Q125 310 120 275 Q118 255 122 240" stroke="#6B5220" stroke-width="9" fill="none" stroke-linecap="round"/>
-  <path d="M122 240 Q88 205 62 215" stroke="#2A7A30" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <path d="M122 240 Q95 195 98 172" stroke="#2A7A30" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <path d="M122 240 Q122 192 130 176" stroke="#2A7A30" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <path d="M122 240 Q148 195 165 202" stroke="#2A7A30" stroke-width="5" fill="none" stroke-linecap="round"/>
-  <path d="M122 240 Q152 215 168 228" stroke="#2A7A30" stroke-width="5" fill="none" stroke-linecap="round"/>
-
-  <!-- Main apartment building -->
-  <rect x="170" y="120" width="390" height="225" fill="url(#bldgT)" rx="3"/>
-
-  <!-- Building roofline flat -->
-  <rect x="165" y="112" width="400" height="14" fill="#C0B88A" rx="2"/>
-
-  <!-- Building trim / banding between floors -->
-  <rect x="170" y="190" width="390" height="8" fill="#B4AE8A" rx="1"/>
-  <rect x="170" y="260" width="390" height="8" fill="#B4AE8A" rx="1"/>
-
-  <!-- Ground floor entry area -->
-  <rect x="290" y="280" width="150" height="68" fill="#B8B295" rx="2"/>
-
-  <!-- Main entrance door (glass double doors) -->
-  <rect x="318" y="295" width="48" height="53" fill="#A8C8DC" rx="2"/>
-  <line x1="342" y1="295" x2="342" y2="348" stroke="rgba(0,0,0,0.2)" stroke-width="2"/>
-  <line x1="318" y1="320" x2="366" y2="320" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-  <circle cx="335" cy="321" r="3.5" fill="#888"/>
-  <circle cx="349" cy="321" r="3.5" fill="#888"/>
-  <!-- Door canopy -->
-  <rect x="302" y="288" width="80" height="9" fill="#9A9478" rx="2"/>
-
-  <!-- Windows - Floor 1 -->
-  <rect x="195" y="135" width="62" height="45" fill="#BFD9EE" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="226" y1="135" x2="226" y2="180" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="195" y1="157" x2="257" y2="157" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="280" y="135" width="62" height="45" fill="#BFD9EE" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="311" y1="135" x2="311" y2="180" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="280" y1="157" x2="342" y2="157" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="395" y="135" width="62" height="45" fill="#BFD9EE" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="426" y1="135" x2="426" y2="180" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="395" y1="157" x2="457" y2="157" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="480" y="135" width="62" height="45" fill="#BFD9EE" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="511" y1="135" x2="511" y2="180" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="480" y1="157" x2="542" y2="157" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <!-- Windows - Floor 2 -->
-  <rect x="195" y="207" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="226" y1="207" x2="226" y2="252" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="195" y1="229" x2="257" y2="229" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="280" y="207" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="311" y1="207" x2="311" y2="252" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="280" y1="229" x2="342" y2="229" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="395" y="207" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="426" y1="207" x2="426" y2="252" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="395" y1="229" x2="457" y2="229" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <rect x="480" y="207" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="511" y1="207" x2="511" y2="252" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-  <line x1="480" y1="229" x2="542" y2="229" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>
-
-  <!-- Windows - Floor 3 (ground level) -->
-  <rect x="195" y="277" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="226" y1="277" x2="226" y2="322" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-
-  <rect x="480" y="277" width="62" height="45" fill="#CCDFF0" rx="2" stroke="#C8C0A0" stroke-width="1.5"/>
-  <line x1="511" y1="277" x2="511" y2="322" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
-
-  <!-- Building name/number sign -->
-  <rect x="352" y="125" width="26" height="16" fill="rgba(0,0,0,0.12)" rx="2"/>
-  <text x="365" y="137" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="rgba(255,255,255,0.8)" text-anchor="middle">APT</text>
-
-  <!-- Parking area -->
-  <rect x="0" y="350" width="155" height="100" fill="#A8A298" opacity="0.55" rx="2"/>
-  <line x1="40" y1="350" x2="40" y2="450" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <line x1="80" y1="350" x2="80" y2="450" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <line x1="120" y1="350" x2="120" y2="450" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="6,4"/>
-  <!-- Parked car silhouette -->
-  <rect x="48" y="370" width="62" height="28" fill="#4A6A80" rx="5" opacity="0.8"/>
-  <rect x="54" y="360" width="50" height="16" fill="#5A7A90" rx="4" opacity="0.8"/>
-
-  <!-- Label bar -->
-  <rect x="0" y="400" width="800" height="50" fill="rgba(26,82,118,0.92)"/>
-  <text x="400" y="425" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle" letter-spacing="0.04em">Tampa Property — Tampa, FL</text>
-  <text x="400" y="443" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle" letter-spacing="0.07em">ALL-INCLUSIVE · NEAR TRANSIT · MOVE-IN READY · WI-FI</text>
+  <rect x="60" y="165" width="280" height="12" fill="#3a3a4a" opacity="0.8"/>
+  <!-- Main modern building -->
+  <rect x="100" y="40" width="200" height="125" fill="url(#building4)" filter="url(#shadow4)"/>
+  <!-- Glass facade grid (windows) -->
+  <!-- Row 1 -->
+  <rect x="112" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.85" filter="url(#glow4)"/>
+  <rect x="146" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <rect x="180" y="52" width="28" height="18" rx="1" fill="#ffd700" opacity="0.5"/>
+  <rect x="214" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.8"/>
+  <rect x="248" y="52" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <!-- Row 2 -->
+  <rect x="112" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="146" y="76" width="28" height="18" rx="1" fill="#ffd700" opacity="0.6"/>
+  <rect x="180" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.85"/>
+  <rect x="214" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="248" y="76" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <!-- Row 3 -->
+  <rect x="112" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <rect x="146" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <rect x="180" y="100" width="28" height="18" rx="1" fill="#ffd700" opacity="0.4"/>
+  <rect x="214" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.9"/>
+  <rect x="248" y="100" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <!-- Row 4 -->
+  <rect x="112" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.6"/>
+  <rect x="146" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.8"/>
+  <rect x="180" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.5"/>
+  <rect x="214" y="124" width="28" height="18" rx="1" fill="#ffd700" opacity="0.5"/>
+  <rect x="248" y="124" width="28" height="18" rx="1" fill="#4a9fd4" opacity="0.7"/>
+  <!-- Building accent lines -->
+  <line x1="100" y1="40" x2="100" y2="165" stroke="rgba(74,159,212,0.3)" stroke-width="2"/>
+  <line x1="300" y1="40" x2="300" y2="165" stroke="rgba(74,159,212,0.3)" stroke-width="2"/>
+  <line x1="100" y1="40" x2="300" y2="40" stroke="rgba(74,159,212,0.4)" stroke-width="2"/>
+  <!-- Main entrance -->
+  <rect x="170" y="140" width="60" height="25" rx="2" fill="#1a2840"/>
+  <rect x="175" y="143" width="24" height="22" rx="1" fill="rgba(74,159,212,0.5)"/>
+  <rect x="201" y="143" width="24" height="22" rx="1" fill="rgba(74,159,212,0.5)"/>
+  <!-- Ground reflection -->
+  <rect x="90" y="165" width="220" height="8" fill="rgba(74,159,212,0.1)"/>
+  <!-- Address bar -->
+  <rect x="0" y="195" width="400" height="30" fill="rgba(0,0,0,0.45)"/>
+  <text x="200" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4a9fd4" letter-spacing="1">Tampa Property · Tampa, FL</text>
 </svg>
